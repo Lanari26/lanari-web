@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import logo from '../assets/logo.png';
 
 export default function LanariTechBrowser() {
+    const navigate = useNavigate();
     const [scrolled, setScrolled] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
     const [searchFocused, setSearchFocused] = useState(false);
@@ -46,6 +49,8 @@ export default function LanariTechBrowser() {
         { name: 'Rise', icon: '📈', color: 'from-purple-500 to-pink-400', url: 'rise.lanari.rw' },
         { name: 'Academy', icon: '🎓', color: 'from-emerald-500 to-teal-400', url: 'academy.lanari.rw' },
         { name: 'AI Solutions', icon: '🤖', color: 'from-orange-500 to-red-400', url: 'ai.lanari.rw' },
+        { name: 'Partner', icon: '🤝', color: 'from-pink-500 to-rose-400', url: 'partner.lanari.rw' },
+        { name: 'Invest', icon: '💎', color: 'from-amber-500 to-yellow-400', url: 'invest.lanari.rw' },
         { name: 'Analytics', icon: '📊', color: 'from-indigo-500 to-purple-400', url: 'analytics.lanari.rw' },
         { name: 'Cloud', icon: '☁️', color: 'from-sky-500 to-blue-400', url: 'cloud.lanari.rw' },
         { name: 'Docs', icon: '📄', color: 'from-yellow-500 to-orange-400', url: 'docs.lanari.rw' },
@@ -66,14 +71,12 @@ export default function LanariTechBrowser() {
             >
                 {/* Logo Section */}
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-xl font-bold shadow-lg shadow-blue-500/20">
-                        L
-                    </div>
+                    <img src={logo} alt="Lanari Tech" className="w-10 h-10 rounded-xl shadow-lg shadow-blue-500/20" />
                     <span className="text-lg font-bold tracking-tight" style={{ color: '#ffffff' }}>Lanari Tech</span>
                 </div>
 
                 {/* Central Scrolling Ticker */}
-                <div className="flex-1 max-w-3xl mx-8 overflow-hidden relative mask-linear-fade">
+                <div className="hidden md:block flex-1 max-w-3xl mx-8 overflow-hidden relative mask-linear-fade">
                     {/* Gradient Masks for fade effect */}
                     <div className="absolute left-0 top-0 bottom-0 w-12 z-10 bg-gradient-to-r from-[rgba(21,24,33,1)] to-transparent pointer-events-none" />
                     <div className="absolute right-0 top-0 bottom-0 w-12 z-10 bg-gradient-to-l from-[rgba(21,24,33,1)] to-transparent pointer-events-none" />
@@ -82,10 +85,11 @@ export default function LanariTechBrowser() {
                         {/* Duplicated list for seamless infinite scroll */}
                         {[...new Array(2)].map((_, i) => (
                             <div key={i} className="flex items-center gap-8 mx-4">
-                                {["Smart Automation", "Cyber Security", "Cloud DevOps", "System Integration", "Future Innovation", "AI Solutions", "Data Analytics", "Digital Transformation"].map((text, j) => (
+                                {["E-Commerce", "Freelancing", "Digital Skills", "Networking", "Online Jobs", "Virtual Stock", "Education", "Innovation"].map((text, j) => (
                                     <span
                                         key={j}
-                                        className="text-sm font-semibold text-gray-400 hover:text-blue-400 transition-colors duration-300"
+                                        onClick={() => navigate('/coming-soon')}
+                                        className="text-sm font-semibold text-gray-400 hover:text-blue-400 transition-colors duration-300 cursor-pointer"
                                     >
                                         {text}
                                     </span>
@@ -96,7 +100,7 @@ export default function LanariTechBrowser() {
                 </div>
                 {/* Right Actions */}
                 <div className="flex items-center gap-4">
-                    <button className="p-2 rounded-full hover:bg-gray-800 transition-colors text-gray-400 hover:text-white relative group">
+                    <button onClick={() => navigate('/coming-soon')} className="p-2 rounded-full hover:bg-gray-800 transition-colors text-gray-400 hover:text-white relative group">
                         <div className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
                         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -112,7 +116,7 @@ export default function LanariTechBrowser() {
                         </svg>
                     </button>
 
-                    <button className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-sm font-bold shadow-lg shadow-purple-500/20 ring-2 ring-transparent hover:ring-purple-400/50 transition-all scale-100 hover:scale-105">
+                    <button onClick={() => navigate('/coming-soon')} className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-sm font-bold shadow-lg shadow-purple-500/20 ring-2 ring-transparent hover:ring-purple-400/50 transition-all scale-100 hover:scale-105">
                         L
                     </button>
                 </div>
@@ -130,6 +134,7 @@ export default function LanariTechBrowser() {
                             {apps.map((app, i) => (
                                 <button
                                     key={i}
+                                    onClick={() => navigate('/coming-soon')}
                                     className="flex flex-col items-center gap-2 p-4 rounded-xl transition-all group hover:bg-gray-700"
                                 >
                                     <div className={`w-16 h-16 bg-gradient-to-br ${app.color} rounded-2xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform shadow-lg`}>
@@ -140,7 +145,7 @@ export default function LanariTechBrowser() {
                             ))}
                         </div>
                         <div className="mt-4 pt-4 text-center" style={{ borderTop: '1px solid #4b5563' }}>
-                            <a href="#" className="text-base font-semibold text-blue-400 hover:text-blue-300 hover:underline">More from Lanari →</a>
+                            <a href="#" onClick={(e) => { e.preventDefault(); navigate('/coming-soon'); }} className="text-base font-semibold text-blue-400 hover:text-blue-300 hover:underline">More from Lanari →</a>
                         </div>
                     </div>
                 </div>
@@ -174,40 +179,43 @@ export default function LanariTechBrowser() {
                 </div>
 
                 {/* Hero Section */}
-                <section className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-20">
-                    {/* Logo */}
+                <section className="relative h-screen flex flex-col items-center justify-center px-6">
                     <div className="mb-12">
                         <div className="flex items-center justify-center gap-3 mb-6">
-                            <span className="text-[90px] font-bold" style={{ color: '#ffffff' }}>L</span>
+                            <span className="text-5xl md:text-[90px] font-bold" style={{ color: '#ffffff' }}>L</span>
                             <div className="relative">
-                                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl" />
-                                <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl blur-xl opacity-50" />
+                                <img src={logo} alt="Lanari Tech" className="w-12 h-12 md:w-20 md:h-20 rounded-2xl object-cover shadow-2xl shadow-purple-500/20" />
+                                <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl blur-xl opacity-30 -z-10" />
                             </div>
-                            <span className="text-[90px] font-bold" style={{ color: '#ffffff' }}>ANARI</span>
-                        </div>
-                        <div className="text-center">
-                            <span className="text-xl font-semibold" style={{ color: '#e5e7eb' }}>Building the Future from Rwanda 🇷🇼</span>
+                            <span className="text-5xl md:text-[90px] font-bold" style={{ color: '#ffffff' }}>NARI</span>
                         </div>
                     </div>
 
+                    {/* Scroll Indicator */}
+                    <div className="absolute bottom-10 animate-bounce">
+                        <svg className="w-6 h-6 text-gray-500" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                        </svg>
+                    </div>
+
                     {/* Search Box */}
-                    <div className="w-full max-w-2xl mb-8">
-                        <div className="rounded-full px-6 py-5 flex items-center gap-4 shadow-2xl transition-all hover:shadow-3xl" style={{ backgroundColor: '#1f2937', border: '1px solid #4b5563' }}>
-                            <svg className="w-6 h-6" style={{ color: '#d1d5db' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <div className="w-full max-w-[90%] lg:max-w-[80%]">
+                        <div className="rounded-full px-4 py-3 md:px-6 md:py-5 flex items-center gap-2 md:gap-4 shadow-2xl transition-all hover:shadow-3xl" style={{ backgroundColor: '#1f2937', border: '1px solid #4b5563' }}>
+                            <svg className="w-5 h-5 md:w-6 md:h-6" style={{ color: '#d1d5db' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                             <input
                                 type="text"
-                                placeholder="Search our platforms or explore AI solutions..."
-                                className="flex-1 bg-transparent text-base font-medium outline-none placeholder-gray-400"
+                                placeholder="Looking for something you need? Search here…"
+                                className="flex-1 bg-transparent text-sm md:text-base lg:text-lg font-medium outline-none placeholder-gray-400 min-w-0"
                                 style={{ color: '#ffffff' }}
                             />
-                            <button className="p-2 rounded-full transition-colors hover:bg-gray-700">
-                                <svg className="w-6 h-6" style={{ color: '#d1d5db' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <button onClick={() => navigate('/coming-soon')} className="p-1.5 md:p-2 rounded-full transition-colors hover:bg-gray-700 flex-shrink-0">
+                                <svg className="w-5 h-5 md:w-6 md:h-6" style={{ color: '#d1d5db' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
                                 </svg>
                             </button>
-                            <button className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full text-base font-bold text-white hover:shadow-lg hover:shadow-purple-500/50 transition-all">
+                            <button onClick={() => navigate('/coming-soon')} className="px-3 py-1.5 md:px-5 md:py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full text-sm md:text-base lg:text-lg font-bold text-white hover:shadow-lg hover:shadow-purple-500/50 transition-all flex-shrink-0 whitespace-nowrap">
                                 AI Mode
                             </button>
                         </div>
@@ -217,7 +225,8 @@ export default function LanariTechBrowser() {
                             {['Siri Platform', 'Rise Solutions', 'Learn Coding', 'AI for Business'].map((term, i) => (
                                 <button
                                     key={i}
-                                    className="px-5 py-2.5 rounded-full text-base font-semibold transition-all hover:bg-gray-700"
+                                    onClick={() => navigate('/coming-soon')}
+                                    className="px-5 py-2.5 rounded-full text-sm md:text-base lg:text-lg font-semibold transition-all hover:bg-gray-700"
                                     style={{ backgroundColor: '#1f2937', color: '#ffffff', border: '1px solid #4b5563' }}
                                 >
                                     {term}
@@ -226,128 +235,143 @@ export default function LanariTechBrowser() {
                         </div>
                     </div>
 
-                    {/* Main Projects - Featured Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl mb-16">
-                        {[
-                            {
-                                icon: '🎯',
-                                title: 'Siri',
-                                desc: 'Smart platform solution',
-                                color: 'from-blue-500 to-cyan-400',
-                                url: 'siri.lanari.rw',
-                                highlight: true
-                            },
-                            {
-                                icon: '📈',
-                                title: 'Rise',
-                                desc: 'Growth-focused platform',
-                                color: 'from-purple-500 to-pink-400',
-                                url: 'rise.lanari.rw',
-                                highlight: true
-                            },
-                            {
-                                icon: '🎓',
-                                title: 'Coding Academy',
-                                desc: 'Learn tech skills',
-                                color: 'from-emerald-500 to-teal-400',
-                                url: 'academy.lanari.rw',
-                                highlight: true
-                            },
-                            {
-                                icon: '🤖',
-                                title: 'AI Solutions',
-                                desc: 'Transform your business',
-                                color: 'from-orange-500 to-red-400',
-                                url: 'ai.lanari.rw',
-                                highlight: true
-                            }
-                        ].map((card, i) => (
-                            <div
-                                key={i}
-                                className="group p-8 rounded-3xl transition-all cursor-pointer hover:scale-105 hover:bg-gray-800"
-                                style={{ backgroundColor: '#1f2937', border: '1px solid #4b5563' }}
-                            >
-                                <div className={`text-5xl mb-5 group-hover:scale-110 transition-transform`}>
-                                    {card.icon}
-                                </div>
-                                <h3 className="text-xl font-bold mb-3" style={{ color: '#ffffff' }}>{card.title}</h3>
-                                <p className="text-sm mb-4 font-medium" style={{ color: '#d1d5db' }}>{card.desc}</p>
-                                <div className="flex items-center gap-2 text-sm font-medium" style={{ color: '#9ca3af' }}>
-                                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fillRule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.498-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clipRule="evenodd" />
-                                    </svg>
-                                    <span>{card.url}</span>
-                                </div>
-                            </div>
-                        ))}
+                    {/* Scroll Indicator */}
+                    <div className="absolute bottom-10 animate-bounce">
+                        <svg className="w-6 h-6 text-gray-500" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                        </svg>
                     </div>
+                </section>
 
-                    {/* Stats */}
-                    <div className="flex items-center justify-center gap-8 text-center flex-wrap">
-                        <div className="px-8 py-4 rounded-2xl" style={{ backgroundColor: '#1f2937', border: '1px solid #4b5563' }}>
-                            <div className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">4</div>
-                            <div className="text-sm font-semibold mt-1" style={{ color: '#d1d5db' }}>Core Projects</div>
+                {/* Main Projects - Scroll to see these */}
+                <section className="px-6 pb-24 relative z-10">
+                    <div className="flex flex-col items-center">
+
+                        {/* Main Projects - Featured Cards */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10 w-full max-w-[95%] mb-24 lg:mb-32">
+                            {[
+                                {
+                                    icon: '🛍️',
+                                    title: 'Siri',
+                                    desc: 'Buy & resell without stock',
+                                    color: 'from-blue-500 to-cyan-400',
+                                    url: 'siri.lanari.rw',
+                                    highlight: true
+                                },
+                                {
+                                    icon: '🚀',
+                                    title: 'Rise',
+                                    desc: 'Freelancing & networking',
+                                    color: 'from-purple-500 to-pink-400',
+                                    url: 'rise.lanari.rw',
+                                    highlight: true
+                                },
+                                {
+                                    icon: '🎓',
+                                    title: 'Coding Academy',
+                                    desc: 'Practical digital skills',
+                                    color: 'from-emerald-500 to-teal-400',
+                                    url: 'academy.lanari.rw',
+                                    highlight: true
+                                },
+                                {
+                                    icon: '💡',
+                                    title: 'Digital Solutions',
+                                    desc: 'Innovative tech tools',
+                                    color: 'from-orange-500 to-red-400',
+                                    url: 'lanari.rw',
+                                    highlight: true
+                                }
+                            ].map((card, i) => (
+                                <div
+                                    key={i}
+                                    onClick={() => navigate('/coming-soon')}
+                                    className="group p-8 rounded-3xl transition-all cursor-pointer hover:scale-105 hover:bg-gray-800 flex flex-col items-center text-center lg:items-start lg:text-left"
+                                    style={{ backgroundColor: '#1f2937', border: '1px solid #4b5563' }}
+                                >
+                                    <div className={`text-5xl lg:text-6xl mb-5 group-hover:scale-110 transition-transform`}>
+                                        {card.icon}
+                                    </div>
+                                    <h3 className="text-xl lg:text-2xl font-bold mb-3" style={{ color: '#ffffff' }}>{card.title}</h3>
+                                    <p className="text-sm lg:text-base mb-4 font-medium" style={{ color: '#d1d5db' }}>{card.desc}</p>
+                                    <div className="flex items-center gap-2 text-sm font-medium mt-auto" style={{ color: '#9ca3af' }}>
+                                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.498-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clipRule="evenodd" />
+                                        </svg>
+                                        <span>{card.url}</span>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                        <div className="px-8 py-4 rounded-2xl" style={{ backgroundColor: '#1f2937', border: '1px solid #4b5563' }}>
-                            <div className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">24/7</div>
-                            <div className="text-sm font-semibold mt-1" style={{ color: '#d1d5db' }}>Available</div>
-                        </div>
-                        <div className="px-8 py-4 rounded-2xl" style={{ backgroundColor: '#1f2937', border: '1px solid #4b5563' }}>
-                            <div className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">∞</div>
-                            <div className="text-sm font-semibold mt-1" style={{ color: '#d1d5db' }}>Possibilities</div>
+
+                        {/* Stats */}
+                        <div className="flex items-center justify-center gap-8 text-center flex-wrap">
+                            <div className="px-8 py-4 rounded-2xl" style={{ backgroundColor: '#1f2937', border: '1px solid #4b5563' }}>
+                                <div className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">4</div>
+                                <div className="text-sm font-semibold mt-1" style={{ color: '#d1d5db' }}>Core Projects</div>
+                            </div>
+                            <div className="px-8 py-4 rounded-2xl" style={{ backgroundColor: '#1f2937', border: '1px solid #4b5563' }}>
+                                <div className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">24/7</div>
+                                <div className="text-sm font-semibold mt-1" style={{ color: '#d1d5db' }}>Available</div>
+                            </div>
+                            <div className="px-8 py-4 rounded-2xl" style={{ backgroundColor: '#1f2937', border: '1px solid #4b5563' }}>
+                                <div className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">∞</div>
+                                <div className="text-sm font-semibold mt-1" style={{ color: '#d1d5db' }}>Possibilities</div>
+                            </div>
                         </div>
                     </div>
                 </section>
 
                 {/* Detailed Features Section */}
-                <section className="py-32 px-6 relative">
-                    <div className="max-w-7xl mx-auto">
-                        <div className="text-center mb-20">
+                <section className="py-32 lg:py-48 px-8 relative">
+                    <div className="max-w-[90%] mx-auto">
+                        <div className="text-center mb-20 lg:mb-32">
                             <div className="inline-block px-6 py-3 rounded-full font-bold mb-8 text-base" style={{ backgroundColor: 'rgba(59, 130, 246, 0.2)', border: '1px solid rgba(59, 130, 246, 0.3)', color: '#93c5fd' }}>
                                 OUR ECOSYSTEM
                             </div>
-                            <h2 className="text-5xl md:text-7xl font-bold mb-6 leading-tight" style={{ color: '#ffffff' }}>
+                            <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight" style={{ color: '#ffffff' }}>
                                 Empowering Rwanda's Digital Future
                             </h2>
-                            <p className="text-xl max-w-3xl mx-auto" style={{ color: '#d1d5db' }}>
+                            <p className="text-xl lg:text-2xl max-w-4xl mx-auto" style={{ color: '#d1d5db' }}>
                                 Four powerful platforms designed to transform education, business, and innovation across Africa
                             </p>
                         </div>
 
-                        <div className="grid md:grid-cols-2 gap-8 mb-16">
+                        <div className="grid md:grid-cols-2 gap-8 lg:gap-16 mb-24">
                             {[
                                 {
-                                    icon: '🎯',
-                                    title: 'Siri Platform',
-                                    desc: 'Our flagship smart platform delivering cutting-edge solutions for modern challenges. Built with scalability and innovation at its core.',
-                                    features: ['Smart Automation', 'Real-time Analytics', 'Scalable Infrastructure', 'Secure by Design'],
+                                    icon: '🛍️',
+                                    title: 'Siri Market',
+                                    desc: 'Become a trader or seller without physical stock. Buy goods online and resell them easily, allowing anyone to shop from wherever they are.',
+                                    features: ['Zero Inventory Model', 'Global Marketplace', 'Easy Reselling', 'Secure Payments'],
                                     color: 'from-blue-500 to-cyan-400'
                                 },
                                 {
-                                    icon: '📈',
-                                    title: 'Rise Solutions',
-                                    desc: 'Empowering businesses and individuals to reach new heights. A comprehensive platform focused on growth and success.',
-                                    features: ['Growth Tools', 'Business Insights', 'Performance Tracking', 'Strategic Planning'],
+                                    icon: '�',
+                                    title: 'Rise Network',
+                                    desc: 'Enables communication, networking, freelancing, and access to online job opportunities. Connect with professionals and grow your career.',
+                                    features: ['Freelance Projects', 'Professional Network', 'Remote Jobs', 'Skill Sharing'],
                                     color: 'from-purple-500 to-pink-400'
                                 },
                                 {
                                     icon: '🎓',
                                     title: 'Lanari Coding Academy',
-                                    desc: 'Training the next generation of African tech talent. Industry-relevant curriculum with hands-on project experience.',
-                                    features: ['Expert Instructors', 'Job-Ready Skills', 'Real Projects', 'Career Support'],
+                                    desc: 'Provides practical coding and digital skills training to help students and professionals thrive in the fast-evolving tech industry.',
+                                    features: ['Practical Training', 'Industry Skills', 'Mentorship', 'Career Growth'],
                                     color: 'from-emerald-500 to-teal-400'
                                 },
                                 {
-                                    icon: '🤖',
-                                    title: 'AI-Powered Business Products',
-                                    desc: 'Transform your business with artificial intelligence. Custom AI solutions tailored to African market needs.',
-                                    features: ['Custom AI Models', 'Automation Tools', 'Data Analytics', 'Integration Support'],
+                                    icon: '💡',
+                                    title: 'Innovative Solutions',
+                                    desc: 'We create tools and platforms that make life easier, opportunities accessible, and technology beneficial for everyone.',
+                                    features: ['Digital Transformation', 'Custom Platforms', 'Tech Consulting', 'Future Ready'],
                                     color: 'from-orange-500 to-red-400'
                                 }
                             ].map((item, i) => (
                                 <div
                                     key={i}
-                                    className="group p-8 rounded-3xl transition-all hover:scale-105"
+                                    onClick={() => navigate('/coming-soon')}
+                                    className="group p-8 rounded-3xl transition-all hover:scale-105 cursor-pointer"
                                     style={{ backgroundColor: '#1f2937', border: '1px solid #4b5563' }}
                                 >
                                     <div className="text-6xl mb-6 group-hover:scale-110 transition-transform">
@@ -370,10 +394,10 @@ export default function LanariTechBrowser() {
                         {/* Call to Action */}
                         <div className="text-center">
                             <div className="inline-flex items-center gap-4">
-                                <button className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full text-lg font-bold text-white hover:shadow-lg hover:shadow-purple-500/50 transition-all">
+                                <button onClick={() => navigate('/coming-soon')} className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full text-lg font-bold text-white hover:shadow-lg hover:shadow-purple-500/50 transition-all">
                                     Explore Our Projects
                                 </button>
-                                <button className="px-8 py-4 rounded-full text-lg font-bold transition-all hover:bg-gray-800" style={{ backgroundColor: '#1f2937', color: '#ffffff', border: '1px solid #4b5563' }}>
+                                <button onClick={() => navigate('/coming-soon')} className="px-8 py-4 rounded-full text-lg font-bold transition-all hover:bg-gray-800" style={{ backgroundColor: '#1f2937', color: '#ffffff', border: '1px solid #4b5563' }}>
                                     Contact Us
                                 </button>
                             </div>
@@ -382,29 +406,29 @@ export default function LanariTechBrowser() {
                 </section>
 
                 {/* Footer */}
-                <footer className="py-16 px-6" style={{ borderTop: '1px solid #4b5563', backgroundColor: '#151821' }}>
-                    <div className="max-w-7xl mx-auto">
-                        <div className="grid md:grid-cols-4 gap-8 mb-12">
-                            <div className="md:col-span-2">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
-                                        <span className="text-xl font-bold">L</span>
-                                    </div>
+                <footer className="py-24 px-8 lg:px-16" style={{ borderTop: '1px solid #4b5563', backgroundColor: '#151821' }}>
+                    <div className="max-w-[95%] mx-auto">
+                        <div className="grid md:grid-cols-4 lg:grid-cols-5 gap-12 lg:gap-24 mb-16">
+                            <div className="md:col-span-2 lg:col-span-2">
+                                <div className="flex items-center gap-4 mb-6">
+                                    <img src={logo} alt="Lanari Tech" className="w-14 h-14 rounded-2xl shadow-lg shadow-purple-500/20" />
                                     <div>
-                                        <h3 className="font-bold text-lg" style={{ color: '#ffffff' }}>LANARI TECH</h3>
-                                        <p className="text-sm font-medium" style={{ color: '#d1d5db' }}>Innovation from Rwanda</p>
+                                        <h3 className="font-bold text-xl lg:text-2xl" style={{ color: '#ffffff' }}>LANARI TECH</h3>
+                                        <p className="text-base lg:text-lg font-medium" style={{ color: '#d1d5db' }}>Innovation from Rwanda</p>
                                     </div>
                                 </div>
-                                <p className="text-base max-w-md" style={{ color: '#9ca3af' }}>
-                                    Building the future of technology in Africa through education, innovation, and AI-powered solutions.
+                                <p className="text-lg lg:text-xl leading-relaxed max-w-2xl" style={{ color: '#9ca3af' }}>
+                                    Committed to satisfying everyone's needs through innovative digital solutions. We empower people to learn, earn, connect, and grow.
                                 </p>
                             </div>
 
+                            <div className="lg:col-span-1"></div> {/* Spacer for better distribution */}
+
                             <div>
-                                <h4 className="font-bold text-base mb-4" style={{ color: '#ffffff' }}>Our Projects</h4>
-                                <nav className="space-y-2">
+                                <h4 className="font-bold text-lg lg:text-xl mb-6" style={{ color: '#ffffff' }}>Our Projects</h4>
+                                <nav className="space-y-4">
                                     {['Siri Platform', 'Rise Solutions', 'Coding Academy', 'AI Products'].map((item) => (
-                                        <a key={item} href="#" className="block text-base hover:text-white transition-colors" style={{ color: '#9ca3af' }}>
+                                        <a key={item} href="#" onClick={(e) => { e.preventDefault(); navigate('/coming-soon'); }} className="block text-base lg:text-lg hover:text-white transition-colors" style={{ color: '#9ca3af' }}>
                                             {item}
                                         </a>
                                     ))}
@@ -412,10 +436,10 @@ export default function LanariTechBrowser() {
                             </div>
 
                             <div>
-                                <h4 className="font-bold text-base mb-4" style={{ color: '#ffffff' }}>Company</h4>
-                                <nav className="space-y-2">
+                                <h4 className="font-bold text-lg lg:text-xl mb-6" style={{ color: '#ffffff' }}>Company</h4>
+                                <nav className="space-y-4">
                                     {['About', 'Careers', 'Contact', 'Privacy', 'Terms'].map((item) => (
-                                        <a key={item} href="#" className="block text-base hover:text-white transition-colors" style={{ color: '#9ca3af' }}>
+                                        <a key={item} href="#" onClick={(e) => { e.preventDefault(); navigate('/coming-soon'); }} className="block text-base lg:text-lg hover:text-white transition-colors" style={{ color: '#9ca3af' }}>
                                             {item}
                                         </a>
                                     ))}
@@ -423,23 +447,23 @@ export default function LanariTechBrowser() {
                             </div>
                         </div>
 
-                        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4" style={{ borderTop: '1px solid #4b5563' }}>
-                            <div className="text-base font-semibold" style={{ color: '#9ca3af' }}>
+                        <div className="pt-10 flex flex-col md:flex-row items-center justify-between gap-6" style={{ borderTop: '1px solid #4b5563' }}>
+                            <div className="text-base lg:text-lg font-semibold" style={{ color: '#9ca3af' }}>
                                 © 2024 Lanari Tech Ltd. All rights reserved.
                             </div>
-                            <div className="flex items-center gap-6">
-                                <a href="#" className="hover:text-white transition-colors" style={{ color: '#9ca3af' }}>
-                                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <div className="flex items-center gap-8">
+                                <a href="#" onClick={(e) => { e.preventDefault(); navigate('/coming-soon'); }} className="hover:text-white transition-colors transform hover:scale-110" style={{ color: '#9ca3af' }}>
+                                    <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
                                     </svg>
                                 </a>
-                                <a href="#" className="hover:text-white transition-colors" style={{ color: '#9ca3af' }}>
-                                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <a href="#" onClick={(e) => { e.preventDefault(); navigate('/coming-soon'); }} className="hover:text-white transition-colors transform hover:scale-110" style={{ color: '#9ca3af' }}>
+                                    <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
                                     </svg>
                                 </a>
-                                <a href="#" className="hover:text-white transition-colors" style={{ color: '#9ca3af' }}>
-                                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <a href="#" onClick={(e) => { e.preventDefault(); navigate('/coming-soon'); }} className="hover:text-white transition-colors transform hover:scale-110" style={{ color: '#9ca3af' }}>
+                                    <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                                     </svg>
                                 </a>
@@ -447,7 +471,7 @@ export default function LanariTechBrowser() {
                         </div>
                     </div>
                 </footer>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }
