@@ -1,4 +1,5 @@
 const { Job, Application } = require('../models/job.model');
+const { sendMail, templates } = require('../config/email');
 
 exports.getJobs = async (req, res, next) => {
     try {
@@ -69,6 +70,25 @@ exports.apply = async (req, res, next) => {
             applicantEmail,
             coverLetter
         });
+
+        // Confirmation email to applicant
+        const confirmation = templates.applicationConfirmation({
+            applicantName,
+            jobTitle: job.title,
+            department: job.department
+        });
+        sendMail({ to: applicantEmail, ...confirmation });
+
+        // Notify admin
+        const adminNotif = templates.applicationNotifyAdmin({
+            applicantName,
+            applicantEmail,
+            jobTitle: job.title,
+            department: job.department,
+            coverLetter
+        });
+        sendMail({ to: process.env.SMTP_USER, ...adminNotif });
+
         res.status(201).json({ success: true, message: 'Application submitted', id });
     } catch (err) {
         next(err);

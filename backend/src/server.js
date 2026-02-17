@@ -20,6 +20,10 @@ app.use('/api/partners', require('./routes/partner.routes'));
 app.use('/api/careers', require('./routes/careers.routes'));
 app.use('/api/notifications', require('./routes/notifications.routes'));
 app.use('/api/admin', require('./routes/admin.routes'));
+app.use('/api/events', require('./routes/event.routes'));
+app.use('/api/investors', require('./routes/investor.routes'));
+app.use('/api/search', require('./routes/search.routes'));
+app.use('/api/ai', require('./routes/ai.routes'));
 
 // Health check
 app.get('/health', (req, res) => {

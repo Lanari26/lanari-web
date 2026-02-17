@@ -23,6 +23,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Notifications from './pages/Notifications';
 import Search from './pages/Search';
+import UserDashboard from './pages/UserDashboard';
 import AiChat from './pages/AiChat';
 import AdminLayout from './pages/admin/AdminLayout';
 import Dashboard from './pages/admin/Dashboard';
@@ -51,6 +52,7 @@ function App() {
     <Routes>
       <Route path="/ai" element={<AiChat />} />
       <Route path="/admin/*" element={<AdminRoutes />} />
+      <Route path="/dashboard" element={<UserDashboard />} />
       <Route path="*" element={
         <MainLayout>
           <Routes>

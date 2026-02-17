@@ -1,9 +1,19 @@
 const Partner = require('../models/partner.model');
+const { sendMail, templates } = require('../config/email');
 
 exports.create = async (req, res, next) => {
     try {
         const { organizationName, contactEmail, partnershipProposal } = req.body;
         const id = await Partner.create({ organizationName, contactEmail, partnershipProposal });
+
+        // Confirmation email to the partner
+        const confirmation = templates.partnerConfirmation(organizationName);
+        sendMail({ to: contactEmail, ...confirmation });
+
+        // Notify admin
+        const adminNotif = templates.partnerNotifyAdmin({ organizationName, contactEmail, partnershipProposal });
+        sendMail({ to: process.env.SMTP_USER, ...adminNotif });
+
         res.status(201).json({ success: true, message: 'Partnership request received', id });
     } catch (err) {
         next(err);

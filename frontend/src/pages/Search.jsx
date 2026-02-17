@@ -1,65 +1,36 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-const allContent = [
-    { title: 'Siri Market', desc: 'Buy & resell anywhere even without stock. Become a trader or seller online with zero inventory.', category: 'Product', icon: '🛍️', color: 'from-blue-500 to-cyan-400', url: '/siri', tags: ['e-commerce', 'shop', 'buy', 'sell', 'resell', 'market', 'trade', 'store', 'product', 'stock', 'inventory'] },
-    { title: 'Rise Network', desc: 'Freelancing, jobs, internships & professional networking. Connect with professionals and grow your career.', category: 'Product', icon: '🚀', color: 'from-purple-500 to-pink-400', url: '/rise', tags: ['freelance', 'job', 'internship', 'career', 'network', 'hire', 'work', 'remote', 'professional'] },
-    { title: 'Coding Academy', desc: 'Practical coding and digital skills training. Learn web development, mobile apps, and more.', category: 'Product', icon: '🎓', color: 'from-emerald-500 to-teal-400', url: '/academy', tags: ['learn', 'code', 'course', 'training', 'education', 'skill', 'web', 'development', 'programming', 'student'] },
-    { title: 'AI Solutions', desc: 'Intelligent tools powered by AI — customer support, analytics, and automated documentation.', category: 'Product', icon: '🤖', color: 'from-orange-500 to-red-400', url: '/ai-products', tags: ['ai', 'artificial intelligence', 'machine learning', 'automation', 'smart', 'chatbot'] },
-    { title: 'Cloud Services', desc: 'Scalable cloud hosting, storage, and CDN for your applications and websites.', category: 'Service', icon: '☁️', color: 'from-sky-500 to-blue-400', url: '/cloud', tags: ['cloud', 'hosting', 'server', 'storage', 'deploy', 'cdn', 'infrastructure'] },
-    { title: 'Analytics Dashboard', desc: 'Data-driven insights and business intelligence to make smarter decisions.', category: 'Service', icon: '📊', color: 'from-indigo-500 to-purple-400', url: '/analytics', tags: ['analytics', 'data', 'dashboard', 'insights', 'metrics', 'report', 'statistics'] },
-    { title: 'Lanari Mail', desc: 'Professional corporate email with custom domain — yourname@lanari.rw.', category: 'Service', icon: '✉️', color: 'from-red-500 to-pink-400', url: '/mail', tags: ['email', 'mail', 'inbox', 'message', 'corporate', 'communication'] },
-    { title: 'Lanari Docs', desc: 'Create, collaborate, and share documents and technical documentation seamlessly.', category: 'Service', icon: '📄', color: 'from-yellow-500 to-orange-400', url: '/docs', tags: ['docs', 'document', 'documentation', 'write', 'wiki', 'knowledge'] },
-    { title: 'Calendar', desc: 'Schedule events, meetings, and manage your time effectively.', category: 'Service', icon: '📅', color: 'from-green-500 to-emerald-400', url: '/calendar', tags: ['calendar', 'event', 'schedule', 'meeting', 'time', 'plan'] },
-    { title: 'Partner with Us', desc: 'Join forces with Lanari Tech. Strategic partnerships for mutual growth.', category: 'Company', icon: '🤝', color: 'from-pink-500 to-rose-400', url: '/partner', tags: ['partner', 'collaborate', 'business', 'sponsor', 'alliance'] },
-    { title: 'Invest in Lanari', desc: 'Investment opportunities in Africa\'s growing tech ecosystem.', category: 'Company', icon: '💎', color: 'from-amber-500 to-yellow-400', url: '/invest', tags: ['invest', 'funding', 'investor', 'equity', 'startup', 'venture', 'finance'] },
-    { title: 'Careers', desc: 'Join our team — explore open positions in engineering, design, marketing, and more.', category: 'Company', icon: '💼', color: 'from-violet-500 to-purple-400', url: '/careers', tags: ['career', 'job', 'hire', 'apply', 'position', 'work', 'team', 'engineer', 'designer'] },
-    { title: 'Contact Us', desc: 'Get in touch with Lanari Tech. We\'d love to hear from you.', category: 'Company', icon: '📬', color: 'from-teal-500 to-cyan-400', url: '/contact', tags: ['contact', 'support', 'help', 'reach', 'phone', 'email', 'location'] },
-    { title: 'About Lanari Tech', desc: 'Our mission, values, and the story behind empowering Rwanda\'s digital future.', category: 'Company', icon: '🏢', color: 'from-blue-500 to-indigo-400', url: '/about', tags: ['about', 'mission', 'values', 'story', 'team', 'company', 'who'] },
-    { title: 'Our Services', desc: 'Full-stack digital solutions — web, mobile, cloud, and AI development.', category: 'Company', icon: '⚙️', color: 'from-gray-500 to-slate-400', url: '/services', tags: ['service', 'solution', 'consulting', 'development', 'web', 'mobile', 'app'] },
-    { title: 'Projects', desc: 'Featured projects and case studies showcasing what we\'ve built.', category: 'Company', icon: '🏗️', color: 'from-cyan-500 to-blue-400', url: '/projects', tags: ['project', 'portfolio', 'case study', 'showcase', 'build'] },
-];
+const API = import.meta.env.VITE_API_URL;
 
 export default function Search() {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const initialQuery = searchParams.get('q') || '';
     const [query, setQuery] = useState(initialQuery);
+    const [results, setResults] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const results = useMemo(() => {
-        if (!query.trim()) return allContent;
-        const q = query.toLowerCase().trim();
-        const words = q.split(/\s+/);
+    useEffect(() => {
+        fetchResults(query);
+    }, []);
 
-        return allContent
-            .map(item => {
-                let score = 0;
-                const titleLower = item.title.toLowerCase();
-                const descLower = item.desc.toLowerCase();
-                const tagsJoined = item.tags.join(' ');
-
-                if (titleLower === q) score += 100;
-                if (titleLower.includes(q)) score += 50;
-                if (descLower.includes(q)) score += 20;
-                if (tagsJoined.includes(q)) score += 30;
-
-                words.forEach(word => {
-                    if (titleLower.includes(word)) score += 15;
-                    if (descLower.includes(word)) score += 5;
-                    item.tags.forEach(tag => {
-                        if (tag.includes(word)) score += 10;
-                    });
-                });
-
-                return { ...item, score };
-            })
-            .filter(item => item.score > 0)
-            .sort((a, b) => b.score - a.score);
-    }, [query]);
+    const fetchResults = async (q) => {
+        setLoading(true);
+        try {
+            const res = await fetch(`${API}/search?q=${encodeURIComponent(q)}`);
+            const data = await res.json();
+            if (data.success) setResults(data.data);
+        } catch (e) {
+            console.error('Search failed:', e);
+        }
+        setLoading(false);
+    };
 
     const handleSearch = (e) => {
         e.preventDefault();
         navigate(`/search?q=${encodeURIComponent(query)}`);
+        fetchResults(query);
     };
 
     const categories = [...new Set(results.map(r => r.category))];
@@ -89,7 +60,7 @@ export default function Search() {
                             style={{ color: '#ffffff' }}
                         />
                         {query && (
-                            <button type="button" onClick={() => setQuery('')} className="p-1 rounded-full hover:bg-gray-700 transition-colors">
+                            <button type="button" onClick={() => { setQuery(''); fetchResults(''); }} className="p-1 rounded-full hover:bg-gray-700 transition-colors">
                                 <svg className="w-4 h-4" style={{ color: '#9ca3af' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
@@ -108,18 +79,16 @@ export default function Search() {
 
             {/* Results */}
             <div className="max-w-4xl mx-auto px-4 py-8 relative z-10">
-                {/* Results count */}
                 <div className="mb-6 flex items-center justify-between">
                     <p className="text-sm font-medium" style={{ color: '#9ca3af' }}>
-                        {query.trim()
+                        {loading ? 'Searching...' : query.trim()
                             ? <>{results.length} result{results.length !== 1 ? 's' : ''} for "<span style={{ color: '#e5e7eb' }}>{query}</span>"</>
                             : <>Browse all Lanari Tech products & services</>
                         }
                     </p>
                 </div>
 
-                {results.length === 0 ? (
-                    /* No Results */
+                {!loading && results.length === 0 ? (
                     <div className="text-center py-20">
                         <div className="text-6xl mb-6">🔍</div>
                         <h2 className="text-2xl font-bold mb-3" style={{ color: '#ffffff' }}>No results found</h2>
@@ -130,7 +99,7 @@ export default function Search() {
                             <p className="text-sm font-medium" style={{ color: '#6b7280' }}>Try searching for:</p>
                             <div className="flex flex-wrap justify-center gap-2">
                                 {['Siri', 'Rise', 'Academy', 'Cloud', 'Jobs', 'AI'].map((s, i) => (
-                                    <button key={i} onClick={() => setQuery(s)} className="px-4 py-2 rounded-full text-sm font-semibold transition-all hover:bg-gray-700" style={{ backgroundColor: '#1f2937', color: '#d1d5db', border: '1px solid #4b5563' }}>
+                                    <button key={i} onClick={() => { setQuery(s); fetchResults(s); }} className="px-4 py-2 rounded-full text-sm font-semibold transition-all hover:bg-gray-700" style={{ backgroundColor: '#1f2937', color: '#d1d5db', border: '1px solid #4b5563' }}>
                                         {s}
                                     </button>
                                 ))}
@@ -144,7 +113,6 @@ export default function Search() {
                         </div>
                     </div>
                 ) : (
-                    /* Grouped Results */
                     <div className="space-y-8">
                         {categories.map(cat => (
                             <div key={cat}>
@@ -167,7 +135,7 @@ export default function Search() {
                                                     <h4 className="text-lg font-bold group-hover:text-blue-400 transition-colors" style={{ color: '#ffffff' }}>{item.title}</h4>
                                                     <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider" style={{ backgroundColor: 'rgba(59, 130, 246, 0.15)', color: '#93c5fd' }}>{item.category}</span>
                                                 </div>
-                                                <p className="text-sm font-medium leading-relaxed" style={{ color: '#9ca3af' }}>{item.desc}</p>
+                                                <p className="text-sm font-medium leading-relaxed" style={{ color: '#9ca3af' }}>{item.description}</p>
                                             </div>
                                             <svg className="w-5 h-5 flex-shrink-0 mt-1 opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: '#6b7280' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />

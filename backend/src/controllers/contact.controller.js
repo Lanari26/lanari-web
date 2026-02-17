@@ -1,9 +1,19 @@
 const Contact = require('../models/contact.model');
+const { sendMail, templates } = require('../config/email');
 
 exports.create = async (req, res, next) => {
     try {
         const { firstName, lastName, email, message } = req.body;
         const id = await Contact.create({ firstName, lastName, email, message });
+
+        // Send confirmation email to the visitor
+        const confirmation = templates.contactConfirmation(firstName);
+        sendMail({ to: email, ...confirmation });
+
+        // Notify admin
+        const adminNotif = templates.contactNotifyAdmin({ firstName, lastName, email, message });
+        sendMail({ to: process.env.SMTP_USER, ...adminNotif });
+
         res.status(201).json({ success: true, message: 'Message received', id });
     } catch (err) {
         next(err);

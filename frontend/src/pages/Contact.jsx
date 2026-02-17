@@ -1,8 +1,39 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 
 export default function Contact() {
-    const navigate = useNavigate();
+    const [form, setForm] = useState({ firstName: '', lastName: '', email: '', message: '' });
+    const [status, setStatus] = useState(null);
+    const [errorMsg, setErrorMsg] = useState('');
+
+    const update = (field) => (e) => setForm({ ...form, [field]: e.target.value });
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setStatus('sending');
+        setErrorMsg('');
+
+        try {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/contact`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(form)
+            });
+            const data = await res.json();
+
+            if (!res.ok) {
+                setErrorMsg(data.error || 'Failed to send message');
+                setStatus('error');
+                return;
+            }
+
+            setStatus('success');
+            setForm({ firstName: '', lastName: '', email: '', message: '' });
+        } catch {
+            setErrorMsg('Unable to connect to server');
+            setStatus('error');
+        }
+    };
+
     return (
         <div className="min-h-screen py-24 px-6">
             <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
@@ -49,29 +80,52 @@ export default function Contact() {
                 </div>
 
                 <div className="p-8 rounded-3xl bg-gray-800 border border-gray-700">
-                    <form className="space-y-6">
-                        <div className="grid md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-gray-300">First Name</label>
-                                <input type="text" className="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none text-white transition-all" placeholder="John" />
+                    {status === 'success' ? (
+                        <div className="text-center py-12">
+                            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-emerald-500/15 flex items-center justify-center">
+                                <svg className="w-8 h-8 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <h3 className="text-xl font-bold text-white mb-2">Message Sent!</h3>
+                            <p className="text-gray-400 mb-6">Thank you for reaching out. We've sent a confirmation to your email and will get back to you soon.</p>
+                            <button
+                                onClick={() => setStatus(null)}
+                                className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold hover:shadow-lg hover:shadow-purple-600/30 transition-all"
+                            >
+                                Send Another Message
+                            </button>
+                        </div>
+                    ) : (
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            {status === 'error' && (
+                                <div className="px-4 py-3 rounded-xl text-sm font-semibold" style={{ backgroundColor: 'rgba(239,68,68,0.1)', color: '#f87171', border: '1px solid rgba(239,68,68,0.2)' }}>
+                                    {errorMsg}
+                                </div>
+                            )}
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-gray-300">First Name</label>
+                                    <input type="text" value={form.firstName} onChange={update('firstName')} required className="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none text-white transition-all" placeholder="John" />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-gray-300">Last Name</label>
+                                    <input type="text" value={form.lastName} onChange={update('lastName')} required className="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none text-white transition-all" placeholder="Doe" />
+                                </div>
                             </div>
                             <div className="space-y-2">
-                                <label className="text-sm font-semibold text-gray-300">Last Name</label>
-                                <input type="text" className="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none text-white transition-all" placeholder="Doe" />
+                                <label className="text-sm font-semibold text-gray-300">Email Address</label>
+                                <input type="email" value={form.email} onChange={update('email')} required className="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none text-white transition-all" placeholder="john@example.com" />
                             </div>
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-sm font-semibold text-gray-300">Email Address</label>
-                            <input type="email" className="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none text-white transition-all" placeholder="john@example.com" />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">Message</label>
-                            <textarea className="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none text-white h-32 transition-all"></textarea>
-                        </div>
-                        <button type="submit" onClick={(e) => { e.preventDefault(); navigate('/coming-soon'); }} className="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-lg hover:shadow-lg hover:shadow-purple-600/30 transition-all transform hover:-translate-y-1">
-                            Send Message
-                        </button>
-                    </form>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-2">Message</label>
+                                <textarea value={form.message} onChange={update('message')} required className="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none text-white h-32 transition-all" placeholder="How can we help you?"></textarea>
+                            </div>
+                            <button type="submit" disabled={status === 'sending'} className="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-lg hover:shadow-lg hover:shadow-purple-600/30 transition-all transform hover:-translate-y-1 disabled:opacity-50 disabled:hover:translate-y-0">
+                                {status === 'sending' ? 'Sending...' : 'Send Message'}
+                            </button>
+                        </form>
+                    )}
                 </div>
             </div>
         </div>

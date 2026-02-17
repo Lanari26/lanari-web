@@ -5,6 +5,14 @@ import logo from '../../assets/logo.png';
 export default function Header() {
     const navigate = useNavigate();
     const [showApps, setShowApps] = useState(false);
+    const [user, setUser] = useState(null);
+
+    React.useEffect(() => {
+        try {
+            const stored = localStorage.getItem('user');
+            if (stored) setUser(JSON.parse(stored));
+        } catch {}
+    }, []);
 
     const apps = [
         { name: 'Siri', icon: '🎯', color: 'from-blue-500 to-cyan-400', url: '/siri' },
@@ -85,9 +93,15 @@ export default function Header() {
                         </svg>
                     </button>
 
-                    <button onClick={() => navigate('/login')} className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-sm font-bold shadow-lg shadow-purple-500/20 ring-2 ring-transparent hover:ring-purple-400/50 transition-all scale-100 hover:scale-105">
-                        L
-                    </button>
+                    {user ? (
+                        <button onClick={() => navigate('/dashboard')} className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-sm font-bold text-white shadow-lg shadow-purple-500/20 ring-2 ring-transparent hover:ring-purple-400/50 transition-all scale-100 hover:scale-105">
+                            {user.fullName ? user.fullName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : 'U'}
+                        </button>
+                    ) : (
+                        <button onClick={() => navigate('/login')} className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-sm font-bold shadow-lg shadow-purple-500/20 ring-2 ring-transparent hover:ring-purple-400/50 transition-all scale-100 hover:scale-105">
+                            L
+                        </button>
+                    )}
                 </div>
             </nav>
 
