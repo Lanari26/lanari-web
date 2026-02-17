@@ -1,4 +1,5 @@
 const { Job, Application } = require('../models/job.model');
+const Activity = require('../models/activity.model');
 const { sendMail, templates } = require('../config/email');
 
 exports.getJobs = async (req, res, next) => {
@@ -88,6 +89,8 @@ exports.apply = async (req, res, next) => {
             coverLetter
         });
         sendMail({ to: process.env.SMTP_USER, ...adminNotif });
+
+        Activity.log('job_apply', null, { applicantEmail, jobTitle: job.title });
 
         res.status(201).json({ success: true, message: 'Application submitted', id });
     } catch (err) {

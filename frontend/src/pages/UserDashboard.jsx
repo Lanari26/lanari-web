@@ -229,7 +229,23 @@ export default function UserDashboard() {
                             {sidebarNav.find(i => i.id === activeSection)?.label || 'Dashboard'}
                         </h1>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                        <div className="hidden sm:flex items-center gap-2">
+                            <button
+                                onClick={() => navigate('/search')}
+                                className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:bg-white/5"
+                                style={{ color: '#9ca3af', border: '1px solid #374151' }}
+                            >
+                                Search
+                            </button>
+                            <button
+                                onClick={() => navigate('/ai')}
+                                className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:bg-white/5"
+                                style={{ color: '#c084fc', border: '1px solid #4c1d95', background: 'linear-gradient(135deg, #7c3aed33, #a855f733)' }}
+                            >
+                                AI Assistant
+                            </button>
+                        </div>
                         <span className="hidden sm:block text-sm font-medium text-gray-400">{user.fullName}</span>
                         <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-xs font-bold text-white">
                             {initials}

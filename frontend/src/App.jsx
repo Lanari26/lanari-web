@@ -1,4 +1,5 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import MainLayout from './components/layout/MainLayout';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -25,13 +26,41 @@ import Notifications from './pages/Notifications';
 import Search from './pages/Search';
 import UserDashboard from './pages/UserDashboard';
 import AiChat from './pages/AiChat';
+import ProtectedRoute from './auth/ProtectedRoute';
 import AdminLayout from './pages/admin/AdminLayout';
 import Dashboard from './pages/admin/Dashboard';
 import AdminMessages from './pages/admin/Messages';
 import AdminPartners from './pages/admin/Partners';
 import AdminJobs from './pages/admin/Jobs';
 import AdminUsers from './pages/admin/Users';
+import AdminAnalytics from './pages/admin/Analytics';
+import AdminDocs from './pages/admin/DocsManager';
 import ComingSoon from './components/ComingSoon';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+function PageTracker() {
+  const location = useLocation();
+  useEffect(() => {
+    // Only track each unique page once per session
+    const tracked = JSON.parse(sessionStorage.getItem('tracked_pages') || '[]');
+    if (tracked.includes(location.pathname)) return;
+
+    tracked.push(location.pathname);
+    sessionStorage.setItem('tracked_pages', JSON.stringify(tracked));
+
+    const token = localStorage.getItem('token');
+    fetch(`${API_URL}/analytics/track`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify({ event: 'page_visit', page: location.pathname })
+    }).catch(() => {});
+  }, [location.pathname]);
+  return null;
+}
 
 function AdminRoutes() {
   return (
@@ -42,6 +71,8 @@ function AdminRoutes() {
         <Route path="/partners" element={<AdminPartners />} />
         <Route path="/jobs" element={<AdminJobs />} />
         <Route path="/users" element={<AdminUsers />} />
+        <Route path="/analytics" element={<AdminAnalytics />} />
+        <Route path="/docs" element={<AdminDocs />} />
       </Routes>
     </AdminLayout>
   );
@@ -49,10 +80,24 @@ function AdminRoutes() {
 
 function App() {
   return (
+    <>
+    <PageTracker />
     <Routes>
-      <Route path="/ai" element={<AiChat />} />
-      <Route path="/admin/*" element={<AdminRoutes />} />
-      <Route path="/dashboard" element={<UserDashboard />} />
+      <Route path="/ai" element={
+        <ProtectedRoute>
+          <AiChat />
+        </ProtectedRoute>
+      } />
+      <Route path="/admin/*" element={
+        <ProtectedRoute requireAdmin>
+          <AdminRoutes />
+        </ProtectedRoute>
+      } />
+      <Route path="/dashboard" element={
+        <ProtectedRoute>
+          <UserDashboard />
+        </ProtectedRoute>
+      } />
       <Route path="*" element={
         <MainLayout>
           <Routes>
@@ -84,6 +129,7 @@ function App() {
         </MainLayout>
       } />
     </Routes>
+    </>
   );
 }
 

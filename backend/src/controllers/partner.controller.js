@@ -1,4 +1,5 @@
 const Partner = require('../models/partner.model');
+const Activity = require('../models/activity.model');
 const { sendMail, templates } = require('../config/email');
 
 exports.create = async (req, res, next) => {
@@ -13,6 +14,8 @@ exports.create = async (req, res, next) => {
         // Notify admin
         const adminNotif = templates.partnerNotifyAdmin({ organizationName, contactEmail, partnershipProposal });
         sendMail({ to: process.env.SMTP_USER, ...adminNotif });
+
+        Activity.log('partner_request', null, { organizationName, contactEmail });
 
         res.status(201).json({ success: true, message: 'Partnership request received', id });
     } catch (err) {

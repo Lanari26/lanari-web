@@ -1,5 +1,6 @@
 const pool = require('../config/db');
 const User = require('../models/user.model');
+const Activity = require('../models/activity.model');
 
 exports.getStats = async (req, res, next) => {
     try {
@@ -40,6 +41,28 @@ exports.updateUserRole = async (req, res, next) => {
         const updated = await User.updateRole(req.params.id, role);
         if (!updated) return res.status(404).json({ error: 'User not found' });
         res.json({ success: true, message: 'Role updated' });
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.getAnalytics = async (req, res, next) => {
+    try {
+        const [overview, uniqueVisitors, today, week, month, dailyActivity, topPages, recent] = await Promise.all([
+            Activity.getOverview(),
+            Activity.getUniqueVisitors(),
+            Activity.getTodayStats(),
+            Activity.getWeekStats(),
+            Activity.getMonthStats(),
+            Activity.getDailyActivity(14),
+            Activity.getTopPages(10),
+            Activity.getRecent(30)
+        ]);
+
+        res.json({
+            success: true,
+            data: { overview, uniqueVisitors, today, week, month, dailyActivity, topPages, recent }
+        });
     } catch (err) {
         next(err);
     }

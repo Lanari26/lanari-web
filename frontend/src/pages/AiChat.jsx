@@ -46,6 +46,10 @@ export default function AiChat() {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
+    const handleUserClick = () => {
+        navigate('/dashboard');
+    };
+
     useEffect(() => { scrollToBottom(); }, [messages, isTyping]);
 
     // Load sessions on mount
@@ -284,7 +288,12 @@ export default function AiChat() {
                 </div>
 
                 {/* User info at bottom */}
-                <div className="p-4 flex items-center gap-3" style={{ borderTop: '1px solid #1f2937' }}>
+                <div
+                    className="p-4 flex items-center gap-3 cursor-pointer hover:bg-white/5 transition-colors"
+                    style={{ borderTop: '1px solid #1f2937' }}
+                    onClick={handleUserClick}
+                    title="Open your dashboard"
+                >
                     <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
                         {user?.name?.charAt(0)?.toUpperCase() || 'U'}
                     </div>

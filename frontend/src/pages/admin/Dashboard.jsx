@@ -13,12 +13,19 @@ const statCards = [
 export default function Dashboard() {
     const navigate = useNavigate();
     const [stats, setStats] = useState(null);
+    const [analytics, setAnalytics] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        api.get('/admin/stats')
-            .then(res => setStats(res.data))
+        Promise.all([
+            api.get('/admin/stats'),
+            api.get('/admin/analytics').catch(() => ({ data: null }))
+        ])
+            .then(([statsRes, analyticsRes]) => {
+                setStats(statsRes.data);
+                setAnalytics(analyticsRes.data);
+            })
             .catch(err => setError(err.message))
             .finally(() => setLoading(false));
     }, []);
@@ -69,6 +76,36 @@ export default function Dashboard() {
                     </button>
                 ))}
             </div>
+
+            {/* Today's Activity */}
+            {analytics?.today && (
+                <div>
+                    <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider">Today's Activity</h3>
+                        <button
+                            onClick={() => navigate('/admin/analytics')}
+                            className="text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors"
+                        >
+                            View Full Analytics →
+                        </button>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                        {[
+                            { label: 'Page Visits', value: analytics.today.visits || 0, color: 'text-blue-400' },
+                            { label: 'Logins', value: analytics.today.logins || 0, color: 'text-emerald-400' },
+                            { label: 'Registrations', value: analytics.today.registrations || 0, color: 'text-purple-400' },
+                            { label: 'Contact Forms', value: analytics.today.contacts || 0, color: 'text-amber-400' },
+                            { label: 'Job Applications', value: analytics.today.applications || 0, color: 'text-orange-400' },
+                            { label: 'Unique Visitors', value: analytics.uniqueVisitors || 0, color: 'text-indigo-400' },
+                        ].map((item, i) => (
+                            <div key={i} className="p-4 rounded-xl text-center" style={{ backgroundColor: '#111827', border: '1px solid #1f2937' }}>
+                                <div className={`text-xl font-bold ${item.color} mb-1`}>{item.value}</div>
+                                <div className="text-[10px] font-semibold text-gray-600">{item.label}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {/* Quick Actions */}
             <div>

@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
 const Notification = require('../models/notification.model');
+const Activity = require('../models/activity.model');
 const { sendMail, templates } = require('../config/email');
 
 const generateToken = (id) => {
@@ -42,6 +43,9 @@ exports.register = async (req, res, next) => {
             html: `<p>New user registered: <strong>${fullName}</strong> (${email})</p>`
         });
 
+        // Log registration activity
+        Activity.log('register', userId, { email });
+
         res.status(201).json({
             success: true,
             token,
@@ -67,6 +71,9 @@ exports.login = async (req, res, next) => {
         }
 
         const token = generateToken(user.id);
+
+        // Log login activity
+        Activity.log('login', user.id, { email: user.email });
 
         // Login alert email
         const loginEmail = templates.loginAlert(user.full_name);

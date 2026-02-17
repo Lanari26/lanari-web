@@ -1,4 +1,5 @@
 const Contact = require('../models/contact.model');
+const Activity = require('../models/activity.model');
 const { sendMail, templates } = require('../config/email');
 
 exports.create = async (req, res, next) => {
@@ -13,6 +14,8 @@ exports.create = async (req, res, next) => {
         // Notify admin
         const adminNotif = templates.contactNotifyAdmin({ firstName, lastName, email, message });
         sendMail({ to: process.env.SMTP_USER, ...adminNotif });
+
+        Activity.log('contact_submit', null, { email, firstName, lastName });
 
         res.status(201).json({ success: true, message: 'Message received', id });
     } catch (err) {
