@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import LoadingScreen from './components/LoadingScreen';
 import MainLayout from './components/layout/MainLayout';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -79,8 +80,11 @@ function AdminRoutes() {
 }
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
   return (
     <>
+    {loading && <LoadingScreen onDone={() => setLoading(false)} />}
     <PageTracker />
     <Routes>
       <Route path="/ai" element={
