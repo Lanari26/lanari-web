@@ -1,0 +1,43 @@
+name: Deploy Backend to Server
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+
+jobs:
+  deploy-backend:
+    name: Deploy Backend
+    runs-on: [self-hosted, Linux, X64]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Sync backend source to deployment directory
+        run: |
+          sudo -u lanari-api-web rsync -a --delete \
+            --exclude ".git" \
+            --exclude "node_modules" \
+            --exclude ".env" \
+            "${{ github.workspace }}/backend/" \
+            "/home/lanari-api-web/htdocs/api-web.lanari.rw/"
+
+      - name: Install backend dependencies
+        run: |
+          sudo -u lanari-api-web bash -lc '
+            cd ~/htdocs/api-web.lanari.rw
+            npm install --omit=dev
+          '
+
+      - name: Restart backend with PM2
+        run: |
+          sudo -u lanari-api-web bash -lc '
+            cd ~/htdocs/api-web.lanari.rw
+            pm2 describe lanari-backend > /dev/null 2>&1 \
+              && pm2 restart lanari-backend \
+              || pm2 start src/server.js --name lanari-backend
+            pm2 save
+          '

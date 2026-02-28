@@ -1,0 +1,39 @@
+name: Deploy Frontend to Server
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+
+jobs:
+  deploy-frontend:
+    name: Deploy Frontend
+    runs-on: [self-hosted, Linux, X64]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: frontend
+        run: npm run build
+
+      - name: Deploy built assets to web root
+        run: |
+          sudo -u lanari-web mkdir -p /home/lanari-web/htdocs/web.lanari.rw
+          sudo -u lanari-web rsync -a --delete \
+            "${{ github.workspace }}/frontend/dist/" \
+            "/home/lanari-web/htdocs/web.lanari.rw/"
