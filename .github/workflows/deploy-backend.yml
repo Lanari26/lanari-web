@@ -21,7 +21,6 @@ jobs:
           sudo -u lanari-api-web rsync -a --delete \
             --exclude ".git" \
             --exclude "node_modules" \
-            --exclude ".env" \
             "${{ github.workspace }}/backend/" \
             "/home/lanari-api-web/htdocs/api-web.lanari.rw/"
 

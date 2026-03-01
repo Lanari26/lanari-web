@@ -220,7 +220,6 @@ Login for Lanari Mail (restricted to `employee` and `admin` roles).
 - `401` — Access restricted to authorized personnel (non-employee/admin users)
 
 ---
-
 ## Contact
 
 ### POST `/api/contact`
