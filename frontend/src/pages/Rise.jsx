@@ -24,10 +24,10 @@ export default function Rise() {
                             A powerful platform connecting professionals, freelancers, and businesses. Find work, jobs, internships, showcase your skills, and build your network in one place.
                         </p>
                         <div className="flex gap-4">
-                            <button onClick={() => navigate('/coming-soon')} className="px-8 py-4 rounded-full bg-purple-600 text-white font-bold hover:bg-purple-500 transition-colors">
+                            <button onClick={() => window.open('https://rise.lanari.rw/', '_blank')} className="px-8 py-4 rounded-full bg-purple-600 text-white font-bold hover:bg-purple-500 transition-colors">
                                 Join Network
                             </button>
-                            <button onClick={() => navigate('/coming-soon')} className="px-8 py-4 rounded-full border border-gray-600 text-white font-bold hover:bg-gray-800 transition-colors">
+                            <button onClick={() => window.open('https://rise.lanari.rw/', '_blank')} className="px-8 py-4 rounded-full border border-gray-600 text-white font-bold hover:bg-gray-800 transition-colors">
                                 Find Talent
                             </button>
                         </div>

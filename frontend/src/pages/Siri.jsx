@@ -18,10 +18,10 @@ export default function Siri() {
                             The future of retail is here. Become a trader anywhere even without owning stock. Buy goods online and resell them effortlessly, empowering anyone to start a business from their phone.
                         </p>
                         <div className="flex gap-4">
-                            <button onClick={() => navigate('/coming-soon')} className="px-8 py-4 rounded-full bg-blue-600 text-white font-bold hover:bg-blue-500 transition-colors">
+                            <button onClick={() => window.open('https://siri.lanari.rw/', '_blank')} className="px-8 py-4 rounded-full bg-blue-600 text-white font-bold hover:bg-blue-500 transition-colors">
                                 Start Selling
                             </button>
-                            <button onClick={() => navigate('/coming-soon')} className="px-8 py-4 rounded-full border border-gray-600 text-white font-bold hover:bg-gray-800 transition-colors">
+                            <button onClick={() => window.open('https://siri.lanari.rw/', '_blank')} className="px-8 py-4 rounded-full border border-gray-600 text-white font-bold hover:bg-gray-800 transition-colors">
                                 Learn More
                             </button>
                         </div>
@@ -63,7 +63,7 @@ export default function Siri() {
                     <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
                         Join thousands of smart traders on Siri Market today.
                     </p>
-                    <button onClick={() => navigate('/coming-soon')} className="px-10 py-4 rounded-full bg-white text-blue-900 font-bold hover:shadow-lg hover:scale-105 transition-all">
+                    <button onClick={() => window.open('https://siri.lanari.rw/', '_blank')} className="px-10 py-4 rounded-full bg-white text-blue-900 font-bold hover:shadow-lg hover:scale-105 transition-all">
                         Download App
                     </button>
                 </div>
