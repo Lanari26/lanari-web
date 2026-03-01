@@ -45,8 +45,8 @@ export default function LanariTechBrowser() {
     }, []);
 
     const apps = [
-        { name: 'Siri', icon: '🎯', color: 'from-blue-500 to-cyan-400', url: 'siri.lanari.rw' },
-        { name: 'Rise', icon: '📈', color: 'from-purple-500 to-pink-400', url: 'rise.lanari.rw' },
+        { name: 'Siri', icon: '🎯', color: 'from-blue-500 to-cyan-400', url: 'https://siri.lanari.rw/' },
+        { name: 'Rise', icon: '📈', color: 'from-purple-500 to-pink-400', url: 'https://rise.lanari.rw/' },
         { name: 'Academy', icon: '🎓', color: 'from-emerald-500 to-teal-400', url: 'academy.lanari.rw' },
         { name: 'AI Solutions', icon: '🤖', color: 'from-orange-500 to-red-400', url: 'ai.lanari.rw' },
         { name: 'Partner', icon: '🤝', color: 'from-pink-500 to-rose-400', url: 'partner.lanari.rw' },
@@ -134,7 +134,7 @@ export default function LanariTechBrowser() {
                             {apps.map((app, i) => (
                                 <button
                                     key={i}
-                                    onClick={() => navigate('/coming-soon')}
+                                    onClick={() => app.url.startsWith('http') ? window.open(app.url, '_blank') : navigate('/coming-soon')}
                                     className="flex flex-col items-center gap-2 p-4 rounded-xl transition-all group hover:bg-gray-700"
                                 >
                                     <div className={`w-16 h-16 bg-gradient-to-br ${app.color} rounded-2xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform shadow-lg`}>
@@ -255,7 +255,7 @@ export default function LanariTechBrowser() {
                                     title: 'Siri',
                                     desc: 'Buy & resell without stock',
                                     color: 'from-blue-500 to-cyan-400',
-                                    url: 'siri.lanari.rw',
+                                    url: 'https://siri.lanari.rw/',
                                     highlight: true
                                 },
                                 {
@@ -263,7 +263,7 @@ export default function LanariTechBrowser() {
                                     title: 'Rise',
                                     desc: 'Freelancing & networking',
                                     color: 'from-purple-500 to-pink-400',
-                                    url: 'rise.lanari.rw',
+                                    url: 'https://rise.lanari.rw/',
                                     highlight: true
                                 },
                                 {
@@ -285,7 +285,7 @@ export default function LanariTechBrowser() {
                             ].map((card, i) => (
                                 <div
                                     key={i}
-                                    onClick={() => navigate('/coming-soon')}
+                                    onClick={() => card.url.startsWith('http') ? window.open(card.url, '_blank') : navigate('/coming-soon')}
                                     className="group p-8 rounded-3xl transition-all cursor-pointer hover:scale-105 hover:bg-gray-800 flex flex-col items-center text-center lg:items-start lg:text-left"
                                     style={{ backgroundColor: '#1f2937', border: '1px solid #4b5563' }}
                                 >
@@ -427,9 +427,14 @@ export default function LanariTechBrowser() {
                             <div>
                                 <h4 className="font-bold text-lg lg:text-xl mb-6" style={{ color: '#ffffff' }}>Our Projects</h4>
                                 <nav className="space-y-4">
-                                    {['Siri Platform', 'Rise Solutions', 'Coding Academy', 'AI Products'].map((item) => (
-                                        <a key={item} href="#" onClick={(e) => { e.preventDefault(); navigate('/coming-soon'); }} className="block text-base lg:text-lg hover:text-white transition-colors" style={{ color: '#9ca3af' }}>
-                                            {item}
+                                    {[
+                                        { name: 'Siri Platform', url: 'https://siri.lanari.rw/' },
+                                        { name: 'Rise Solutions', url: 'https://rise.lanari.rw/' },
+                                        { name: 'Coding Academy', url: 'https://lca.lanari.rw/' },
+                                        { name: 'AI Products', url: '/coming-soon' },
+                                    ].map((item) => (
+                                        <a key={item.name} href="#" onClick={(e) => { e.preventDefault(); item.url.startsWith('http') ? window.open(item.url, '_blank') : navigate(item.url); }} className="block text-base lg:text-lg hover:text-white transition-colors" style={{ color: '#9ca3af' }}>
+                                            {item.name}
                                         </a>
                                     ))}
                                 </nav>
