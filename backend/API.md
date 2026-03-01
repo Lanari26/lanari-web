@@ -218,7 +218,6 @@ Login for Lanari Mail (restricted to `employee` and `admin` roles).
 ```
 **Errors:**
 - `401` — Access restricted to authorized personnel (non-employee/admin users)
-
 ---
 ## Contact
 
