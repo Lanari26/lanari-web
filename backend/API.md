@@ -191,7 +191,6 @@ Get the user's dashboard data (profile, notifications, applications).
   }
 }
 ```
-
 ---
 
 ### POST `/api/auth/mail-login`
