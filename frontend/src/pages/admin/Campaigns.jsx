@@ -436,72 +436,94 @@ export default function Campaigns() {
                                     }}
                                 />
                             ) : (
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                                    {templates.map(t => (
-                                        <TemplateCard
-                                            key={t.key}
-                                            template={t}
-                                            selected={selectedTemplate?.key === t.key}
-                                            onClick={() => handleSelectTemplate(t)}
-                                        />
-                                    ))}
-                                </div>
+                                <>
+                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                                        {templates.map(t => (
+                                            <TemplateCard
+                                                key={t.key}
+                                                template={t}
+                                                selected={selectedTemplate?.key === t.key}
+                                                onClick={() => handleSelectTemplate(t)}
+                                            />
+                                        ))}
+                                    </div>
+
+                                    {/* Template Variables — inline after template selection */}
+                                    {detectedVars.length > 0 && selectedTemplate && (
+                                        <div style={{ marginTop: 20, padding: 20, background: '#0a0e1a', borderRadius: 14, border: '1px solid #374151' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
+                                                <div style={{ width: 28, height: 28, borderRadius: 8, background: 'linear-gradient(135deg, #f59e0b, #d97706)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#fff" strokeWidth={2.5}>
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                    </svg>
+                                                </div>
+                                                <h3 style={{ margin: 0, color: '#fff', fontSize: 15, fontWeight: 700 }}>Fill Template Content</h3>
+                                            </div>
+                                            <p style={{ margin: '0 0 16px', color: '#6b7280', fontSize: 12, paddingLeft: 38 }}>
+                                                <code style={{ color: '#60a5fa', background: '#1e3a5f', padding: '1px 5px', borderRadius: 4 }}>{'{{name}}'}</code> and <code style={{ color: '#60a5fa', background: '#1e3a5f', padding: '1px 5px', borderRadius: 4 }}>{'{{email}}'}</code> are auto-filled per recipient. Fill in the rest below:
+                                            </p>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                                                {detectedVars.map(varName => {
+                                                    const isLong = ['content', 'features', 'description', 'details', 'updates'].includes(varName);
+                                                    return (
+                                                        <div key={varName}>
+                                                            <label style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#d1d5db', fontSize: 13, fontWeight: 600, marginBottom: 6 }}>
+                                                                <code style={{ color: '#f59e0b', background: '#451a0344', padding: '2px 8px', borderRadius: 6, fontSize: 11, fontWeight: 700 }}>
+                                                                    {`{{${varName}}}`}
+                                                                </code>
+                                                                {VAR_LABELS[varName] || varName.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase())}
+                                                                {!templateVars[varName] && (
+                                                                    <span style={{ color: '#ef4444', fontSize: 11, fontWeight: 700 }}>required</span>
+                                                                )}
+                                                                {templateVars[varName] && (
+                                                                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#10b981" strokeWidth={2.5}>
+                                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                                                    </svg>
+                                                                )}
+                                                            </label>
+                                                            {isLong ? (
+                                                                <textarea
+                                                                    value={templateVars[varName] || ''}
+                                                                    onChange={e => setTemplateVars(prev => ({ ...prev, [varName]: e.target.value }))}
+                                                                    placeholder={`Enter ${VAR_LABELS[varName] || varName}...`}
+                                                                    rows={4}
+                                                                    style={{
+                                                                        width: '100%', padding: '10px 14px', background: '#111827', border: `2px solid ${templateVars[varName] ? '#10b98144' : '#f59e0b55'}`,
+                                                                        borderRadius: 10, color: '#e5e7eb', fontSize: 13, lineHeight: 1.6,
+                                                                        outline: 'none', resize: 'vertical', boxSizing: 'border-box',
+                                                                        transition: 'border-color 0.2s',
+                                                                    }}
+                                                                />
+                                                            ) : (
+                                                                <input
+                                                                    value={templateVars[varName] || ''}
+                                                                    onChange={e => setTemplateVars(prev => ({ ...prev, [varName]: e.target.value }))}
+                                                                    placeholder={`Enter ${VAR_LABELS[varName] || varName}...`}
+                                                                    style={{
+                                                                        width: '100%', padding: '10px 14px', background: '#111827', border: `2px solid ${templateVars[varName] ? '#10b98144' : '#f59e0b55'}`,
+                                                                        borderRadius: 10, color: '#e5e7eb', fontSize: 13,
+                                                                        outline: 'none', boxSizing: 'border-box',
+                                                                        transition: 'border-color 0.2s',
+                                                                    }}
+                                                                />
+                                                            )}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                            {detectedVars.every(v => templateVars[v]) && (
+                                                <div style={{ marginTop: 14, padding: '10px 14px', background: '#064e3b44', borderRadius: 10, border: '1px solid #10b98133', display: 'flex', alignItems: 'center', gap: 8 }}>
+                                                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#10b981" strokeWidth={2}>
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                    <span style={{ color: '#34d399', fontSize: 13, fontWeight: 600 }}>All fields filled — check the live preview on the right!</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </>
                             )}
                         </div>
-
-                        {/* Template Variables */}
-                        {detectedVars.length > 0 && !useManual && (
-                            <div style={{ background: '#111827', borderRadius: 16, border: '1px solid #1f2937', padding: 24 }}>
-                                <h3 style={{ margin: '0 0 4px', color: '#fff', fontSize: 16, fontWeight: 700 }}>Fill Template Content</h3>
-                                <p style={{ margin: '0 0 16px', color: '#6b7280', fontSize: 12 }}>
-                                    These fields will replace the placeholders in your template. <code style={{ color: '#60a5fa', background: '#1e3a5f', padding: '1px 5px', borderRadius: 4 }}>{'{{name}}'}</code> and <code style={{ color: '#60a5fa', background: '#1e3a5f', padding: '1px 5px', borderRadius: 4 }}>{'{{email}}'}</code> are auto-filled per recipient.
-                                </p>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                                    {detectedVars.map(varName => {
-                                        const isLong = ['content', 'features', 'description', 'details', 'updates'].includes(varName);
-                                        return (
-                                            <div key={varName}>
-                                                <label style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#9ca3af', fontSize: 13, fontWeight: 600, marginBottom: 6 }}>
-                                                    <code style={{ color: '#f59e0b', background: '#451a0333', padding: '2px 6px', borderRadius: 4, fontSize: 11 }}>
-                                                        {`{{${varName}}}`}
-                                                    </code>
-                                                    {VAR_LABELS[varName] || varName.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase())}
-                                                    {!templateVars[varName] && (
-                                                        <span style={{ color: '#ef4444', fontSize: 11 }}>*</span>
-                                                    )}
-                                                </label>
-                                                {isLong ? (
-                                                    <textarea
-                                                        value={templateVars[varName] || ''}
-                                                        onChange={e => setTemplateVars(prev => ({ ...prev, [varName]: e.target.value }))}
-                                                        placeholder={`Enter ${VAR_LABELS[varName] || varName}...`}
-                                                        rows={4}
-                                                        style={{
-                                                            width: '100%', padding: '10px 14px', background: '#0a0e1a', border: `1px solid ${templateVars[varName] ? '#374151' : '#92400e55'}`,
-                                                            borderRadius: 10, color: '#e5e7eb', fontSize: 13, lineHeight: 1.6,
-                                                            outline: 'none', resize: 'vertical', boxSizing: 'border-box',
-                                                            transition: 'border-color 0.15s',
-                                                        }}
-                                                    />
-                                                ) : (
-                                                    <input
-                                                        value={templateVars[varName] || ''}
-                                                        onChange={e => setTemplateVars(prev => ({ ...prev, [varName]: e.target.value }))}
-                                                        placeholder={`Enter ${VAR_LABELS[varName] || varName}...`}
-                                                        style={{
-                                                            width: '100%', padding: '10px 14px', background: '#0a0e1a', border: `1px solid ${templateVars[varName] ? '#374151' : '#92400e55'}`,
-                                                            borderRadius: 10, color: '#e5e7eb', fontSize: 13,
-                                                            outline: 'none', boxSizing: 'border-box',
-                                                            transition: 'border-color 0.15s',
-                                                        }}
-                                                    />
-                                                )}
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        )}
 
                         {/* Save button */}
                         <button
