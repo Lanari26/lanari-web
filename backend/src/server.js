@@ -36,6 +36,7 @@ async function start() {
     app.use('/api/ai', require('./routes/ai.routes'));
     app.use('/api/analytics', require('./routes/analytics.routes'));
     app.use('/api/docs', require('./routes/docs.routes'));
+    app.use('/api/campaigns', require('./routes/campaign.routes'));
 
     // Health check
     app.get('/health', (req, res) => {

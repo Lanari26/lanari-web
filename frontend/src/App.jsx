@@ -36,6 +36,7 @@ import AdminJobs from './pages/admin/Jobs';
 import AdminUsers from './pages/admin/Users';
 import AdminAnalytics from './pages/admin/Analytics';
 import AdminDocs from './pages/admin/DocsManager';
+import AdminCampaigns from './pages/admin/Campaigns';
 import ComingSoon from './components/ComingSoon';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -74,6 +75,7 @@ function AdminRoutes() {
         <Route path="/users" element={<AdminUsers />} />
         <Route path="/analytics" element={<AdminAnalytics />} />
         <Route path="/docs" element={<AdminDocs />} />
+        <Route path="/campaigns" element={<AdminCampaigns />} />
       </Routes>
     </AdminLayout>
   );
