@@ -90,10 +90,64 @@ export default function Campaigns() {
     const [audience, setAudience] = useState('all');
     const [selectedTemplate, setSelectedTemplate] = useState(null);
     const [htmlContent, setHtmlContent] = useState('');
+    const [templateVars, setTemplateVars] = useState({}); // { varName: value }
     const [useManual, setUseManual] = useState(false);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');
     const previewRef = useRef(null);
+
+    // Auto-reserved vars (filled automatically per-recipient, not by admin)
+    const RESERVED_VARS = ['name', 'email'];
+
+    // Friendly labels for known template variables
+    const VAR_LABELS = {
+        content: 'Content / Highlights',
+        month: 'Month (e.g. March 2026)',
+        productName: 'Product Name',
+        description: 'Description',
+        features: 'Key Features (one per line)',
+        headline: 'Headline',
+        offer: 'Offer (e.g. 50% OFF)',
+        details: 'Offer Details',
+        eventName: 'Event Name',
+        date: 'Date',
+        time: 'Time',
+        location: 'Location',
+        title: 'Title',
+        updates: 'Updates / What\'s New',
+    };
+
+    // Extract {{variable}} placeholders from HTML, excluding reserved ones
+    const extractVars = (html) => {
+        const matches = html.match(/\{\{(\w+)\}\}/g) || [];
+        const unique = [...new Set(matches.map(m => m.replace(/\{\{|\}\}/g, '')))];
+        return unique.filter(v => !RESERVED_VARS.includes(v.toLowerCase()));
+    };
+
+    // Get the final HTML with all template vars replaced
+    const getFilledHtml = (html) => {
+        let result = html;
+        for (const [key, val] of Object.entries(templateVars)) {
+            if (val) {
+                result = result.replace(new RegExp(`\\{\\{${key}\\}\\}`, 'gi'), val);
+            }
+        }
+        return result;
+    };
+
+    // Get the final subject with template vars replaced
+    const getFilledSubject = () => {
+        let result = subject;
+        for (const [key, val] of Object.entries(templateVars)) {
+            if (val) {
+                result = result.replace(new RegExp(`\\{\\{${key}\\}\\}`, 'gi'), val);
+            }
+        }
+        return result;
+    };
+
+    // Detected variables from current template HTML
+    const detectedVars = htmlContent ? extractVars(htmlContent + ' ' + subject) : [];
 
     useEffect(() => {
         loadData();
@@ -121,6 +175,7 @@ export default function Campaigns() {
         setAudience('all');
         setSelectedTemplate(null);
         setHtmlContent('');
+        setTemplateVars({});
         setUseManual(false);
         setError('');
     };
@@ -129,6 +184,7 @@ export default function Campaigns() {
         setSelectedTemplate(t);
         setSubject(t.subject);
         setHtmlContent(t.html);
+        setTemplateVars({});
         setUseManual(false);
     };
 
@@ -168,14 +224,22 @@ export default function Campaigns() {
             setError('Please fill in title, subject, and email content.');
             return;
         }
+        // Check unfilled template variables
+        const filledHtml = getFilledHtml(htmlContent);
+        const filledSubject = getFilledSubject();
+        const remainingVars = extractVars(filledHtml + ' ' + filledSubject);
+        if (remainingVars.length > 0) {
+            setError(`Please fill in all template variables: ${remainingVars.join(', ')}`);
+            return;
+        }
         try {
             setSaving(true);
             setError('');
             await api.post('/campaigns', {
                 title,
-                subject,
+                subject: filledSubject,
                 templateKey: selectedTemplate?.key || null,
-                htmlContent,
+                htmlContent: filledHtml,
                 audience,
             });
             resetForm();
@@ -385,6 +449,60 @@ export default function Campaigns() {
                             )}
                         </div>
 
+                        {/* Template Variables */}
+                        {detectedVars.length > 0 && !useManual && (
+                            <div style={{ background: '#111827', borderRadius: 16, border: '1px solid #1f2937', padding: 24 }}>
+                                <h3 style={{ margin: '0 0 4px', color: '#fff', fontSize: 16, fontWeight: 700 }}>Fill Template Content</h3>
+                                <p style={{ margin: '0 0 16px', color: '#6b7280', fontSize: 12 }}>
+                                    These fields will replace the placeholders in your template. <code style={{ color: '#60a5fa', background: '#1e3a5f', padding: '1px 5px', borderRadius: 4 }}>{'{{name}}'}</code> and <code style={{ color: '#60a5fa', background: '#1e3a5f', padding: '1px 5px', borderRadius: 4 }}>{'{{email}}'}</code> are auto-filled per recipient.
+                                </p>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                                    {detectedVars.map(varName => {
+                                        const isLong = ['content', 'features', 'description', 'details', 'updates'].includes(varName);
+                                        return (
+                                            <div key={varName}>
+                                                <label style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#9ca3af', fontSize: 13, fontWeight: 600, marginBottom: 6 }}>
+                                                    <code style={{ color: '#f59e0b', background: '#451a0333', padding: '2px 6px', borderRadius: 4, fontSize: 11 }}>
+                                                        {`{{${varName}}}`}
+                                                    </code>
+                                                    {VAR_LABELS[varName] || varName.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase())}
+                                                    {!templateVars[varName] && (
+                                                        <span style={{ color: '#ef4444', fontSize: 11 }}>*</span>
+                                                    )}
+                                                </label>
+                                                {isLong ? (
+                                                    <textarea
+                                                        value={templateVars[varName] || ''}
+                                                        onChange={e => setTemplateVars(prev => ({ ...prev, [varName]: e.target.value }))}
+                                                        placeholder={`Enter ${VAR_LABELS[varName] || varName}...`}
+                                                        rows={4}
+                                                        style={{
+                                                            width: '100%', padding: '10px 14px', background: '#0a0e1a', border: `1px solid ${templateVars[varName] ? '#374151' : '#92400e55'}`,
+                                                            borderRadius: 10, color: '#e5e7eb', fontSize: 13, lineHeight: 1.6,
+                                                            outline: 'none', resize: 'vertical', boxSizing: 'border-box',
+                                                            transition: 'border-color 0.15s',
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    <input
+                                                        value={templateVars[varName] || ''}
+                                                        onChange={e => setTemplateVars(prev => ({ ...prev, [varName]: e.target.value }))}
+                                                        placeholder={`Enter ${VAR_LABELS[varName] || varName}...`}
+                                                        style={{
+                                                            width: '100%', padding: '10px 14px', background: '#0a0e1a', border: `1px solid ${templateVars[varName] ? '#374151' : '#92400e55'}`,
+                                                            borderRadius: 10, color: '#e5e7eb', fontSize: 13,
+                                                            outline: 'none', boxSizing: 'border-box',
+                                                            transition: 'border-color 0.15s',
+                                                        }}
+                                                    />
+                                                )}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
+
                         {/* Save button */}
                         <button
                             onClick={handleCreate}
@@ -411,7 +529,7 @@ export default function Campaigns() {
                         </div>
                         {htmlContent ? (
                             <iframe
-                                srcDoc={htmlContent.replace(/\{\{name\}\}/gi, 'John Doe').replace(/\{\{email\}\}/gi, 'john@example.com')}
+                                srcDoc={getFilledHtml(htmlContent).replace(/\{\{name\}\}/gi, 'John Doe').replace(/\{\{email\}\}/gi, 'john@example.com')}
                                 title="Live Preview"
                                 style={{ width: '100%', height: 580, border: 'none', background: '#0a0e1a' }}
                             />
