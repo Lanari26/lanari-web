@@ -248,7 +248,7 @@ export default function Internships() {
                                             <input type="tel" value={form.phone} onChange={update('phone')} className="w-full px-4 py-2.5 rounded-xl bg-gray-900 border border-gray-600 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none text-white text-sm transition-all" placeholder="+250 7XX XXX XXX" />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-semibold text-gray-300 mb-1.5">University</label>
+                                            <label className="block text-sm font-semibold text-gray-300 mb-1.5">School/University</label>
                                             <input type="text" value={form.university} onChange={update('university')} className="w-full px-4 py-2.5 rounded-xl bg-gray-900 border border-gray-600 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none text-white text-sm transition-all" placeholder="University of Rwanda" />
                                         </div>
                                     </div>
