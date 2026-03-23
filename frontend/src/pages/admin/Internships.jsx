@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { api } from './api';
 
+const DEFAULT_INTERNSHIP_PRICE = 30000;
+
 const statusColors = {
     received: { bg: 'rgba(234,179,8,0.15)', color: '#facc15' },
     reviewing: { bg: 'rgba(59,130,246,0.15)', color: '#60a5fa' },
@@ -9,13 +11,18 @@ const statusColors = {
     rejected: { bg: 'rgba(239,68,68,0.15)', color: '#f87171' },
 };
 
+const formatPrice = (value) => {
+    const amount = Number(value);
+    return `${new Intl.NumberFormat().format(Number.isFinite(amount) ? amount : DEFAULT_INTERNSHIP_PRICE)} RWF`;
+};
+
 export default function Internships() {
     const [internships, setInternships] = useState([]);
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [tab, setTab] = useState('internships');
     const [showForm, setShowForm] = useState(false);
-    const [form, setForm] = useState({ title: '', department: '', duration: '', location: '', description: '', requirements: '' });
+    const [form, setForm] = useState({ title: '', department: '', duration: '', location: '', price: DEFAULT_INTERNSHIP_PRICE, description: '', requirements: '' });
     const [editId, setEditId] = useState(null);
     const [expandedApp, setExpandedApp] = useState(null);
 
@@ -34,7 +41,7 @@ export default function Internships() {
     useEffect(() => { load(); }, []);
 
     const resetForm = () => {
-        setForm({ title: '', department: '', duration: '', location: '', description: '', requirements: '' });
+        setForm({ title: '', department: '', duration: '', location: '', price: DEFAULT_INTERNSHIP_PRICE, description: '', requirements: '' });
         setEditId(null);
         setShowForm(false);
     };
@@ -56,6 +63,7 @@ export default function Internships() {
             department: intern.department,
             duration: intern.duration,
             location: intern.location,
+            price: intern.price ?? DEFAULT_INTERNSHIP_PRICE,
             description: intern.description || '',
             requirements: intern.requirements || ''
         });
@@ -113,6 +121,7 @@ export default function Internships() {
                         <input value={form.department} onChange={e => setForm({ ...form, department: e.target.value })} placeholder="Department" required className="px-4 py-2.5 rounded-xl text-sm font-medium bg-gray-800 text-white border border-gray-700 outline-none focus:border-purple-500" />
                         <input value={form.duration} onChange={e => setForm({ ...form, duration: e.target.value })} placeholder="Duration (e.g. 3 months)" required className="px-4 py-2.5 rounded-xl text-sm font-medium bg-gray-800 text-white border border-gray-700 outline-none focus:border-purple-500" />
                         <input value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} placeholder="Location" required className="px-4 py-2.5 rounded-xl text-sm font-medium bg-gray-800 text-white border border-gray-700 outline-none focus:border-purple-500" />
+                        <input type="number" min="0" value={form.price} onChange={e => setForm({ ...form, price: e.target.value })} placeholder="Price in RWF" required className="px-4 py-2.5 rounded-xl text-sm font-medium bg-gray-800 text-white border border-gray-700 outline-none focus:border-purple-500 sm:col-span-2" />
                     </div>
                     <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Description (optional)" rows={3} className="w-full px-4 py-2.5 rounded-xl text-sm font-medium bg-gray-800 text-white border border-gray-700 outline-none focus:border-purple-500 resize-none" />
                     <textarea value={form.requirements} onChange={e => setForm({ ...form, requirements: e.target.value })} placeholder="Requirements (optional)" rows={2} className="w-full px-4 py-2.5 rounded-xl text-sm font-medium bg-gray-800 text-white border border-gray-700 outline-none focus:border-purple-500 resize-none" />
@@ -133,6 +142,7 @@ export default function Internships() {
                                 <div className="flex items-center gap-2 flex-wrap mb-1">
                                     <span className="text-sm font-bold text-white">{intern.title}</span>
                                     <span className="px-2 py-0.5 rounded-full text-[10px] font-bold text-purple-400" style={{ backgroundColor: 'rgba(168,85,247,0.15)' }}>{intern.duration}</span>
+                                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold text-emerald-400" style={{ backgroundColor: 'rgba(16,185,129,0.15)' }}>{formatPrice(intern.price)}</span>
                                     {!intern.is_active && (
                                         <span className="px-2 py-0.5 rounded-full text-[10px] font-bold text-red-400" style={{ backgroundColor: 'rgba(239,68,68,0.15)' }}>Inactive</span>
                                     )}

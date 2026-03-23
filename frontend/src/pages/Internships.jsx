@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 const API = import.meta.env.VITE_API_URL;
+const DEFAULT_INTERNSHIP_PRICE = 30000;
+
+const formatPrice = (value) => {
+    const amount = Number(value);
+    return `${new Intl.NumberFormat().format(Number.isFinite(amount) ? amount : DEFAULT_INTERNSHIP_PRICE)} RWF`;
+};
 
 export default function Internships() {
     const [internships, setInternships] = useState([]);
@@ -133,6 +139,7 @@ export default function Internships() {
                                         <div className="flex flex-wrap gap-3 text-sm font-medium mb-3">
                                             <span className={`px-3 py-1 rounded-full ${deptColors[intern.department] || 'bg-gray-700 text-gray-300'}`}>{intern.department}</span>
                                             <span className="px-3 py-1 rounded-full bg-purple-500/15 text-purple-400">{intern.duration}</span>
+                                            <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400">{formatPrice(intern.price)}</span>
                                             <span className="flex items-center gap-1 text-gray-400">
                                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -213,6 +220,9 @@ export default function Internships() {
                                         <span className="text-gray-600">-</span>
                                         <span className="text-gray-500 text-sm">{applyInternship.duration}</span>
                                     </div>
+                                    <p className="mt-3 text-sm font-semibold text-emerald-400">
+                                        Internship fee: {formatPrice(applyInternship.price)}
+                                    </p>
                                 </div>
 
                                 {status === 'error' && (

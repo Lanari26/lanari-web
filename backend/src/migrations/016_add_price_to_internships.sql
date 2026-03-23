@@ -1,0 +1,2 @@
+ALTER TABLE internships
+ADD COLUMN price INT NOT NULL DEFAULT 30000 AFTER location;

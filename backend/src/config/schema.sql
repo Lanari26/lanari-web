@@ -129,6 +129,7 @@ CREATE TABLE IF NOT EXISTS internships (
     department VARCHAR(100) NOT NULL,
     duration VARCHAR(50) NOT NULL,
     location VARCHAR(100) NOT NULL,
+    price INT NOT NULL DEFAULT 30000,
     description TEXT DEFAULT NULL,
     requirements TEXT DEFAULT NULL,
     is_active BOOLEAN DEFAULT TRUE,

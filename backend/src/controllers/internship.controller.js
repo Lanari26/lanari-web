@@ -2,6 +2,21 @@ const { Internship, InternshipApplication } = require('../models/internship.mode
 const Activity = require('../models/activity.model');
 const { sendMail, templates } = require('../config/email');
 
+const DEFAULT_INTERNSHIP_PRICE = 30000;
+
+function normalizeInternshipPrice(value, fallback = DEFAULT_INTERNSHIP_PRICE) {
+    if (value === undefined || value === null || value === '') {
+        return fallback;
+    }
+
+    const parsed = Number.parseInt(value, 10);
+    if (!Number.isFinite(parsed) || parsed < 0) {
+        return fallback;
+    }
+
+    return parsed;
+}
+
 exports.getInternships = async (req, res, next) => {
     try {
         const internships = await Internship.findAllActive();
@@ -26,7 +41,8 @@ exports.getInternship = async (req, res, next) => {
 exports.createInternship = async (req, res, next) => {
     try {
         const { title, department, duration, location, description, requirements } = req.body;
-        const id = await Internship.create({ title, department, duration, location, description, requirements });
+        const price = normalizeInternshipPrice(req.body.price);
+        const id = await Internship.create({ title, department, duration, location, price, description, requirements });
         res.status(201).json({ success: true, message: 'Internship created', id });
     } catch (err) {
         next(err);
@@ -35,7 +51,11 @@ exports.createInternship = async (req, res, next) => {
 
 exports.updateInternship = async (req, res, next) => {
     try {
-        const updated = await Internship.update(req.params.id, req.body);
+        const payload = {
+            ...req.body,
+            ...(req.body.price !== undefined ? { price: normalizeInternshipPrice(req.body.price) } : {})
+        };
+        const updated = await Internship.update(req.params.id, payload);
         if (!updated) {
             return res.status(404).json({ error: 'Internship not found or no changes made' });
         }

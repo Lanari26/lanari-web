@@ -18,15 +18,15 @@ const Internship = {
         return rows[0] || null;
     },
 
-    async create({ title, department, duration, location, description, requirements }) {
+    async create({ title, department, duration, location, price, description, requirements }) {
         const [result] = await pool.query(
-            'INSERT INTO internships (title, department, duration, location, description, requirements) VALUES (?, ?, ?, ?, ?, ?)',
-            [title, department, duration, location, description || null, requirements || null]
+            'INSERT INTO internships (title, department, duration, location, price, description, requirements) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            [title, department, duration, location, price, description || null, requirements || null]
         );
         return result.insertId;
     },
 
-    async update(id, { title, department, duration, location, description, requirements, isActive }) {
+    async update(id, { title, department, duration, location, price, description, requirements, isActive }) {
         const fields = [];
         const values = [];
 
@@ -34,6 +34,7 @@ const Internship = {
         if (department !== undefined) { fields.push('department = ?'); values.push(department); }
         if (duration !== undefined) { fields.push('duration = ?'); values.push(duration); }
         if (location !== undefined) { fields.push('location = ?'); values.push(location); }
+        if (price !== undefined) { fields.push('price = ?'); values.push(price); }
         if (description !== undefined) { fields.push('description = ?'); values.push(description); }
         if (requirements !== undefined) { fields.push('requirements = ?'); values.push(requirements); }
         if (isActive !== undefined) { fields.push('is_active = ?'); values.push(isActive); }
