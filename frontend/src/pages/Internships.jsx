@@ -271,11 +271,11 @@ export default function Internships() {
                                         </div>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-300 mb-1.5">Portfolio URL</label>
+                                        <label className="block text-sm font-semibold text-gray-300 mb-1.5">Portfolio URL(optional)</label>
                                         <input type="url" value={form.portfolioUrl} onChange={update('portfolioUrl')} className="w-full px-4 py-2.5 rounded-xl bg-gray-900 border border-gray-600 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none text-white text-sm transition-all" placeholder="https://github.com/yourprofile" />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-300 mb-1.5">Motivation Letter</label>
+                                        <label className="block text-sm font-semibold text-gray-300 mb-1.5">Motivation Letter(optional)</label>
                                         <textarea value={form.motivation} onChange={update('motivation')} rows={4} className="w-full px-4 py-2.5 rounded-xl bg-gray-900 border border-gray-600 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none text-white text-sm transition-all resize-none" placeholder="Tell us why you're interested in this internship and what you hope to learn..." />
                                     </div>
                                     <button
