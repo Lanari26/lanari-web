@@ -26,6 +26,7 @@ export default function Header() {
         { name: 'Docs', icon: '📄', color: 'from-yellow-500 to-orange-400', url: '/docs' },
         { name: 'Mail', icon: '✉️', color: 'from-red-500 to-pink-400', url: '/mail' },
         { name: 'Calendar', icon: '📅', color: 'from-green-500 to-emerald-400', url: '/calendar' },
+        { name: 'Internships', icon: '🎓', color: 'from-violet-500 to-purple-400', url: '/internships' },
     ];
 
     return (
@@ -61,7 +62,8 @@ export default function Header() {
                                     { text: "Online Jobs", url: "/rise" },
                                     { text: "Virtual Stock", url: "/siri" },
                                     { text: "Education", url: "/academy" },
-                                    { text: "Innovation", url: "/ai-products" }
+                                    { text: "Innovation", url: "/ai-products" },
+                                    { text: "Internships", url: "/internships" }
                                 ].map((item, j) => (
                                     <span
                                         key={j}

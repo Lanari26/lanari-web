@@ -268,6 +268,55 @@ const templates = {
         `)
     }),
 
+    /** Confirmation email sent to internship applicant */
+    internshipConfirmation: ({ fullName, internshipTitle, department }) => ({
+        subject: `Internship Application Received — ${internshipTitle} at Lanari Tech`,
+        html: wrap(`
+            <h2 style="margin:0 0 16px;color:#ffffff;font-size:22px;">Internship Application Received!</h2>
+            <p style="margin:0 0 24px;color:#9ca3af;font-size:15px;line-height:1.7;">
+                Hi ${fullName}, thank you for applying to the <strong style="color:#e5e7eb;">${internshipTitle}</strong> internship in our <strong style="color:#e5e7eb;">${department}</strong> department.
+            </p>
+            <p style="margin:0 0 24px;color:#9ca3af;font-size:15px;line-height:1.7;">
+                Our team will review your application and get back to you within 5-7 business days. We appreciate your interest in growing with Lanari Tech!
+            </p>
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+                <tr><td style="padding:16px;background-color:#111827;border-radius:12px;border:1px solid #374151;">
+                    <p style="margin:0 0 4px;color:#a78bfa;font-size:13px;font-weight:700;">Application Details:</p>
+                    <p style="margin:0;color:#9ca3af;font-size:13px;line-height:1.8;">
+                        ✦ <strong style="color:#e5e7eb;">Position:</strong> ${internshipTitle}<br/>
+                        ✦ <strong style="color:#e5e7eb;">Department:</strong> ${department}<br/>
+                        ✦ <strong style="color:#e5e7eb;">Status:</strong> Under Review
+                    </p>
+                </td></tr>
+            </table>
+            <a href="${process.env.FRONTEND_URL}/internships" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#ffffff;text-decoration:none;font-weight:700;font-size:14px;border-radius:12px;">
+                View More Internships
+            </a>
+        `)
+    }),
+
+    /** Internal notification to admin when a new internship application arrives */
+    internshipNotifyAdmin: ({ fullName, email, university, fieldOfStudy, internshipTitle, department, motivation }) => ({
+        subject: `New Internship Application: ${fullName} — ${internshipTitle}`,
+        html: wrap(`
+            <h2 style="margin:0 0 16px;color:#ffffff;font-size:22px;">New Internship Application</h2>
+            <p style="margin:0 0 24px;color:#9ca3af;font-size:15px;">A new internship application has been submitted.</p>
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+                <tr><td style="padding:16px;background-color:#111827;border-radius:12px;border:1px solid #374151;">
+                    <p style="margin:0 0 12px;color:#e5e7eb;font-size:14px;"><strong>Applicant:</strong> ${fullName}</p>
+                    <p style="margin:0 0 12px;color:#e5e7eb;font-size:14px;"><strong>Email:</strong> <a href="mailto:${email}" style="color:#a78bfa;">${email}</a></p>
+                    <p style="margin:0 0 12px;color:#e5e7eb;font-size:14px;"><strong>Position:</strong> ${internshipTitle} (${department})</p>
+                    ${university ? `<p style="margin:0 0 12px;color:#e5e7eb;font-size:14px;"><strong>University:</strong> ${university}</p>` : ''}
+                    ${fieldOfStudy ? `<p style="margin:0 0 12px;color:#e5e7eb;font-size:14px;"><strong>Field of Study:</strong> ${fieldOfStudy}</p>` : ''}
+                    ${motivation ? `<p style="margin:0 0 8px;color:#e5e7eb;font-size:14px;"><strong>Motivation:</strong></p><p style="margin:0;color:#9ca3af;font-size:14px;line-height:1.7;white-space:pre-wrap;">${motivation}</p>` : '<p style="margin:0;color:#6b7280;font-size:13px;font-style:italic;">No motivation letter provided</p>'}
+                </td></tr>
+            </table>
+            <a href="${process.env.FRONTEND_URL}/admin/internships" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#ffffff;text-decoration:none;font-weight:700;font-size:14px;border-radius:12px;">
+                View in Admin Panel
+            </a>
+        `)
+    }),
+
     /** Internal notification to admin when a new investor inquiry arrives */
     investorNotifyAdmin: ({ fullName, email, phone, organization, investmentRange, message }) => ({
         subject: `New Investor Inquiry: ${fullName}${organization ? ` (${organization})` : ''}`,

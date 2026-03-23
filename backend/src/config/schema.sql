@@ -122,6 +122,37 @@ CREATE TABLE IF NOT EXISTS chat_messages (
     FOREIGN KEY (session_id) REFERENCES chat_sessions(id) ON DELETE CASCADE
 );
 
+-- Internship listings
+CREATE TABLE IF NOT EXISTS internships (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(150) NOT NULL,
+    department VARCHAR(100) NOT NULL,
+    duration VARCHAR(50) NOT NULL,
+    location VARCHAR(100) NOT NULL,
+    description TEXT DEFAULT NULL,
+    requirements TEXT DEFAULT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Internship applications
+CREATE TABLE IF NOT EXISTS internship_applications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    internship_id INT NOT NULL,
+    full_name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) DEFAULT NULL,
+    university VARCHAR(200) DEFAULT NULL,
+    field_of_study VARCHAR(150) DEFAULT NULL,
+    year_of_study VARCHAR(20) DEFAULT NULL,
+    motivation TEXT DEFAULT NULL,
+    portfolio_url VARCHAR(500) DEFAULT NULL,
+    status ENUM('received', 'reviewing', 'interview', 'accepted', 'rejected') DEFAULT 'received',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (internship_id) REFERENCES internships(id) ON DELETE CASCADE
+);
+
 -- Seed jobs from Careers.jsx
 INSERT INTO job_listings (title, department, type, location) VALUES
     ('Senior Frontend Developer', 'Engineering', 'Full-time', 'Remote / Kigali'),

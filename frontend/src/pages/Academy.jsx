@@ -38,6 +38,17 @@ export default function Academy() {
                     ))}
                 </div>
 
+                {/* Internship CTA */}
+                <div className="bg-purple-900/20 border border-purple-500/20 rounded-3xl p-12 text-center mb-12">
+                    <h2 className="text-3xl font-bold text-white mb-4">Academic Internships</h2>
+                    <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
+                        Put your skills to work with a hands-on internship at Lanari Tech. Gain real-world experience, mentorship, and a pathway to a career in tech.
+                    </p>
+                    <button onClick={() => navigate('/internships')} className="px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold hover:shadow-lg hover:shadow-purple-600/30 transition-all">
+                        View Internships
+                    </button>
+                </div>
+
                 <div className="bg-emerald-900/20 border border-emerald-500/20 rounded-3xl p-12 text-center">
                     <h2 className="text-3xl font-bold text-white mb-4">Start learning for free</h2>
                     <p className="text-gray-300 mb-8">Access our introductory courses and start your journey today.</p>
