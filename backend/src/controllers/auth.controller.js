@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
 const Notification = require('../models/notification.model');
 const Activity = require('../models/activity.model');
+const Team = require('../models/team.model');
 const { sendMail, templates } = require('../config/email');
 
 const generateToken = (id) => {
@@ -118,6 +119,10 @@ exports.getDashboard = async (req, res, next) => {
             [user.email]
         ).catch(() => [[]]);
 
+        const teamWorkspace = ['employee', 'admin'].includes(user.role)
+            ? await Team.getWorkspace(userId)
+            : null;
+
         res.json({
             success: true,
             data: {
@@ -131,7 +136,8 @@ exports.getDashboard = async (req, res, next) => {
                 },
                 notifications: notifRows,
                 unreadNotifications: unreadCount[0].count,
-                applications: appRows
+                applications: appRows,
+                teamWorkspace
             }
         });
     } catch (err) {

@@ -154,6 +154,83 @@ CREATE TABLE IF NOT EXISTS internship_applications (
     FOREIGN KEY (internship_id) REFERENCES internships(id) ON DELETE CASCADE
 );
 
+-- Team ownership map
+CREATE TABLE IF NOT EXISTS team_roles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    code VARCHAR(20) NOT NULL UNIQUE,
+    short_label VARCHAR(20) NOT NULL,
+    name VARCHAR(120) NOT NULL,
+    default_title VARCHAR(120) DEFAULT NULL,
+    ownership_summary TEXT DEFAULT NULL,
+    sort_order INT NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS team_role_responsibilities (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    team_role_id INT NOT NULL,
+    responsibility TEXT NOT NULL,
+    sort_order INT NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (team_role_id) REFERENCES team_roles(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS team_profiles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL UNIQUE,
+    team_role_id INT DEFAULT NULL,
+    display_title VARCHAR(120) DEFAULT NULL,
+    staff_code VARCHAR(30) DEFAULT NULL,
+    bio TEXT DEFAULT NULL,
+    ownership_summary TEXT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (team_role_id) REFERENCES team_roles(id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS team_decision_rules (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    question VARCHAR(255) NOT NULL,
+    answer TEXT NOT NULL,
+    sort_order INT NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS team_tasks (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    description TEXT DEFAULT NULL,
+    status ENUM('todo', 'in_progress', 'blocked', 'completed') DEFAULT 'todo',
+    priority ENUM('low', 'medium', 'high', 'urgent') DEFAULT 'medium',
+    assignee_user_id INT NOT NULL,
+    created_by_user_id INT NOT NULL,
+    due_date DATE DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (assignee_user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (created_by_user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS team_reports (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    author_user_id INT NOT NULL,
+    task_id INT DEFAULT NULL,
+    title VARCHAR(200) NOT NULL,
+    body TEXT NOT NULL,
+    report_date DATE NOT NULL,
+    status ENUM('submitted', 'reviewed') DEFAULT 'submitted',
+    reviewed_by_user_id INT DEFAULT NULL,
+    reviewed_at TIMESTAMP NULL DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (author_user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (task_id) REFERENCES team_tasks(id) ON DELETE SET NULL,
+    FOREIGN KEY (reviewed_by_user_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
 -- Seed jobs from Careers.jsx
 INSERT INTO job_listings (title, department, type, location) VALUES
     ('Senior Frontend Developer', 'Engineering', 'Full-time', 'Remote / Kigali'),

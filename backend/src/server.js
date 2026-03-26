@@ -38,6 +38,7 @@ async function start() {
     app.use('/api/docs', require('./routes/docs.routes'));
     app.use('/api/campaigns', require('./routes/campaign.routes'));
     app.use('/api/internships', require('./routes/internship.routes'));
+    app.use('/api/team', require('./routes/team.routes'));
 
     // Health check
     app.get('/health', (req, res) => {

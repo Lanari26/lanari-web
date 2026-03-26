@@ -37,6 +37,7 @@ import AdminUsers from './pages/admin/Users';
 import AdminAnalytics from './pages/admin/Analytics';
 import AdminDocs from './pages/admin/DocsManager';
 import AdminCampaigns from './pages/admin/Campaigns';
+import AdminTeam from './pages/admin/Team';
 import Internships from './pages/Internships';
 import AdminInternships from './pages/admin/Internships';
 import ComingSoon from './components/ComingSoon';
@@ -75,6 +76,7 @@ function AdminRoutes() {
         <Route path="/partners" element={<AdminPartners />} />
         <Route path="/jobs" element={<AdminJobs />} />
         <Route path="/users" element={<AdminUsers />} />
+        <Route path="/team" element={<AdminTeam />} />
         <Route path="/analytics" element={<AdminAnalytics />} />
         <Route path="/docs" element={<AdminDocs />} />
         <Route path="/campaigns" element={<AdminCampaigns />} />
