@@ -90,30 +90,30 @@ export default function TeamFinances() {
             )}
 
             {showForm && (
-                <section className="rounded-3xl p-5 sm:p-6" style={{ backgroundColor: '#111827', border: '1px solid #1f2937' }}>
-                    <div className="mb-5">
-                        <h2 className="text-lg font-bold text-white">Offer Money</h2>
-                        <p className="text-sm font-medium text-gray-500 mt-1">Admins can proactively offer or disburse money to staff through any provider or custom channel.</p>
+                <section className="rounded-2xl p-4 sm:p-5" style={{ backgroundColor: '#111827', border: '1px solid #1f2937' }}>
+                    <div className="mb-4">
+                        <h2 className="text-base font-bold text-white">Offer Money</h2>
+                        <p className="text-xs font-medium text-gray-500 mt-1">Admins can proactively offer or disburse money to staff through any provider or custom channel.</p>
                     </div>
-                    <form onSubmit={createMoneyOffer} className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-                        <select value={moneyOfferForm.beneficiaryUserId} onChange={(e) => setMoneyOfferForm((prev) => ({ ...prev, beneficiaryUserId: e.target.value }))} className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-cyan-500 transition-colors">
+                    <form onSubmit={createMoneyOffer} className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+                        <select value={moneyOfferForm.beneficiaryUserId} onChange={(e) => setMoneyOfferForm((prev) => ({ ...prev, beneficiaryUserId: e.target.value }))} className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-cyan-500 transition-colors">
                             <option value="">Choose staff member</option>
                             {members.filter((member) => member.isActive).map((member) => (
                                 <option key={member.id} value={member.id}>{member.fullName}</option>
                             ))}
                         </select>
-                        <input value={moneyOfferForm.title} onChange={(e) => setMoneyOfferForm((prev) => ({ ...prev, title: e.target.value }))} placeholder="Offer title" className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-cyan-500 transition-colors" />
-                        <input value={moneyOfferForm.amount} onChange={(e) => setMoneyOfferForm((prev) => ({ ...prev, amount: e.target.value }))} placeholder="Amount" type="number" min="0" step="0.01" className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-cyan-500 transition-colors" />
-                        <input value={moneyOfferForm.currency} onChange={(e) => setMoneyOfferForm((prev) => ({ ...prev, currency: e.target.value.toUpperCase() }))} placeholder="Currency" className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-cyan-500 transition-colors" />
-                        <input value={moneyOfferForm.paymentProvider} onChange={(e) => setMoneyOfferForm((prev) => ({ ...prev, paymentProvider: e.target.value }))} placeholder="Provider or channel (MBS, MoMo, bank...)" className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-cyan-500 transition-colors" />
-                        <input value={moneyOfferForm.paymentReference} onChange={(e) => setMoneyOfferForm((prev) => ({ ...prev, paymentReference: e.target.value }))} placeholder="Wallet / account / reference" className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-cyan-500 transition-colors" />
-                        <select value={moneyOfferForm.status} onChange={(e) => setMoneyOfferForm((prev) => ({ ...prev, status: e.target.value }))} className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-cyan-500 transition-colors">
+                        <input value={moneyOfferForm.title} onChange={(e) => setMoneyOfferForm((prev) => ({ ...prev, title: e.target.value }))} placeholder="Offer title" className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-cyan-500 transition-colors" />
+                        <input value={moneyOfferForm.amount} onChange={(e) => setMoneyOfferForm((prev) => ({ ...prev, amount: e.target.value }))} placeholder="Amount" type="number" min="0" step="0.01" className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-cyan-500 transition-colors" />
+                        <input value={moneyOfferForm.currency} onChange={(e) => setMoneyOfferForm((prev) => ({ ...prev, currency: e.target.value.toUpperCase() }))} placeholder="Currency" className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-cyan-500 transition-colors" />
+                        <input value={moneyOfferForm.paymentProvider} onChange={(e) => setMoneyOfferForm((prev) => ({ ...prev, paymentProvider: e.target.value }))} placeholder="Provider or channel (MBS, MoMo, bank...)" className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-cyan-500 transition-colors" />
+                        <input value={moneyOfferForm.paymentReference} onChange={(e) => setMoneyOfferForm((prev) => ({ ...prev, paymentReference: e.target.value }))} placeholder="Wallet / account / reference" className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-cyan-500 transition-colors" />
+                        <select value={moneyOfferForm.status} onChange={(e) => setMoneyOfferForm((prev) => ({ ...prev, status: e.target.value }))} className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-cyan-500 transition-colors">
                             <option value="approved">Approved offer</option>
                             <option value="paid">Already paid</option>
                             <option value="pending">Pending review</option>
                         </select>
                         <div />
-                        <textarea value={moneyOfferForm.note} onChange={(e) => setMoneyOfferForm((prev) => ({ ...prev, note: e.target.value }))} placeholder="Why this money is being offered" className="sm:col-span-2 xl:col-span-4 rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-cyan-500 transition-colors min-h-24" />
+                        <textarea value={moneyOfferForm.note} onChange={(e) => setMoneyOfferForm((prev) => ({ ...prev, note: e.target.value }))} placeholder="Why this money is being offered" className="sm:col-span-2 xl:col-span-4 rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-cyan-500 transition-colors min-h-20" />
                         <div className="sm:col-span-2 xl:col-span-4 flex gap-3 justify-end">
                             <button type="button" onClick={() => { setShowForm(false); setMoneyOfferForm(emptyMoneyOfferForm); }} className="rounded-lg px-4 py-2 text-sm bg-gray-800 text-gray-400 font-semibold hover:bg-gray-700 transition-colors">
                                 Cancel

@@ -80,30 +80,30 @@ export default function TeamMembers() {
             </div>
 
             {showForm && (
-                <section className="rounded-3xl p-5 sm:p-6 animate-in" style={{ backgroundColor: '#111827', border: '1px solid #1f2937' }}>
-                    <div className="mb-5">
-                        <h2 className="text-lg font-bold text-white">Create Staff Account</h2>
-                        <p className="text-sm font-medium text-gray-500 mt-1">Admins can add staff directly without waiting for public registration.</p>
+                <section className="rounded-2xl p-4 sm:p-5" style={{ backgroundColor: '#111827', border: '1px solid #1f2937' }}>
+                    <div className="mb-4">
+                        <h2 className="text-base font-bold text-white">Create Staff Account</h2>
+                        <p className="text-xs font-medium text-gray-500 mt-1">Admins can add staff directly without waiting for public registration.</p>
                     </div>
-                    <form onSubmit={createMember} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <input value={memberForm.fullName} onChange={(e) => setMemberForm((prev) => ({ ...prev, fullName: e.target.value }))} placeholder="Full name" className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors" />
-                        <input value={memberForm.email} onChange={(e) => setMemberForm((prev) => ({ ...prev, email: e.target.value }))} placeholder="Email" className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors" />
-                        <input value={memberForm.phoneNumber} onChange={(e) => setMemberForm((prev) => ({ ...prev, phoneNumber: e.target.value }))} placeholder="Phone number" className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors" />
-                        <input value={memberForm.password} onChange={(e) => setMemberForm((prev) => ({ ...prev, password: e.target.value }))} placeholder="Temporary password" type="password" className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors" />
-                        <select value={memberForm.role} onChange={(e) => setMemberForm((prev) => ({ ...prev, role: e.target.value }))} className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors">
+                    <form onSubmit={createMember} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <input value={memberForm.fullName} onChange={(e) => setMemberForm((prev) => ({ ...prev, fullName: e.target.value }))} placeholder="Full name" className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors" />
+                        <input value={memberForm.email} onChange={(e) => setMemberForm((prev) => ({ ...prev, email: e.target.value }))} placeholder="Email" className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors" />
+                        <input value={memberForm.phoneNumber} onChange={(e) => setMemberForm((prev) => ({ ...prev, phoneNumber: e.target.value }))} placeholder="Phone number" className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors" />
+                        <input value={memberForm.password} onChange={(e) => setMemberForm((prev) => ({ ...prev, password: e.target.value }))} placeholder="Temporary password" type="password" className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors" />
+                        <select value={memberForm.role} onChange={(e) => setMemberForm((prev) => ({ ...prev, role: e.target.value }))} className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors">
                             <option value="employee">Employee</option>
                             <option value="admin">Admin</option>
                         </select>
-                        <select value={memberForm.teamRoleId} onChange={(e) => setMemberForm((prev) => ({ ...prev, teamRoleId: e.target.value }))} className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors">
+                        <select value={memberForm.teamRoleId} onChange={(e) => setMemberForm((prev) => ({ ...prev, teamRoleId: e.target.value }))} className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors">
                             <option value="">Select ownership seat</option>
                             {roles.map((role) => (
                                 <option key={role.id} value={role.id}>{role.code} · {role.name}</option>
                             ))}
                         </select>
-                        <input value={memberForm.displayTitle} onChange={(e) => setMemberForm((prev) => ({ ...prev, displayTitle: e.target.value }))} placeholder="Display title" className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors" />
-                        <input value={memberForm.staffCode} onChange={(e) => setMemberForm((prev) => ({ ...prev, staffCode: e.target.value }))} placeholder="Staff code" className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors" />
-                        <textarea value={memberForm.bio} onChange={(e) => setMemberForm((prev) => ({ ...prev, bio: e.target.value }))} placeholder="Bio or context" className="sm:col-span-2 rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors min-h-24" />
-                        <textarea value={memberForm.ownershipSummary} onChange={(e) => setMemberForm((prev) => ({ ...prev, ownershipSummary: e.target.value }))} placeholder="Optional member-specific ownership summary" className="sm:col-span-2 rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors min-h-24" />
+                        <input value={memberForm.displayTitle} onChange={(e) => setMemberForm((prev) => ({ ...prev, displayTitle: e.target.value }))} placeholder="Display title" className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors" />
+                        <input value={memberForm.staffCode} onChange={(e) => setMemberForm((prev) => ({ ...prev, staffCode: e.target.value }))} placeholder="Staff code" className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors" />
+                        <textarea value={memberForm.bio} onChange={(e) => setMemberForm((prev) => ({ ...prev, bio: e.target.value }))} placeholder="Bio or context" className="sm:col-span-2 rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors min-h-20" />
+                        <textarea value={memberForm.ownershipSummary} onChange={(e) => setMemberForm((prev) => ({ ...prev, ownershipSummary: e.target.value }))} placeholder="Optional member-specific ownership summary" className="sm:col-span-2 rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors min-h-20" />
                         <div className="sm:col-span-2 flex gap-3 justify-end">
                             <button type="button" onClick={() => { setShowForm(false); setMemberForm(emptyMemberForm); }} className="rounded-lg px-4 py-2 text-sm bg-gray-800 text-gray-400 font-semibold hover:bg-gray-700 transition-colors">
                                 Cancel

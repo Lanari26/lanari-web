@@ -77,25 +77,25 @@ export default function TeamTasks() {
             </div>
 
             {showForm && (
-                <section className="rounded-3xl p-5 sm:p-6" style={{ backgroundColor: '#111827', border: '1px solid #1f2937' }}>
-                    <div className="mb-5">
-                        <h2 className="text-lg font-bold text-white">Assign New Task</h2>
-                        <p className="text-sm font-medium text-gray-500 mt-1">Tasks can be routed by admin and then updated by the assignee in their workspace.</p>
+                <section className="rounded-2xl p-4 sm:p-5" style={{ backgroundColor: '#111827', border: '1px solid #1f2937' }}>
+                    <div className="mb-4">
+                        <h2 className="text-base font-bold text-white">Assign New Task</h2>
+                        <p className="text-xs font-medium text-gray-500 mt-1">Tasks can be routed by admin and then updated by the assignee in their workspace.</p>
                     </div>
-                    <form onSubmit={createTask} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <input value={taskForm.title} onChange={(e) => setTaskForm((prev) => ({ ...prev, title: e.target.value }))} placeholder="Task title" className="sm:col-span-2 rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-emerald-500 transition-colors" />
-                        <textarea value={taskForm.description} onChange={(e) => setTaskForm((prev) => ({ ...prev, description: e.target.value }))} placeholder="Task description" className="sm:col-span-2 rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-emerald-500 transition-colors min-h-28" />
-                        <select value={taskForm.assigneeUserId} onChange={(e) => setTaskForm((prev) => ({ ...prev, assigneeUserId: e.target.value }))} className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-emerald-500 transition-colors">
+                    <form onSubmit={createTask} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <input value={taskForm.title} onChange={(e) => setTaskForm((prev) => ({ ...prev, title: e.target.value }))} placeholder="Task title" className="sm:col-span-2 rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-emerald-500 transition-colors" />
+                        <textarea value={taskForm.description} onChange={(e) => setTaskForm((prev) => ({ ...prev, description: e.target.value }))} placeholder="Task description" className="sm:col-span-2 rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-emerald-500 transition-colors min-h-20" />
+                        <select value={taskForm.assigneeUserId} onChange={(e) => setTaskForm((prev) => ({ ...prev, assigneeUserId: e.target.value }))} className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-emerald-500 transition-colors">
                             <option value="">Assign to...</option>
                             {members.filter((member) => member.isActive).map((member) => (
                                 <option key={member.id} value={member.id}>{member.fullName}</option>
                             ))}
                         </select>
-                        <input type="date" value={taskForm.dueDate} onChange={(e) => setTaskForm((prev) => ({ ...prev, dueDate: e.target.value }))} className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-emerald-500 transition-colors" />
-                        <select value={taskForm.priority} onChange={(e) => setTaskForm((prev) => ({ ...prev, priority: e.target.value }))} className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-emerald-500 transition-colors">
+                        <input type="date" value={taskForm.dueDate} onChange={(e) => setTaskForm((prev) => ({ ...prev, dueDate: e.target.value }))} className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-emerald-500 transition-colors" />
+                        <select value={taskForm.priority} onChange={(e) => setTaskForm((prev) => ({ ...prev, priority: e.target.value }))} className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-emerald-500 transition-colors">
                             {priorityOptions.map((option) => <option key={option} value={option}>{option}</option>)}
                         </select>
-                        <select value={taskForm.status} onChange={(e) => setTaskForm((prev) => ({ ...prev, status: e.target.value }))} className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-emerald-500 transition-colors">
+                        <select value={taskForm.status} onChange={(e) => setTaskForm((prev) => ({ ...prev, status: e.target.value }))} className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-emerald-500 transition-colors">
                             {statusOptions.map((option) => <option key={option} value={option}>{option.replace('_', ' ')}</option>)}
                         </select>
                         <div className="sm:col-span-2 flex gap-3 justify-end">

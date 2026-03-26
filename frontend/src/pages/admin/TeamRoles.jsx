@@ -77,20 +77,20 @@ export default function TeamRoles() {
             </div>
 
             {showForm && (
-                <section className="rounded-3xl p-5 sm:p-6" style={{ backgroundColor: '#111827', border: '1px solid #1f2937' }}>
-                    <div className="mb-5">
-                        <h2 className="text-lg font-bold text-white">Add Custom Role</h2>
-                        <p className="text-sm font-medium text-gray-500 mt-1">Default seats ship preloaded, but every role stays editable and you can add more custom seats.</p>
+                <section className="rounded-2xl p-4 sm:p-5" style={{ backgroundColor: '#111827', border: '1px solid #1f2937' }}>
+                    <div className="mb-4">
+                        <h2 className="text-base font-bold text-white">Add Custom Role</h2>
+                        <p className="text-xs font-medium text-gray-500 mt-1">Default seats ship preloaded, but every role stays editable and you can add more custom seats.</p>
                     </div>
-                    <form onSubmit={createRole} className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                        <input value={roleForm.code} onChange={(e) => setRoleForm((prev) => ({ ...prev, code: e.target.value }))} placeholder="Code" className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-purple-500 transition-colors" />
-                        <input value={roleForm.shortLabel} onChange={(e) => setRoleForm((prev) => ({ ...prev, shortLabel: e.target.value }))} placeholder="Short label" className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-purple-500 transition-colors" />
-                        <input value={roleForm.name} onChange={(e) => setRoleForm((prev) => ({ ...prev, name: e.target.value }))} placeholder="Role name" className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-purple-500 transition-colors" />
-                        <input value={roleForm.defaultTitle} onChange={(e) => setRoleForm((prev) => ({ ...prev, defaultTitle: e.target.value }))} placeholder="Default title" className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-purple-500 transition-colors" />
-                        <input type="number" value={roleForm.sortOrder} onChange={(e) => setRoleForm((prev) => ({ ...prev, sortOrder: Number(e.target.value) }))} placeholder="Sort order" className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-purple-500 transition-colors" />
+                    <form onSubmit={createRole} className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+                        <input value={roleForm.code} onChange={(e) => setRoleForm((prev) => ({ ...prev, code: e.target.value }))} placeholder="Code" className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-purple-500 transition-colors" />
+                        <input value={roleForm.shortLabel} onChange={(e) => setRoleForm((prev) => ({ ...prev, shortLabel: e.target.value }))} placeholder="Short label" className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-purple-500 transition-colors" />
+                        <input value={roleForm.name} onChange={(e) => setRoleForm((prev) => ({ ...prev, name: e.target.value }))} placeholder="Role name" className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-purple-500 transition-colors" />
+                        <input value={roleForm.defaultTitle} onChange={(e) => setRoleForm((prev) => ({ ...prev, defaultTitle: e.target.value }))} placeholder="Default title" className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-purple-500 transition-colors" />
+                        <input type="number" value={roleForm.sortOrder} onChange={(e) => setRoleForm((prev) => ({ ...prev, sortOrder: Number(e.target.value) }))} placeholder="Sort order" className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-purple-500 transition-colors" />
                         <div />
-                        <textarea value={roleForm.ownershipSummary} onChange={(e) => setRoleForm((prev) => ({ ...prev, ownershipSummary: e.target.value }))} placeholder="Ownership summary" className="lg:col-span-3 rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-purple-500 transition-colors min-h-24" />
-                        <textarea value={roleForm.responsibilitiesText} onChange={(e) => setRoleForm((prev) => ({ ...prev, responsibilitiesText: e.target.value }))} placeholder="One responsibility per line" className="lg:col-span-3 rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-purple-500 transition-colors min-h-28" />
+                        <textarea value={roleForm.ownershipSummary} onChange={(e) => setRoleForm((prev) => ({ ...prev, ownershipSummary: e.target.value }))} placeholder="Ownership summary" className="lg:col-span-3 rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-purple-500 transition-colors min-h-20" />
+                        <textarea value={roleForm.responsibilitiesText} onChange={(e) => setRoleForm((prev) => ({ ...prev, responsibilitiesText: e.target.value }))} placeholder="One responsibility per line" className="lg:col-span-3 rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-purple-500 transition-colors min-h-20" />
                         <div className="lg:col-span-3 flex gap-3 justify-end">
                             <button type="button" onClick={() => { setShowForm(false); setRoleForm(emptyRoleForm); }} className="rounded-lg px-4 py-2 text-sm bg-gray-800 text-gray-400 font-semibold hover:bg-gray-700 transition-colors">
                                 Cancel

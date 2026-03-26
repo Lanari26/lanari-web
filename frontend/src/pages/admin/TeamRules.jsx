@@ -70,15 +70,15 @@ export default function TeamRules() {
             </div>
 
             {showForm && (
-                <section className="rounded-3xl p-5 sm:p-6" style={{ backgroundColor: '#111827', border: '1px solid #1f2937' }}>
-                    <div className="mb-5">
-                        <h2 className="text-lg font-bold text-white">Add Decision Rule</h2>
-                        <p className="text-sm font-medium text-gray-500 mt-1">Define Q&A pairs that guide team decisions consistently.</p>
+                <section className="rounded-2xl p-4 sm:p-5" style={{ backgroundColor: '#111827', border: '1px solid #1f2937' }}>
+                    <div className="mb-4">
+                        <h2 className="text-base font-bold text-white">Add Decision Rule</h2>
+                        <p className="text-xs font-medium text-gray-500 mt-1">Define Q&A pairs that guide team decisions consistently.</p>
                     </div>
-                    <form onSubmit={createRule} className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                        <input value={ruleForm.question} onChange={(e) => setRuleForm((prev) => ({ ...prev, question: e.target.value }))} placeholder="Question" className="lg:col-span-2 rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-orange-500 transition-colors" />
-                        <input type="number" value={ruleForm.sortOrder} onChange={(e) => setRuleForm((prev) => ({ ...prev, sortOrder: Number(e.target.value) }))} placeholder="Sort order" className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-orange-500 transition-colors" />
-                        <textarea value={ruleForm.answer} onChange={(e) => setRuleForm((prev) => ({ ...prev, answer: e.target.value }))} placeholder="Answer" className="lg:col-span-3 rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-orange-500 transition-colors min-h-28" />
+                    <form onSubmit={createRule} className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+                        <input value={ruleForm.question} onChange={(e) => setRuleForm((prev) => ({ ...prev, question: e.target.value }))} placeholder="Question" className="lg:col-span-2 rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-orange-500 transition-colors" />
+                        <input type="number" value={ruleForm.sortOrder} onChange={(e) => setRuleForm((prev) => ({ ...prev, sortOrder: Number(e.target.value) }))} placeholder="Sort order" className="rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-orange-500 transition-colors" />
+                        <textarea value={ruleForm.answer} onChange={(e) => setRuleForm((prev) => ({ ...prev, answer: e.target.value }))} placeholder="Answer" className="lg:col-span-3 rounded-lg px-3 py-2 text-sm bg-gray-950 text-white border border-gray-700 outline-none focus:border-orange-500 transition-colors min-h-20" />
                         <div className="lg:col-span-3 flex gap-3 justify-end">
                             <button type="button" onClick={() => { setShowForm(false); setRuleForm(emptyRuleForm); }} className="rounded-lg px-4 py-2 text-sm bg-gray-800 text-gray-400 font-semibold hover:bg-gray-700 transition-colors">
                                 Cancel
