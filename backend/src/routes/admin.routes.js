@@ -11,7 +11,9 @@ const {
     updateDecisionRule,
     createTask,
     updateTask,
-    reviewReport
+    reviewReport,
+    createMoneyOffer,
+    updateMoneyRequestStatus
 } = require('../controllers/team.controller');
 const { protect, adminOnly } = require('../middleware/auth');
 
@@ -30,6 +32,8 @@ router.put('/team/decision-rules/:id', updateDecisionRule);
 router.post('/team/tasks', createTask);
 router.patch('/team/tasks/:id', updateTask);
 router.patch('/team/reports/:id/review', reviewReport);
+router.post('/team/money-requests/offers', createMoneyOffer);
+router.patch('/team/money-requests/:id', updateMoneyRequestStatus);
 router.patch('/users/:id/role', updateUserRole);
 router.patch('/users/:id/toggle', toggleUserActive);
 

@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS team_money_requests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    source ENUM('staff_request', 'admin_offer') NOT NULL DEFAULT 'staff_request',
+    beneficiary_user_id INT NOT NULL,
+    initiated_by_user_id INT NOT NULL,
+    title VARCHAR(180) NOT NULL,
+    amount DECIMAL(12,2) NOT NULL,
+    currency VARCHAR(10) NOT NULL DEFAULT 'RWF',
+    payment_provider VARCHAR(80) DEFAULT NULL,
+    payment_reference VARCHAR(120) DEFAULT NULL,
+    note TEXT DEFAULT NULL,
+    status ENUM('pending', 'approved', 'rejected', 'paid') NOT NULL DEFAULT 'pending',
+    admin_note TEXT DEFAULT NULL,
+    reviewed_by_user_id INT DEFAULT NULL,
+    reviewed_at TIMESTAMP NULL DEFAULT NULL,
+    paid_at TIMESTAMP NULL DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (beneficiary_user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (initiated_by_user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (reviewed_by_user_id) REFERENCES users(id) ON DELETE SET NULL
+);

@@ -18,6 +18,8 @@ exports.getStats = async (req, res, next) => {
         const [[{ teamMembers }]] = await pool.query('SELECT COUNT(*) as teamMembers FROM team_profiles');
         const [[{ openTasks }]] = await pool.query("SELECT COUNT(*) as openTasks FROM team_tasks WHERE status <> 'completed'");
         const [[{ pendingReports }]] = await pool.query("SELECT COUNT(*) as pendingReports FROM team_reports WHERE status = 'submitted'");
+        const [[{ pendingMoneyRequests }]] = await pool.query("SELECT COUNT(*) as pendingMoneyRequests FROM team_money_requests WHERE status = 'pending'");
+        const [[{ paidMoneyRequests }]] = await pool.query("SELECT COUNT(*) as paidMoneyRequests FROM team_money_requests WHERE status = 'paid'");
 
         res.json({
             success: true,
@@ -35,7 +37,9 @@ exports.getStats = async (req, res, next) => {
                 newInternshipApplications,
                 teamMembers,
                 openTasks,
-                pendingReports
+                pendingReports,
+                pendingMoneyRequests,
+                paidMoneyRequests
             }
         });
     } catch (err) {

@@ -119,6 +119,7 @@ export default function Dashboard() {
                         { label: 'Manage Jobs', desc: `${stats.jobs} active listings`, path: '/admin/jobs', color: 'text-orange-400' },
                         { label: 'Manage Users', desc: `${stats.users} registered`, path: '/admin/users', color: 'text-blue-400' },
                         { label: 'Run Team', desc: `${stats.teamMembers} staff, ${stats.openTasks} open tasks`, path: '/admin/team', color: 'text-cyan-400' },
+                        { label: 'Manage Funds', desc: `${stats.pendingMoneyRequests} pending, ${stats.paidMoneyRequests} paid`, path: '/admin/team', color: 'text-lime-400' },
                         { label: 'Internships', desc: `${stats.internships} active, ${stats.newInternshipApplications} new apps`, path: '/admin/internships', color: 'text-violet-400' },
                     ].map((action, i) => (
                         <button

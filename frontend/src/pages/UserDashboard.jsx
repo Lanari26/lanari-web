@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
+import StaffDashboard from '../components/dashboard/StaffDashboard';
 import TeamWorkspace from '../components/dashboard/TeamWorkspace';
 
 const API = import.meta.env.VITE_API_URL;
@@ -91,7 +92,7 @@ export default function UserDashboard() {
     const { user, notifications, unreadNotifications, applications, teamWorkspace } = data;
     const sidebarNav = teamWorkspace
         ? [
-            ...baseSidebarNav.slice(0, 1),
+            { ...baseSidebarNav[0], label: 'Staff HQ' },
             { label: 'Team', id: 'team', icon: 'M18 9a3 3 0 11-6 0 3 3 0 016 0zM6 10a2 2 0 100-4 2 2 0 000 4zm12 10a4 4 0 00-8 0m8 0h4m-4 0a4 4 0 00-8 0m-6 0a4 4 0 018 0' },
             ...baseSidebarNav.slice(1)
         ]
@@ -264,16 +265,27 @@ export default function UserDashboard() {
                 {/* Content */}
                 <main className="flex-1 overflow-y-auto p-4 sm:p-6">
                     {activeSection === 'overview' && (
-                        <OverviewSection
-                            user={user}
-                            initials={initials}
-                            memberDate={memberDate}
-                            notifications={notifications}
-                            unreadNotifications={unreadNotifications}
-                            applications={applications}
-                            navigate={navigate}
-                            onNav={handleNavClick}
-                        />
+                        teamWorkspace ? (
+                            <StaffDashboard
+                                user={user}
+                                workspace={teamWorkspace}
+                                notifications={notifications}
+                                unreadNotifications={unreadNotifications}
+                                navigate={navigate}
+                                onNav={handleNavClick}
+                            />
+                        ) : (
+                            <OverviewSection
+                                user={user}
+                                initials={initials}
+                                memberDate={memberDate}
+                                notifications={notifications}
+                                unreadNotifications={unreadNotifications}
+                                applications={applications}
+                                navigate={navigate}
+                                onNav={handleNavClick}
+                            />
+                        )
                     )}
                     {activeSection === 'team' && teamWorkspace && (
                         <TeamWorkspace workspace={teamWorkspace} />

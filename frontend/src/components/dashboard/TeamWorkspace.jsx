@@ -22,6 +22,7 @@ function Badge({ children, tone = 'blue' }) {
 export default function TeamWorkspace({ workspace }) {
     const [data, setData] = useState(workspace);
     const [form, setForm] = useState({ title: '', body: '', taskId: '' });
+    const [moneyForm, setMoneyForm] = useState({ title: '', amount: '', currency: 'RWF', paymentProvider: '', paymentReference: '', note: '' });
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');
 
@@ -115,6 +116,60 @@ export default function TeamWorkspace({ workspace }) {
         }
     };
 
+    const submitMoneyRequest = async (e) => {
+        e.preventDefault();
+        if (!moneyForm.title.trim() || !moneyForm.amount) return;
+
+        setSaving(true);
+        setError('');
+        try {
+            const res = await fetch(`${API}/team/money-requests`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    title: moneyForm.title.trim(),
+                    amount: Number(moneyForm.amount),
+                    currency: moneyForm.currency.trim().toUpperCase(),
+                    paymentProvider: moneyForm.paymentProvider.trim(),
+                    paymentReference: moneyForm.paymentReference.trim(),
+                    note: moneyForm.note.trim()
+                })
+            });
+            const payload = await res.json();
+            if (!res.ok) throw new Error(payload.error || 'Failed to submit money request');
+
+            const request = {
+                id: `money-${Date.now()}`,
+                title: moneyForm.title.trim(),
+                amount: Number(moneyForm.amount),
+                currency: moneyForm.currency.trim().toUpperCase(),
+                payment_provider: moneyForm.paymentProvider.trim(),
+                payment_reference: moneyForm.paymentReference.trim(),
+                note: moneyForm.note.trim(),
+                status: 'pending',
+                source: 'staff_request',
+                created_at: new Date().toISOString()
+            };
+
+            setData((prev) => ({
+                ...prev,
+                moneyRequests: [request, ...(prev.moneyRequests || [])],
+                financeSummary: {
+                    ...prev.financeSummary,
+                    pendingRequests: (prev.financeSummary?.pendingRequests || 0) + 1
+                }
+            }));
+            setMoneyForm({ title: '', amount: '', currency: 'RWF', paymentProvider: '', paymentReference: '', note: '' });
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setSaving(false);
+        }
+    };
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3">
@@ -132,7 +187,9 @@ export default function TeamWorkspace({ workspace }) {
                     { label: 'Assigned Tasks', value: data.summary.assignedTasks, tone: 'blue' },
                     { label: 'Active Tasks', value: data.summary.activeTasks, tone: 'amber' },
                     { label: 'Completed Tasks', value: data.summary.completedTasks, tone: 'emerald' },
-                    { label: 'Reports Sent', value: data.summary.submittedReports, tone: 'pink' }
+                    { label: 'Reports Sent', value: data.summary.submittedReports, tone: 'pink' },
+                    { label: 'Pending Money', value: data.financeSummary?.pendingRequests || 0, tone: 'blue' },
+                    { label: 'Paid Money', value: data.financeSummary?.paidRequests || 0, tone: 'emerald' }
                 ].map((item) => (
                     <div key={item.label} className="p-5 rounded-2xl" style={{ backgroundColor: '#1f2937', border: '1px solid #374151' }}>
                         <div className={`text-3xl font-bold ${item.tone === 'blue' ? 'text-blue-400' : item.tone === 'amber' ? 'text-amber-400' : item.tone === 'emerald' ? 'text-emerald-400' : 'text-pink-400'}`}>
@@ -282,6 +339,89 @@ export default function TeamWorkspace({ workspace }) {
                                 </div>
                             ))}
                         </div>
+                    </div>
+                </section>
+            </div>
+
+            <div className="grid grid-cols-1 xl:grid-cols-[0.95fr,1.05fr] gap-6">
+                <section className="rounded-3xl p-6" style={{ backgroundColor: '#1f2937', border: '1px solid #374151' }}>
+                    <h3 className="text-lg font-bold text-white mb-4">Request Money</h3>
+                    <form onSubmit={submitMoneyRequest} className="space-y-4">
+                        <input
+                            value={moneyForm.title}
+                            onChange={(e) => setMoneyForm((prev) => ({ ...prev, title: e.target.value }))}
+                            placeholder="What is the money for?"
+                            className="w-full rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none"
+                        />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input
+                                value={moneyForm.amount}
+                                onChange={(e) => setMoneyForm((prev) => ({ ...prev, amount: e.target.value }))}
+                                placeholder="Amount"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                className="w-full rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none"
+                            />
+                            <input
+                                value={moneyForm.currency}
+                                onChange={(e) => setMoneyForm((prev) => ({ ...prev, currency: e.target.value.toUpperCase() }))}
+                                placeholder="Currency"
+                                className="w-full rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none"
+                            />
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input
+                                value={moneyForm.paymentProvider}
+                                onChange={(e) => setMoneyForm((prev) => ({ ...prev, paymentProvider: e.target.value }))}
+                                placeholder="Provider or channel (MBS, MoMo, bank...)"
+                                className="w-full rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none"
+                            />
+                            <input
+                                value={moneyForm.paymentReference}
+                                onChange={(e) => setMoneyForm((prev) => ({ ...prev, paymentReference: e.target.value }))}
+                                placeholder="Wallet / account / reference"
+                                className="w-full rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none"
+                            />
+                        </div>
+                        <textarea
+                            value={moneyForm.note}
+                            onChange={(e) => setMoneyForm((prev) => ({ ...prev, note: e.target.value }))}
+                            placeholder="Explain why you need the funds and any disbursement notes."
+                            className="w-full rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none min-h-28"
+                        />
+                        <button disabled={saving} className="w-full rounded-xl px-4 py-3 bg-gradient-to-r from-cyan-600 to-blue-500 text-white font-bold disabled:opacity-50">
+                            {saving ? 'Submitting...' : 'Submit Money Request'}
+                        </button>
+                    </form>
+                </section>
+
+                <section className="rounded-3xl p-6" style={{ backgroundColor: '#1f2937', border: '1px solid #374151' }}>
+                    <h3 className="text-lg font-bold text-white mb-4">Money Requests And Offers</h3>
+                    <div className="space-y-3">
+                        {(data.moneyRequests || []).length === 0 && (
+                            <div className="rounded-2xl p-4 text-sm text-gray-500" style={{ backgroundColor: '#111827', border: '1px solid #1f2937' }}>
+                                No money requests or offers yet.
+                            </div>
+                        )}
+                        {(data.moneyRequests || []).map((item) => (
+                            <div key={item.id} className="rounded-2xl p-4" style={{ backgroundColor: '#111827', border: '1px solid #1f2937' }}>
+                                <div className="flex flex-wrap items-center gap-2">
+                                    <div className="text-sm font-bold text-white">{item.title}</div>
+                                    <Badge tone={item.status === 'paid' ? 'emerald' : item.status === 'rejected' ? 'pink' : item.status === 'approved' ? 'blue' : 'amber'}>
+                                        {item.status}
+                                    </Badge>
+                                    <Badge tone="gray">{item.source === 'admin_offer' ? 'admin offer' : 'staff request'}</Badge>
+                                </div>
+                                <div className="text-xs text-gray-500 mt-2">
+                                    {Number(item.amount).toFixed(2)} {item.currency}
+                                    {item.payment_provider ? ` · ${item.payment_provider}` : ''}
+                                    {item.payment_reference ? ` · ${item.payment_reference}` : ''}
+                                </div>
+                                {item.note && <p className="text-sm text-gray-400 mt-3 whitespace-pre-wrap">{item.note}</p>}
+                                {item.admin_note && <p className="text-xs text-cyan-300 mt-3">Admin note: {item.admin_note}</p>}
+                            </div>
+                        ))}
                     </div>
                 </section>
             </div>

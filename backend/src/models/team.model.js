@@ -195,8 +195,42 @@ const Team = {
         return rows;
     },
 
+    async getMoneyRequests({ userId, includeAll = false } = {}) {
+        const params = [];
+        let where = '';
+
+        if (!includeAll && userId) {
+            where = 'WHERE tmr.beneficiary_user_id = ?';
+            params.push(userId);
+        }
+
+        const [rows] = await pool.query(
+            `SELECT
+                tmr.*,
+                beneficiary.full_name AS beneficiary_name,
+                beneficiary.email AS beneficiary_email,
+                initiator.full_name AS initiator_name,
+                reviewer.full_name AS reviewer_name
+            FROM team_money_requests tmr
+            JOIN users beneficiary ON beneficiary.id = tmr.beneficiary_user_id
+            JOIN users initiator ON initiator.id = tmr.initiated_by_user_id
+            LEFT JOIN users reviewer ON reviewer.id = tmr.reviewed_by_user_id
+            ${where}
+            ORDER BY
+                CASE tmr.status
+                    WHEN 'pending' THEN 1
+                    WHEN 'approved' THEN 2
+                    WHEN 'paid' THEN 3
+                    ELSE 4
+                END,
+                tmr.created_at DESC`,
+            params
+        );
+        return rows;
+    },
+
     async getSummary() {
-        const [[members], [tasks], [reports]] = await Promise.all([
+        const [[members], [tasks], [reports], [money]] = await Promise.all([
             pool.query('SELECT COUNT(*) AS total_members FROM team_profiles'),
             pool.query(
                 `SELECT
@@ -209,6 +243,13 @@ const Team = {
                     SUM(CASE WHEN status = 'submitted' THEN 1 ELSE 0 END) AS pending_reports,
                     COUNT(*) AS total_reports
                 FROM team_reports`
+            ),
+            pool.query(
+                `SELECT
+                    SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) AS pending_money_requests,
+                    SUM(CASE WHEN status = 'paid' THEN 1 ELSE 0 END) AS paid_money_requests,
+                    COALESCE(SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END), 0) AS total_paid_amount
+                FROM team_money_requests`
             )
         ]);
 
@@ -217,18 +258,22 @@ const Team = {
             openTasks: tasks[0].open_tasks || 0,
             completedTasks: tasks[0].completed_tasks || 0,
             pendingReports: reports[0].pending_reports || 0,
-            totalReports: reports[0].total_reports || 0
+            totalReports: reports[0].total_reports || 0,
+            pendingMoneyRequests: money[0].pending_money_requests || 0,
+            paidMoneyRequests: money[0].paid_money_requests || 0,
+            totalPaidAmount: Number(money[0].total_paid_amount || 0)
         };
     },
 
     async getWorkspace(userId) {
-        const [profile, roles, decisionRules, tasks, reports, roster] = await Promise.all([
+        const [profile, roles, decisionRules, tasks, reports, roster, moneyRequests] = await Promise.all([
             this.getProfileByUserId(userId),
             this.getRoles(),
             this.getDecisionRules(),
             this.getTasks({ assigneeUserId: userId }),
             this.getReports({ authorUserId: userId }),
-            this.getRoster()
+            this.getRoster(),
+            this.getMoneyRequests({ userId })
         ]);
 
         const assignedRole = profile?.team_role_id
@@ -242,12 +287,21 @@ const Team = {
             decisionRules,
             tasks,
             reports,
+            moneyRequests,
             roster,
             summary: {
                 assignedTasks: tasks.length,
                 activeTasks: tasks.filter((task) => task.status !== 'completed').length,
                 completedTasks: tasks.filter((task) => task.status === 'completed').length,
                 submittedReports: reports.length
+            },
+            financeSummary: {
+                pendingRequests: moneyRequests.filter((item) => item.status === 'pending').length,
+                approvedRequests: moneyRequests.filter((item) => item.status === 'approved').length,
+                paidRequests: moneyRequests.filter((item) => item.status === 'paid').length,
+                totalPaidAmount: moneyRequests
+                    .filter((item) => item.status === 'paid')
+                    .reduce((sum, item) => sum + Number(item.amount || 0), 0)
             }
         };
     }

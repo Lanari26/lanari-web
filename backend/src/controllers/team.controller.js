@@ -7,6 +7,7 @@ const { validateEmail } = require('../middleware/validate');
 const STAFF_ROLES = new Set(['employee', 'admin']);
 const TASK_STATUSES = new Set(['todo', 'in_progress', 'blocked', 'completed']);
 const TASK_PRIORITIES = new Set(['low', 'medium', 'high', 'urgent']);
+const MONEY_REQUEST_STATUSES = new Set(['pending', 'approved', 'rejected', 'paid']);
 
 function badRequest(message, statusCode = 400) {
     const error = new Error(message);
@@ -87,18 +88,19 @@ async function replaceResponsibilities(conn, teamRoleId, responsibilities) {
 
 exports.getAdminTeamOverview = async (req, res, next) => {
     try {
-        const [summary, members, roles, decisionRules, tasks, reports] = await Promise.all([
+        const [summary, members, roles, decisionRules, tasks, reports, moneyRequests] = await Promise.all([
             Team.getSummary(),
             Team.getMembers(),
             Team.getRoles(),
             Team.getDecisionRules(),
             Team.getTasks({ includeAll: true }),
-            Team.getReports({ includeAll: true })
+            Team.getReports({ includeAll: true }),
+            Team.getMoneyRequests({ includeAll: true })
         ]);
 
         res.json({
             success: true,
-            data: { summary, members, roles, decisionRules, tasks, reports }
+            data: { summary, members, roles, decisionRules, tasks, reports, moneyRequests }
         });
     } catch (err) {
         next(err);
@@ -601,6 +603,165 @@ exports.reviewReport = async (req, res, next) => {
         });
 
         res.json({ success: true, message: 'Report reviewed' });
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.createMoneyRequest = async (req, res, next) => {
+    try {
+        if (!STAFF_ROLES.has(req.user.role)) {
+            throw badRequest('Only staff accounts can request money', 403);
+        }
+
+        const {
+            title,
+            amount,
+            currency = 'RWF',
+            paymentProvider = '',
+            paymentReference = '',
+            note = ''
+        } = req.body;
+
+        if (!title || !String(title).trim()) throw badRequest('Request title is required');
+        if (!amount || Number(amount) <= 0) throw badRequest('Amount must be greater than zero');
+
+        await pool.query(
+            `INSERT INTO team_money_requests
+             (source, beneficiary_user_id, initiated_by_user_id, title, amount, currency, payment_provider, payment_reference, note)
+             VALUES ('staff_request', ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+                req.user.id,
+                req.user.id,
+                String(title).trim(),
+                Number(amount),
+                String(currency || 'RWF').trim().toUpperCase(),
+                String(paymentProvider || '').trim() || null,
+                String(paymentReference || '').trim() || null,
+                String(note || '').trim() || null
+            ]
+        );
+
+        await notifyAdmins(
+            'New staff money request',
+            `${req.user.full_name} requested ${Number(amount).toFixed(2)} ${String(currency || 'RWF').trim().toUpperCase()} for "${String(title).trim()}".`
+        );
+
+        res.status(201).json({ success: true, message: 'Money request submitted' });
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.createMoneyOffer = async (req, res, next) => {
+    try {
+        const {
+            beneficiaryUserId,
+            title,
+            amount,
+            currency = 'RWF',
+            paymentProvider = '',
+            paymentReference = '',
+            note = '',
+            status = 'approved'
+        } = req.body;
+
+        if (!beneficiaryUserId) throw badRequest('Beneficiary is required');
+        if (!title || !String(title).trim()) throw badRequest('Offer title is required');
+        if (!amount || Number(amount) <= 0) throw badRequest('Amount must be greater than zero');
+        if (!['approved', 'paid', 'pending'].includes(status)) throw badRequest('Invalid initial offer status');
+
+        const [beneficiaries] = await pool.query(
+            'SELECT id, full_name FROM users WHERE id = ? AND is_active = TRUE',
+            [Number(beneficiaryUserId)]
+        );
+        if (beneficiaries.length === 0) throw badRequest('Beneficiary not found', 404);
+
+        const normalizedStatus = status;
+        const reviewedByUserId = normalizedStatus === 'pending' ? null : req.user.id;
+        const reviewedAt = normalizedStatus === 'pending' ? null : new Date();
+        const paidAt = normalizedStatus === 'paid' ? new Date() : null;
+
+        await pool.query(
+            `INSERT INTO team_money_requests
+             (source, beneficiary_user_id, initiated_by_user_id, title, amount, currency, payment_provider, payment_reference, note, status, reviewed_by_user_id, reviewed_at, paid_at)
+             VALUES ('admin_offer', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+                Number(beneficiaryUserId),
+                req.user.id,
+                String(title).trim(),
+                Number(amount),
+                String(currency || 'RWF').trim().toUpperCase(),
+                String(paymentProvider || '').trim() || null,
+                String(paymentReference || '').trim() || null,
+                String(note || '').trim() || null,
+                normalizedStatus,
+                reviewedByUserId,
+                reviewedAt,
+                paidAt
+            ]
+        );
+
+        await Notification.create({
+            userId: Number(beneficiaryUserId),
+            title: 'Admin funding offer created',
+            description: `${req.user.full_name} created a ${normalizedStatus === 'paid' ? 'paid' : normalizedStatus} offer of ${Number(amount).toFixed(2)} ${String(currency || 'RWF').trim().toUpperCase()} for "${String(title).trim()}".`,
+            type: normalizedStatus === 'paid' ? 'success' : 'info'
+        });
+
+        res.status(201).json({ success: true, message: 'Money offer created' });
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.updateMoneyRequestStatus = async (req, res, next) => {
+    try {
+        const requestId = Number(req.params.id);
+        const { status, adminNote = '', paymentProvider = '', paymentReference = '' } = req.body;
+
+        if (!MONEY_REQUEST_STATUSES.has(status)) {
+            throw badRequest('Invalid money request status');
+        }
+
+        const [rows] = await pool.query(
+            `SELECT id, beneficiary_user_id, title, amount, currency, status
+             FROM team_money_requests
+             WHERE id = ?`,
+            [requestId]
+        );
+        if (rows.length === 0) throw badRequest('Money request not found', 404);
+
+        await pool.query(
+            `UPDATE team_money_requests
+             SET status = ?,
+                 admin_note = ?,
+                 payment_provider = COALESCE(?, payment_provider),
+                 payment_reference = COALESCE(?, payment_reference),
+                 reviewed_by_user_id = ?,
+                 reviewed_at = NOW(),
+                 paid_at = CASE WHEN ? = 'paid' THEN NOW() ELSE paid_at END
+             WHERE id = ?`,
+            [
+                status,
+                String(adminNote || '').trim() || null,
+                String(paymentProvider || '').trim() || null,
+                String(paymentReference || '').trim() || null,
+                req.user.id,
+                status,
+                requestId
+            ]
+        );
+
+        const item = rows[0];
+        await Notification.create({
+            userId: item.beneficiary_user_id,
+            title: 'Money request updated',
+            description: `Your "${item.title}" request is now ${status}. Amount: ${Number(item.amount).toFixed(2)} ${item.currency}.`,
+            type: status === 'rejected' ? 'warning' : status === 'paid' ? 'success' : 'info'
+        });
+
+        res.json({ success: true, message: 'Money request updated' });
     } catch (err) {
         next(err);
     }
