@@ -114,12 +114,12 @@ export default function TeamFinances() {
                         </select>
                         <div />
                         <textarea value={moneyOfferForm.note} onChange={(e) => setMoneyOfferForm((prev) => ({ ...prev, note: e.target.value }))} placeholder="Why this money is being offered" className="sm:col-span-2 xl:col-span-4 rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-cyan-500 transition-colors min-h-24" />
-                        <div className="sm:col-span-2 xl:col-span-4 flex gap-3">
-                            <button disabled={saving} className="flex-1 rounded-xl px-4 py-3 bg-gradient-to-r from-cyan-600 to-blue-500 text-white font-bold disabled:opacity-50">
-                                {saving ? 'Saving...' : 'Create Admin Offer'}
-                            </button>
-                            <button type="button" onClick={() => { setShowForm(false); setMoneyOfferForm(emptyMoneyOfferForm); }} className="rounded-xl px-6 py-3 bg-gray-800 text-gray-400 font-bold hover:bg-gray-700 transition-colors">
+                        <div className="sm:col-span-2 xl:col-span-4 flex gap-3 justify-end">
+                            <button type="button" onClick={() => { setShowForm(false); setMoneyOfferForm(emptyMoneyOfferForm); }} className="rounded-lg px-4 py-2 text-sm bg-gray-800 text-gray-400 font-semibold hover:bg-gray-700 transition-colors">
                                 Cancel
+                            </button>
+                            <button disabled={saving} className="rounded-lg px-5 py-2 text-sm bg-gradient-to-r from-cyan-600 to-blue-500 text-white font-semibold disabled:opacity-50">
+                                {saving ? 'Saving...' : 'Create Admin Offer'}
                             </button>
                         </div>
                     </form>

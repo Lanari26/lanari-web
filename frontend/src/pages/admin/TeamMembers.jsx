@@ -104,12 +104,12 @@ export default function TeamMembers() {
                         <input value={memberForm.staffCode} onChange={(e) => setMemberForm((prev) => ({ ...prev, staffCode: e.target.value }))} placeholder="Staff code" className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors" />
                         <textarea value={memberForm.bio} onChange={(e) => setMemberForm((prev) => ({ ...prev, bio: e.target.value }))} placeholder="Bio or context" className="sm:col-span-2 rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors min-h-24" />
                         <textarea value={memberForm.ownershipSummary} onChange={(e) => setMemberForm((prev) => ({ ...prev, ownershipSummary: e.target.value }))} placeholder="Optional member-specific ownership summary" className="sm:col-span-2 rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-blue-500 transition-colors min-h-24" />
-                        <div className="sm:col-span-2 flex gap-3">
-                            <button disabled={saving} className="flex-1 rounded-xl px-4 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold disabled:opacity-50">
-                                {saving ? 'Saving...' : 'Create Staff Member'}
-                            </button>
-                            <button type="button" onClick={() => { setShowForm(false); setMemberForm(emptyMemberForm); }} className="rounded-xl px-6 py-3 bg-gray-800 text-gray-400 font-bold hover:bg-gray-700 transition-colors">
+                        <div className="sm:col-span-2 flex gap-3 justify-end">
+                            <button type="button" onClick={() => { setShowForm(false); setMemberForm(emptyMemberForm); }} className="rounded-lg px-4 py-2 text-sm bg-gray-800 text-gray-400 font-semibold hover:bg-gray-700 transition-colors">
                                 Cancel
+                            </button>
+                            <button disabled={saving} className="rounded-lg px-5 py-2 text-sm bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold disabled:opacity-50">
+                                {saving ? 'Saving...' : 'Create Staff Member'}
                             </button>
                         </div>
                     </form>

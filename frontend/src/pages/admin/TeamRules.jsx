@@ -79,12 +79,12 @@ export default function TeamRules() {
                         <input value={ruleForm.question} onChange={(e) => setRuleForm((prev) => ({ ...prev, question: e.target.value }))} placeholder="Question" className="lg:col-span-2 rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-orange-500 transition-colors" />
                         <input type="number" value={ruleForm.sortOrder} onChange={(e) => setRuleForm((prev) => ({ ...prev, sortOrder: Number(e.target.value) }))} placeholder="Sort order" className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-orange-500 transition-colors" />
                         <textarea value={ruleForm.answer} onChange={(e) => setRuleForm((prev) => ({ ...prev, answer: e.target.value }))} placeholder="Answer" className="lg:col-span-3 rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-orange-500 transition-colors min-h-28" />
-                        <div className="lg:col-span-3 flex gap-3">
-                            <button disabled={saving} className="flex-1 rounded-xl px-4 py-3 bg-gradient-to-r from-orange-600 to-amber-500 text-white font-bold disabled:opacity-50">
-                                {saving ? 'Saving...' : 'Add Decision Rule'}
-                            </button>
-                            <button type="button" onClick={() => { setShowForm(false); setRuleForm(emptyRuleForm); }} className="rounded-xl px-6 py-3 bg-gray-800 text-gray-400 font-bold hover:bg-gray-700 transition-colors">
+                        <div className="lg:col-span-3 flex gap-3 justify-end">
+                            <button type="button" onClick={() => { setShowForm(false); setRuleForm(emptyRuleForm); }} className="rounded-lg px-4 py-2 text-sm bg-gray-800 text-gray-400 font-semibold hover:bg-gray-700 transition-colors">
                                 Cancel
+                            </button>
+                            <button disabled={saving} className="rounded-lg px-5 py-2 text-sm bg-gradient-to-r from-orange-600 to-amber-500 text-white font-semibold disabled:opacity-50">
+                                {saving ? 'Saving...' : 'Add Decision Rule'}
                             </button>
                         </div>
                     </form>

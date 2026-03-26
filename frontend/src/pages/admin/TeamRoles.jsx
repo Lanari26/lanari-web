@@ -91,12 +91,12 @@ export default function TeamRoles() {
                         <div />
                         <textarea value={roleForm.ownershipSummary} onChange={(e) => setRoleForm((prev) => ({ ...prev, ownershipSummary: e.target.value }))} placeholder="Ownership summary" className="lg:col-span-3 rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-purple-500 transition-colors min-h-24" />
                         <textarea value={roleForm.responsibilitiesText} onChange={(e) => setRoleForm((prev) => ({ ...prev, responsibilitiesText: e.target.value }))} placeholder="One responsibility per line" className="lg:col-span-3 rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-purple-500 transition-colors min-h-28" />
-                        <div className="lg:col-span-3 flex gap-3">
-                            <button disabled={saving} className="flex-1 rounded-xl px-4 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold disabled:opacity-50">
-                                {saving ? 'Saving...' : 'Add Custom Role'}
-                            </button>
-                            <button type="button" onClick={() => { setShowForm(false); setRoleForm(emptyRoleForm); }} className="rounded-xl px-6 py-3 bg-gray-800 text-gray-400 font-bold hover:bg-gray-700 transition-colors">
+                        <div className="lg:col-span-3 flex gap-3 justify-end">
+                            <button type="button" onClick={() => { setShowForm(false); setRoleForm(emptyRoleForm); }} className="rounded-lg px-4 py-2 text-sm bg-gray-800 text-gray-400 font-semibold hover:bg-gray-700 transition-colors">
                                 Cancel
+                            </button>
+                            <button disabled={saving} className="rounded-lg px-5 py-2 text-sm bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold disabled:opacity-50">
+                                {saving ? 'Saving...' : 'Add Custom Role'}
                             </button>
                         </div>
                     </form>

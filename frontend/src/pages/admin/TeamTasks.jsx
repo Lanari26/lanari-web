@@ -98,12 +98,12 @@ export default function TeamTasks() {
                         <select value={taskForm.status} onChange={(e) => setTaskForm((prev) => ({ ...prev, status: e.target.value }))} className="rounded-xl px-4 py-3 bg-gray-950 text-white border border-gray-700 outline-none focus:border-emerald-500 transition-colors">
                             {statusOptions.map((option) => <option key={option} value={option}>{option.replace('_', ' ')}</option>)}
                         </select>
-                        <div className="sm:col-span-2 flex gap-3">
-                            <button disabled={saving} className="flex-1 rounded-xl px-4 py-3 bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-bold disabled:opacity-50">
-                                {saving ? 'Saving...' : 'Create Task'}
-                            </button>
-                            <button type="button" onClick={() => { setShowForm(false); setTaskForm(emptyTaskForm); }} className="rounded-xl px-6 py-3 bg-gray-800 text-gray-400 font-bold hover:bg-gray-700 transition-colors">
+                        <div className="sm:col-span-2 flex gap-3 justify-end">
+                            <button type="button" onClick={() => { setShowForm(false); setTaskForm(emptyTaskForm); }} className="rounded-lg px-4 py-2 text-sm bg-gray-800 text-gray-400 font-semibold hover:bg-gray-700 transition-colors">
                                 Cancel
+                            </button>
+                            <button disabled={saving} className="rounded-lg px-5 py-2 text-sm bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-semibold disabled:opacity-50">
+                                {saving ? 'Saving...' : 'Create Task'}
                             </button>
                         </div>
                     </form>
