@@ -37,7 +37,13 @@ import AdminUsers from './pages/admin/Users';
 import AdminAnalytics from './pages/admin/Analytics';
 import AdminDocs from './pages/admin/DocsManager';
 import AdminCampaigns from './pages/admin/Campaigns';
-import AdminTeam from './pages/admin/Team';
+import AdminTeam from './pages/admin/TeamOverview';
+import AdminTeamMembers from './pages/admin/TeamMembers';
+import AdminTeamTasks from './pages/admin/TeamTasks';
+import AdminTeamFinances from './pages/admin/TeamFinances';
+import AdminTeamRoles from './pages/admin/TeamRoles';
+import AdminTeamRules from './pages/admin/TeamRules';
+import AdminTeamReports from './pages/admin/TeamReports';
 import Internships from './pages/Internships';
 import AdminInternships from './pages/admin/Internships';
 import ComingSoon from './components/ComingSoon';
@@ -77,6 +83,12 @@ function AdminRoutes() {
         <Route path="/jobs" element={<AdminJobs />} />
         <Route path="/users" element={<AdminUsers />} />
         <Route path="/team" element={<AdminTeam />} />
+        <Route path="/team/members" element={<AdminTeamMembers />} />
+        <Route path="/team/tasks" element={<AdminTeamTasks />} />
+        <Route path="/team/finances" element={<AdminTeamFinances />} />
+        <Route path="/team/roles" element={<AdminTeamRoles />} />
+        <Route path="/team/rules" element={<AdminTeamRules />} />
+        <Route path="/team/reports" element={<AdminTeamReports />} />
         <Route path="/analytics" element={<AdminAnalytics />} />
         <Route path="/docs" element={<AdminDocs />} />
         <Route path="/campaigns" element={<AdminCampaigns />} />

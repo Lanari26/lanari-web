@@ -8,17 +8,41 @@ const navItems = [
     { label: 'Partners', path: '/admin/partners', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z' },
     { label: 'Jobs', path: '/admin/jobs', icon: 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' },
     { label: 'Users', path: '/admin/users', icon: 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z' },
-    { label: 'Team', path: '/admin/team', icon: 'M18 9a3 3 0 11-6 0 3 3 0 016 0zM6 10a2 2 0 100-4 2 2 0 000 4zm12 10a4 4 0 00-8 0m8 0h4m-4 0a4 4 0 00-8 0m-6 0a4 4 0 018 0' },
+    {
+        label: 'Team',
+        icon: 'M18 9a3 3 0 11-6 0 3 3 0 016 0zM6 10a2 2 0 100-4 2 2 0 000 4zm12 10a4 4 0 00-8 0m8 0h4m-4 0a4 4 0 00-8 0m-6 0a4 4 0 018 0',
+        children: [
+            { label: 'Overview', path: '/admin/team' },
+            { label: 'Members', path: '/admin/team/members' },
+            { label: 'Tasks', path: '/admin/team/tasks' },
+            { label: 'Finances', path: '/admin/team/finances' },
+            { label: 'Roles', path: '/admin/team/roles' },
+            { label: 'Rules', path: '/admin/team/rules' },
+            { label: 'Reports', path: '/admin/team/reports' }
+        ]
+    },
     { label: 'Analytics', path: '/admin/analytics', icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z' },
     { label: 'Campaigns', path: '/admin/campaigns', icon: 'M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122' },
     { label: 'Internships', path: '/admin/internships', icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' },
     { label: 'Docs', path: '/admin/docs', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' },
 ];
 
+function getPageTitle(pathname) {
+    for (const item of navItems) {
+        if (item.path === pathname) return item.label;
+        if (item.children) {
+            const child = item.children.find(c => c.path === pathname);
+            if (child) return `${item.label} — ${child.label}`;
+        }
+    }
+    return 'Admin';
+}
+
 export default function AdminLayout({ children }) {
     const navigate = useNavigate();
     const location = useLocation();
     const [collapsed, setCollapsed] = useState(false);
+    const [teamOpen, setTeamOpen] = useState(location.pathname.startsWith('/admin/team'));
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -27,6 +51,8 @@ export default function AdminLayout({ children }) {
     };
 
     const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+    const isTeamActive = location.pathname.startsWith('/admin/team');
 
     return (
         <div className="flex h-screen overflow-hidden" style={{ backgroundColor: '#0a0e1a' }}>
@@ -44,6 +70,61 @@ export default function AdminLayout({ children }) {
                 {/* Nav */}
                 <nav className="flex-1 py-4 px-2 space-y-1 overflow-y-auto">
                     {navItems.map((item) => {
+                        if (item.children) {
+                            return (
+                                <div key={item.label}>
+                                    <button
+                                        onClick={() => {
+                                            if (collapsed) {
+                                                navigate(item.children[0].path);
+                                            } else {
+                                                setTeamOpen(!teamOpen);
+                                            }
+                                        }}
+                                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${isTeamActive
+                                            ? 'bg-blue-500/15 text-blue-400'
+                                            : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                        }`}
+                                        title={item.label}
+                                    >
+                                        <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
+                                        </svg>
+                                        {!collapsed && (
+                                            <>
+                                                <span className="flex-1 text-left">{item.label}</span>
+                                                <svg
+                                                    className={`w-4 h-4 flex-shrink-0 transition-transform duration-200 ${teamOpen ? 'rotate-180' : ''}`}
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+                                                >
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                                </svg>
+                                            </>
+                                        )}
+                                    </button>
+                                    {!collapsed && teamOpen && (
+                                        <div className="ml-4 mt-1 space-y-0.5 border-l border-gray-700/50 pl-3">
+                                            {item.children.map((child) => {
+                                                const childActive = location.pathname === child.path;
+                                                return (
+                                                    <button
+                                                        key={child.path}
+                                                        onClick={() => navigate(child.path)}
+                                                        className={`w-full flex items-center px-3 py-2 rounded-lg text-[13px] font-medium transition-all ${childActive
+                                                            ? 'bg-blue-500/10 text-blue-400'
+                                                            : 'text-gray-500 hover:text-gray-300 hover:bg-white/5'
+                                                        }`}
+                                                    >
+                                                        {child.label}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        }
+
                         const active = location.pathname === item.path;
                         return (
                             <button
@@ -52,7 +133,7 @@ export default function AdminLayout({ children }) {
                                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${active
                                     ? 'bg-blue-500/15 text-blue-400'
                                     : 'text-gray-400 hover:text-white hover:bg-white/5'
-                                    }`}
+                                }`}
                                 title={item.label}
                             >
                                 <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
@@ -101,7 +182,7 @@ export default function AdminLayout({ children }) {
                 {/* Top bar */}
                 <header className="flex items-center justify-between px-6 py-4 flex-shrink-0" style={{ backgroundColor: '#111827', borderBottom: '1px solid #1f2937' }}>
                     <h1 className="text-lg font-bold text-white">
-                        {navItems.find(i => i.path === location.pathname)?.label || 'Admin'}
+                        {getPageTitle(location.pathname)}
                     </h1>
                     <div className="flex items-center gap-3">
                         <span className="text-sm font-medium text-gray-400">{user.fullName || 'Admin'}</span>
