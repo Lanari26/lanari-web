@@ -1,4 +1,5 @@
 const pool = require('../config/db');
+const { getAISummary } = require('./ai.controller');
 
 exports.search = async (req, res, next) => {
     try {
@@ -74,7 +75,15 @@ exports.search = async (req, res, next) => {
         .filter(item => item.score > 0)
         .sort((a, b) => b.score - a.score);
 
-        res.json({ success: true, data: scored });
+        // Generate AI summary for the search query (non-blocking — don't fail search if AI fails)
+        let aiSummary = null;
+        if (scored.length > 0) {
+            try {
+                aiSummary = await getAISummary(q, scored);
+            } catch (_) { /* AI summary is optional */ }
+        }
+
+        res.json({ success: true, data: scored, aiSummary });
     } catch (err) {
         next(err);
     }

@@ -9,6 +9,7 @@ export default function Search() {
     const initialQuery = searchParams.get('q') || '';
     const [query, setQuery] = useState(initialQuery);
     const [results, setResults] = useState([]);
+    const [aiSummary, setAiSummary] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -17,10 +18,14 @@ export default function Search() {
 
     const fetchResults = async (q) => {
         setLoading(true);
+        setAiSummary(null);
         try {
             const res = await fetch(`${API}/search?q=${encodeURIComponent(q)}`);
             const data = await res.json();
-            if (data.success) setResults(data.data);
+            if (data.success) {
+                setResults(data.data);
+                if (data.aiSummary) setAiSummary(data.aiSummary);
+            }
         } catch (e) {
             console.error('Search failed:', e);
         }
@@ -87,6 +92,19 @@ export default function Search() {
                         }
                     </p>
                 </div>
+
+                {/* AI Summary */}
+                {aiSummary && !loading && (
+                    <div className="mb-6 p-4 rounded-2xl" style={{ backgroundColor: 'rgba(99, 102, 241, 0.1)', border: '1px solid rgba(99, 102, 241, 0.25)' }}>
+                        <div className="flex items-start gap-3">
+                            <span className="text-lg flex-shrink-0 mt-0.5">🤖</span>
+                            <div>
+                                <p className="text-xs font-bold uppercase tracking-widest mb-1.5" style={{ color: '#818cf8' }}>AI Summary</p>
+                                <p className="text-sm font-medium leading-relaxed" style={{ color: '#d1d5db' }}>{aiSummary}</p>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 {!loading && results.length === 0 ? (
                     <div className="text-center py-20">

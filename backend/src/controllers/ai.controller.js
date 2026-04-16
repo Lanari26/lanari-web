@@ -10,7 +10,9 @@ let geminiClient = null;
 let claudeClient = null;
 
 try {
-    if (process.env.GEMINI_API_KEY) {
+    if (process.env.OPENROUTER_API_KEY) {
+        aiProvider = 'openrouter';
+    } else if (process.env.GEMINI_API_KEY) {
         const { GoogleGenAI } = require('@google/genai');
         geminiClient = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
         aiProvider = 'gemini';
@@ -306,10 +308,53 @@ function buildSystemPrompt() {
         `Q: ${e.question} A: ${e.answer.replace(/\n/g, ' ').substring(0, 200)}`
     ).join('\n');
 
-    return `You are Lanari AI, assistant for Lanari Tech (Rwanda). Use this knowledge base:
+    return `You are Lanari AI, the professional assistant for Lanari Tech — a Rwandan tech company building digital products across e-commerce, jobs, education, cloud, and AI.
+
+Knowledge base:
 ${kb}
 
-Rules: Use knowledge base for Lanari questions. Answer general questions from your own knowledge. Be concise (2-3 paragraphs max). Use markdown. Be friendly. Don't invent Lanari features not in the knowledge base.`;
+Rules:
+- For Lanari-related questions, answer ONLY from the knowledge base above. Never invent features.
+- For general knowledge questions, answer from your own training data.
+- Keep responses concise and summarized — 2-3 short paragraphs max, use bullet points when listing items.
+- Use markdown formatting (bold, bullets, headers) for readability.
+- Be professional, helpful, and friendly.
+- If unsure, say so honestly and suggest the user contact Lanari Tech directly.`;
+}
+
+async function askOpenRouter(message, history, systemPrompt) {
+    const messages = [{ role: 'system', content: systemPrompt }];
+    for (const msg of history) {
+        messages.push({
+            role: msg.role === 'user' ? 'user' : 'assistant',
+            content: msg.content
+        });
+    }
+    messages.push({ role: 'user', content: message });
+
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+            'Content-Type': 'application/json',
+            'HTTP-Referer': process.env.FRONTEND_URL || 'https://web.lanari.rw',
+            'X-Title': 'Lanari AI'
+        },
+        body: JSON.stringify({
+            model: 'meta-llama/llama-3.1-8b-instruct:free',
+            messages,
+            max_tokens: 400,
+            temperature: 0.7
+        })
+    });
+
+    if (!response.ok) {
+        const err = await response.text();
+        throw new Error(`OpenRouter API error: ${response.status} — ${err}`);
+    }
+
+    const data = await response.json();
+    return data.choices?.[0]?.message?.content || null;
 }
 
 async function askAI(message, chatHistory = []) {
@@ -318,7 +363,9 @@ async function askAI(message, chatHistory = []) {
     const systemPrompt = buildSystemPrompt();
     const recentHistory = chatHistory.slice(-6);
 
-    if (aiProvider === 'gemini') {
+    if (aiProvider === 'openrouter') {
+        return askOpenRouter(message, recentHistory, systemPrompt);
+    } else if (aiProvider === 'gemini') {
         return askGemini(message, recentHistory, systemPrompt);
     } else if (aiProvider === 'claude') {
         return askClaude(message, recentHistory, systemPrompt);
@@ -467,4 +514,26 @@ exports.deleteSession = async (req, res, next) => {
         if (!deleted) return res.status(404).json({ error: 'Session not found' });
         res.json({ success: true, message: 'Session deleted' });
     } catch (err) { next(err); }
+};
+
+// ─── AI Search Summary (used by search controller) ─────────
+
+exports.getAISummary = async (query, results) => {
+    if (!aiProvider) return null;
+
+    const topResults = results.slice(0, 5).map(r => `- ${r.title}: ${r.description}`).join('\n');
+    const prompt = `The user searched for "${query}" on Lanari Tech's website. Here are the top results:\n${topResults}\n\nWrite a brief 2-3 sentence summary helping the user understand what Lanari offers related to their search. Be professional and concise. Do not use markdown.`;
+
+    try {
+        if (aiProvider === 'openrouter') {
+            return await askOpenRouter(prompt, [], 'You are a helpful search assistant for Lanari Tech. Give brief, professional summaries in 2-3 sentences.');
+        } else if (aiProvider === 'gemini') {
+            return await askGemini(prompt, [], 'You are a helpful search assistant. Give brief summaries.');
+        } else if (aiProvider === 'claude') {
+            return await askClaude(prompt, [], 'You are a helpful search assistant. Give brief summaries.');
+        }
+    } catch (err) {
+        console.error('AI summary error:', err.message);
+        return null;
+    }
 };
