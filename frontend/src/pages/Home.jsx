@@ -75,7 +75,7 @@ export default function Home() {
     return (
         <div className="relative">
 
-            {/* ── Animated Background ── */}
+            {/* ── Animated Tech Background ── */}
             <div className="fixed inset-0 overflow-hidden pointer-events-none">
                 {/* Mouse-tracking orb */}
                 <div
@@ -102,6 +102,90 @@ export default function Home() {
                     style={{
                         backgroundImage: 'linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px)',
                         backgroundSize: '60px 60px',
+                    }}
+                />
+
+                {/* ── Circuit Lines SVG ── */}
+                <svg className="absolute inset-0 w-full h-full" style={{ opacity: 0.12 }}>
+                    {/* Horizontal circuit paths */}
+                    <line x1="0" y1="20%" x2="100%" y2="20%" stroke="url(#techGrad1)" strokeWidth="0.5" strokeDasharray="8 12" style={{ animation: 'dash-flow 25s linear infinite' }} />
+                    <line x1="0" y1="50%" x2="100%" y2="50%" stroke="url(#techGrad2)" strokeWidth="0.5" strokeDasharray="6 18" style={{ animation: 'dash-flow 30s linear infinite reverse' }} />
+                    <line x1="0" y1="80%" x2="100%" y2="80%" stroke="url(#techGrad1)" strokeWidth="0.5" strokeDasharray="10 14" style={{ animation: 'dash-flow 22s linear infinite' }} />
+                    {/* Vertical circuit paths */}
+                    <line x1="15%" y1="0" x2="15%" y2="100%" stroke="url(#techGrad2)" strokeWidth="0.5" strokeDasharray="5 20" style={{ animation: 'dash-flow 28s linear infinite' }} />
+                    <line x1="50%" y1="0" x2="50%" y2="100%" stroke="url(#techGrad1)" strokeWidth="0.5" strokeDasharray="8 16" style={{ animation: 'dash-flow 35s linear infinite reverse' }} />
+                    <line x1="85%" y1="0" x2="85%" y2="100%" stroke="url(#techGrad2)" strokeWidth="0.5" strokeDasharray="6 22" style={{ animation: 'dash-flow 26s linear infinite' }} />
+                    {/* Circuit junction nodes */}
+                    {[
+                        [15, 20], [50, 20], [85, 20],
+                        [15, 50], [50, 50], [85, 50],
+                        [15, 80], [50, 80], [85, 80],
+                    ].map(([cx, cy], i) => (
+                        <circle key={i} cx={`${cx}%`} cy={`${cy}%`} r="3" fill={i % 2 === 0 ? '#3b82f6' : '#a855f7'} style={{ animation: `node-pulse ${3 + (i % 3)}s ease-in-out infinite ${i * 0.4}s` }} />
+                    ))}
+                    <defs>
+                        <linearGradient id="techGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0" />
+                            <stop offset="50%" stopColor="#3b82f6" stopOpacity="1" />
+                            <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
+                        </linearGradient>
+                        <linearGradient id="techGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stopColor="#a855f7" stopOpacity="0" />
+                            <stop offset="50%" stopColor="#a855f7" stopOpacity="1" />
+                            <stop offset="100%" stopColor="#06b6d4" stopOpacity="0" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+
+                {/* ── Floating Tech Particles ── */}
+                {[
+                    { left: '8%',  size: 3, delay: 0,   dur: 14, color: '#3b82f6' },
+                    { left: '22%', size: 2, delay: 2,   dur: 18, color: '#a855f7' },
+                    { left: '35%', size: 4, delay: 5,   dur: 12, color: '#06b6d4' },
+                    { left: '52%', size: 2, delay: 1,   dur: 16, color: '#3b82f6' },
+                    { left: '68%', size: 3, delay: 4,   dur: 20, color: '#8b5cf6' },
+                    { left: '78%', size: 2, delay: 7,   dur: 14, color: '#10b981' },
+                    { left: '92%', size: 3, delay: 3,   dur: 17, color: '#a855f7' },
+                ].map((p, i) => (
+                    <div
+                        key={`particle-${i}`}
+                        className="absolute rounded-full"
+                        style={{
+                            left: p.left,
+                            bottom: '-10px',
+                            width: p.size,
+                            height: p.size,
+                            backgroundColor: p.color,
+                            boxShadow: `0 0 ${p.size * 3}px ${p.color}`,
+                            animation: `drift-up ${p.dur}s linear infinite ${p.delay}s`,
+                        }}
+                    />
+                ))}
+
+                {/* ── Floating Code Symbols ── */}
+                {['</', '/>', '{ }', '( )', '01', 'AI', '< >'].map((sym, i) => (
+                    <span
+                        key={`code-${i}`}
+                        className="absolute font-mono font-bold select-none"
+                        style={{
+                            left: `${10 + i * 13}%`,
+                            bottom: '-20px',
+                            fontSize: `${12 + (i % 3) * 4}px`,
+                            color: ['#3b82f6', '#a855f7', '#06b6d4', '#10b981', '#8b5cf6', '#3b82f6', '#a855f7'][i],
+                            animation: `code-float ${10 + i * 3}s linear infinite ${i * 1.8}s`,
+                        }}
+                    >
+                        {sym}
+                    </span>
+                ))}
+
+                {/* ── Horizontal Scan Line ── */}
+                <div
+                    className="absolute left-0 w-full h-[1px]"
+                    style={{
+                        background: 'linear-gradient(90deg, transparent 0%, rgba(59,130,246,0.3) 20%, rgba(168,85,247,0.4) 50%, rgba(59,130,246,0.3) 80%, transparent 100%)',
+                        animation: 'scan-line 8s linear infinite',
+                        boxShadow: '0 0 12px rgba(99,102,241,0.3)',
                     }}
                 />
             </div>
@@ -287,8 +371,14 @@ export default function Home() {
             </section>
 
             {/* ── Ecosystem Section ── */}
-            <section className="py-32 lg:py-48 px-8 relative">
-                <div className="max-w-[90%] mx-auto">
+            <section className="py-32 lg:py-48 px-8 relative overflow-hidden">
+                {/* Section tech accent — orbiting ring */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" style={{ width: 300, height: 300, opacity: 0.06 }}>
+                    <div className="absolute inset-0 rounded-full" style={{ border: '1px dashed #a855f7', animation: 'orbit 40s linear infinite' }} />
+                    <div className="absolute inset-6 rounded-full" style={{ border: '1px dashed #3b82f6', animation: 'orbit 30s linear infinite reverse' }} />
+                    <div className="absolute inset-12 rounded-full" style={{ border: '1px dashed #06b6d4', animation: 'orbit 20s linear infinite' }} />
+                </div>
+                <div className="max-w-[90%] mx-auto relative z-10">
 
                     {/* Section title */}
                     <div
