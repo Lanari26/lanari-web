@@ -358,8 +358,22 @@ function callOpenRouter(body) {
     });
 }
 
+// Free models to try in order (best first). If one is rate-limited, try the next.
+const OPENROUTER_MODELS = [
+    'google/gemma-3-27b-it:free',
+    'google/gemma-3-12b-it:free',
+    'meta-llama/llama-3.3-70b-instruct:free',
+    'meta-llama/llama-3.2-3b-instruct:free',
+];
+
 async function askOpenRouter(message, history, systemPrompt) {
-    const messages = [{ role: 'system', content: systemPrompt }];
+    const messages = [];
+
+    // Gemma free models don't support the "system" role, so we inject
+    // the system prompt as the first user turn with an assistant ack.
+    messages.push({ role: 'user', content: `[System Instructions]\n${systemPrompt}\n\nAcknowledge briefly.` });
+    messages.push({ role: 'assistant', content: 'Understood. I\'m Lanari AI, ready to help.' });
+
     for (const msg of history) {
         messages.push({
             role: msg.role === 'user' ? 'user' : 'assistant',
@@ -368,12 +382,17 @@ async function askOpenRouter(message, history, systemPrompt) {
     }
     messages.push({ role: 'user', content: message });
 
-    return callOpenRouter({
-        model: 'meta-llama/llama-3.1-8b-instruct:free',
-        messages,
-        max_tokens: 400,
-        temperature: 0.7
-    });
+    // Try each model in order; skip on rate-limit or error
+    for (const model of OPENROUTER_MODELS) {
+        try {
+            const result = await callOpenRouter({ model, messages, max_tokens: 400, temperature: 0.7 });
+            if (result) return result;
+        } catch (err) {
+            console.warn(`OpenRouter ${model} failed:`, err.message.substring(0, 120));
+            continue;
+        }
+    }
+    return null; // All models failed — will fall back to NLP engine
 }
 
 async function askAI(message, chatHistory = []) {
