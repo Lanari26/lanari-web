@@ -209,14 +209,6 @@ export default function Home() {
                     >{sym}</span>
                 ))}
 
-                {/* ── Scan Line ── */}
-                <div className="absolute left-0 w-full h-[2px]"
-                    style={{
-                        background: 'linear-gradient(90deg, transparent 0%, rgba(59,130,246,0.5) 20%, rgba(168,85,247,0.7) 50%, rgba(59,130,246,0.5) 80%, transparent 100%)',
-                        animation: 'scan-line 8s linear infinite',
-                        boxShadow: '0 0 20px rgba(99,102,241,0.5), 0 0 40px rgba(99,102,241,0.2)',
-                    }}
-                />
             </div>
 
             {/* ── Hero ── */}
