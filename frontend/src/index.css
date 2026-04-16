@@ -67,10 +67,11 @@
 
     /* ── Tech background animations ── */
     @keyframes drift-up {
-        0%   { transform: translateY(0) translateX(0); opacity: 0; }
-        10%  { opacity: 1; }
-        90%  { opacity: 1; }
-        100% { transform: translateY(-100vh) translateX(30px); opacity: 0; }
+        0%   { transform: translateY(0) translateX(0) scale(0.5); opacity: 0; }
+        10%  { opacity: 0.9; transform: translateY(-10vh) translateX(5px) scale(1); }
+        50%  { opacity: 1; }
+        90%  { opacity: 0.8; }
+        100% { transform: translateY(-100vh) translateX(40px) scale(0.6); opacity: 0; }
     }
 
     @keyframes drift-down {
@@ -97,9 +98,9 @@
 
     @keyframes code-float {
         0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
-        15%  { opacity: 0.15; }
-        85%  { opacity: 0.15; }
-        100% { transform: translateY(-80vh) rotate(15deg); opacity: 0; }
+        10%  { opacity: 0.4; }
+        85%  { opacity: 0.35; }
+        100% { transform: translateY(-100vh) rotate(12deg); opacity: 0; }
     }
 
     @keyframes scan-line {

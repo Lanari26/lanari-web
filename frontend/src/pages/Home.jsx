@@ -106,22 +106,28 @@ export default function Home() {
                 />
 
                 {/* ── Circuit Lines SVG ── */}
-                <svg className="absolute inset-0 w-full h-full" style={{ opacity: 0.12 }}>
+                <svg className="absolute inset-0 w-full h-full" style={{ opacity: 0.35 }}>
                     {/* Horizontal circuit paths */}
-                    <line x1="0" y1="20%" x2="100%" y2="20%" stroke="url(#techGrad1)" strokeWidth="0.5" strokeDasharray="8 12" style={{ animation: 'dash-flow 25s linear infinite' }} />
-                    <line x1="0" y1="50%" x2="100%" y2="50%" stroke="url(#techGrad2)" strokeWidth="0.5" strokeDasharray="6 18" style={{ animation: 'dash-flow 30s linear infinite reverse' }} />
-                    <line x1="0" y1="80%" x2="100%" y2="80%" stroke="url(#techGrad1)" strokeWidth="0.5" strokeDasharray="10 14" style={{ animation: 'dash-flow 22s linear infinite' }} />
+                    <line x1="0" y1="20%" x2="100%" y2="20%" stroke="url(#techGrad1)" strokeWidth="1" strokeDasharray="8 12" style={{ animation: 'dash-flow 25s linear infinite' }} />
+                    <line x1="0" y1="50%" x2="100%" y2="50%" stroke="url(#techGrad2)" strokeWidth="1" strokeDasharray="6 18" style={{ animation: 'dash-flow 30s linear infinite reverse' }} />
+                    <line x1="0" y1="80%" x2="100%" y2="80%" stroke="url(#techGrad1)" strokeWidth="1" strokeDasharray="10 14" style={{ animation: 'dash-flow 22s linear infinite' }} />
+                    {/* Diagonal accent lines */}
+                    <line x1="0" y1="0" x2="40%" y2="100%" stroke="url(#techGrad1)" strokeWidth="0.5" strokeDasharray="4 16" style={{ animation: 'dash-flow 20s linear infinite' }} />
+                    <line x1="60%" y1="0" x2="100%" y2="100%" stroke="url(#techGrad2)" strokeWidth="0.5" strokeDasharray="4 16" style={{ animation: 'dash-flow 24s linear infinite reverse' }} />
                     {/* Vertical circuit paths */}
-                    <line x1="15%" y1="0" x2="15%" y2="100%" stroke="url(#techGrad2)" strokeWidth="0.5" strokeDasharray="5 20" style={{ animation: 'dash-flow 28s linear infinite' }} />
-                    <line x1="50%" y1="0" x2="50%" y2="100%" stroke="url(#techGrad1)" strokeWidth="0.5" strokeDasharray="8 16" style={{ animation: 'dash-flow 35s linear infinite reverse' }} />
-                    <line x1="85%" y1="0" x2="85%" y2="100%" stroke="url(#techGrad2)" strokeWidth="0.5" strokeDasharray="6 22" style={{ animation: 'dash-flow 26s linear infinite' }} />
-                    {/* Circuit junction nodes */}
+                    <line x1="15%" y1="0" x2="15%" y2="100%" stroke="url(#techGrad2)" strokeWidth="1" strokeDasharray="5 20" style={{ animation: 'dash-flow 28s linear infinite' }} />
+                    <line x1="50%" y1="0" x2="50%" y2="100%" stroke="url(#techGrad1)" strokeWidth="1" strokeDasharray="8 16" style={{ animation: 'dash-flow 35s linear infinite reverse' }} />
+                    <line x1="85%" y1="0" x2="85%" y2="100%" stroke="url(#techGrad2)" strokeWidth="1" strokeDasharray="6 22" style={{ animation: 'dash-flow 26s linear infinite' }} />
+                    {/* Circuit junction nodes — bigger with glow */}
                     {[
                         [15, 20], [50, 20], [85, 20],
                         [15, 50], [50, 50], [85, 50],
                         [15, 80], [50, 80], [85, 80],
                     ].map(([cx, cy], i) => (
-                        <circle key={i} cx={`${cx}%`} cy={`${cy}%`} r="3" fill={i % 2 === 0 ? '#3b82f6' : '#a855f7'} style={{ animation: `node-pulse ${3 + (i % 3)}s ease-in-out infinite ${i * 0.4}s` }} />
+                        <g key={i}>
+                            <circle cx={`${cx}%`} cy={`${cy}%`} r="8" fill={i % 2 === 0 ? '#3b82f6' : '#a855f7'} opacity="0.15" style={{ animation: `node-pulse ${3 + (i % 3)}s ease-in-out infinite ${i * 0.4}s` }} />
+                            <circle cx={`${cx}%`} cy={`${cy}%`} r="4" fill={i % 2 === 0 ? '#3b82f6' : '#a855f7'} style={{ animation: `node-pulse ${3 + (i % 3)}s ease-in-out infinite ${i * 0.4}s` }} />
+                        </g>
                     ))}
                     <defs>
                         <linearGradient id="techGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -137,15 +143,18 @@ export default function Home() {
                     </defs>
                 </svg>
 
-                {/* ── Floating Tech Particles ── */}
+                {/* ── Floating Tech Particles — bigger, brighter ── */}
                 {[
-                    { left: '8%',  size: 3, delay: 0,   dur: 14, color: '#3b82f6' },
-                    { left: '22%', size: 2, delay: 2,   dur: 18, color: '#a855f7' },
-                    { left: '35%', size: 4, delay: 5,   dur: 12, color: '#06b6d4' },
-                    { left: '52%', size: 2, delay: 1,   dur: 16, color: '#3b82f6' },
-                    { left: '68%', size: 3, delay: 4,   dur: 20, color: '#8b5cf6' },
-                    { left: '78%', size: 2, delay: 7,   dur: 14, color: '#10b981' },
-                    { left: '92%', size: 3, delay: 3,   dur: 17, color: '#a855f7' },
+                    { left: '5%',  size: 6,  delay: 0,   dur: 14, color: '#3b82f6' },
+                    { left: '15%', size: 4,  delay: 3,   dur: 18, color: '#a855f7' },
+                    { left: '25%', size: 8,  delay: 6,   dur: 11, color: '#06b6d4' },
+                    { left: '38%', size: 5,  delay: 1,   dur: 16, color: '#8b5cf6' },
+                    { left: '48%', size: 7,  delay: 8,   dur: 13, color: '#3b82f6' },
+                    { left: '58%', size: 4,  delay: 4,   dur: 19, color: '#10b981' },
+                    { left: '68%', size: 6,  delay: 2,   dur: 15, color: '#a855f7' },
+                    { left: '78%', size: 5,  delay: 7,   dur: 12, color: '#06b6d4' },
+                    { left: '88%', size: 7,  delay: 5,   dur: 17, color: '#8b5cf6' },
+                    { left: '95%', size: 4,  delay: 9,   dur: 14, color: '#3b82f6' },
                 ].map((p, i) => (
                     <div
                         key={`particle-${i}`}
@@ -156,36 +165,37 @@ export default function Home() {
                             width: p.size,
                             height: p.size,
                             backgroundColor: p.color,
-                            boxShadow: `0 0 ${p.size * 3}px ${p.color}`,
+                            boxShadow: `0 0 ${p.size * 4}px ${p.color}, 0 0 ${p.size * 8}px ${p.color}40`,
                             animation: `drift-up ${p.dur}s linear infinite ${p.delay}s`,
                         }}
                     />
                 ))}
 
-                {/* ── Floating Code Symbols ── */}
-                {['</', '/>', '{ }', '( )', '01', 'AI', '< >'].map((sym, i) => (
+                {/* ── Floating Code Symbols — larger, more visible ── */}
+                {['</', '/>', '{ }', '( )', '01', 'AI', '< >', '&&', '[ ]', '::'].map((sym, i) => (
                     <span
                         key={`code-${i}`}
                         className="absolute font-mono font-bold select-none"
                         style={{
-                            left: `${10 + i * 13}%`,
-                            bottom: '-20px',
-                            fontSize: `${12 + (i % 3) * 4}px`,
-                            color: ['#3b82f6', '#a855f7', '#06b6d4', '#10b981', '#8b5cf6', '#3b82f6', '#a855f7'][i],
-                            animation: `code-float ${10 + i * 3}s linear infinite ${i * 1.8}s`,
+                            left: `${5 + i * 10}%`,
+                            bottom: '-30px',
+                            fontSize: `${16 + (i % 3) * 6}px`,
+                            color: ['#3b82f6', '#a855f7', '#06b6d4', '#10b981', '#8b5cf6', '#3b82f6', '#a855f7', '#06b6d4', '#10b981', '#8b5cf6'][i],
+                            textShadow: `0 0 10px ${['#3b82f6', '#a855f7', '#06b6d4', '#10b981', '#8b5cf6', '#3b82f6', '#a855f7', '#06b6d4', '#10b981', '#8b5cf6'][i]}60`,
+                            animation: `code-float ${9 + i * 2}s linear infinite ${i * 1.5}s`,
                         }}
                     >
                         {sym}
                     </span>
                 ))}
 
-                {/* ── Horizontal Scan Line ── */}
+                {/* ── Horizontal Scan Line — brighter ── */}
                 <div
-                    className="absolute left-0 w-full h-[1px]"
+                    className="absolute left-0 w-full h-[2px]"
                     style={{
-                        background: 'linear-gradient(90deg, transparent 0%, rgba(59,130,246,0.3) 20%, rgba(168,85,247,0.4) 50%, rgba(59,130,246,0.3) 80%, transparent 100%)',
+                        background: 'linear-gradient(90deg, transparent 0%, rgba(59,130,246,0.5) 20%, rgba(168,85,247,0.7) 50%, rgba(59,130,246,0.5) 80%, transparent 100%)',
                         animation: 'scan-line 8s linear infinite',
-                        boxShadow: '0 0 12px rgba(99,102,241,0.3)',
+                        boxShadow: '0 0 20px rgba(99,102,241,0.5), 0 0 40px rgba(99,102,241,0.2)',
                     }}
                 />
             </div>
