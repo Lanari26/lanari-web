@@ -20,27 +20,27 @@ const CARDS = [
     { icon: '🛍️', title: 'Siri', desc: 'Buy & resell anywhere even without stock', color: 'from-blue-500 to-cyan-400', url: '/siri' },
     { icon: '🚀', title: 'Rise', desc: 'Freelancing, Jobs & Internships', color: 'from-purple-500 to-pink-400', url: '/rise' },
     { icon: '🎓', title: 'Coding Academy', desc: 'Practical digital skills', color: 'from-emerald-500 to-teal-400', url: '/academy' },
-    { icon: '💡', title: 'Digital Solutions', desc: 'Innovative tech tools', color: 'from-orange-500 to-red-400', url: '/ai-products' },
+    { icon: '🤖', title: 'AI-Powered', desc: 'Smart tools & intelligent assistant', color: 'from-orange-500 to-red-400', url: '/ai-products' },
 ];
 
 const FEATURES = [
     { icon: '🛍️', title: 'Siri Market', desc: 'Become a trader or seller anywhere even without physical stock. Buy goods online and resell them easily, allowing anyone to shop from wherever they are.', features: ['Zero Inventory Model', 'Global Marketplace', 'Easy Reselling', 'Secure Payments'], color: 'from-blue-500 to-cyan-400', url: '/siri' },
     { icon: '🌐', title: 'Rise Network', desc: 'Enables communication, networking, freelancing, and access to online job and internship opportunities. Connect with professionals and grow your career.', features: ['Freelance Projects', 'Professional Network', 'Remote Jobs', 'Skill Sharing'], color: 'from-purple-500 to-pink-400', url: '/rise' },
     { icon: '🎓', title: 'Lanari Coding Academy', desc: 'Provides practical coding and digital skills training to help students and professionals thrive in the fast-evolving tech industry.', features: ['Practical Training', 'Industry Skills', 'Mentorship', 'Career Growth'], color: 'from-emerald-500 to-teal-400', url: '/academy' },
-    { icon: '💡', title: 'Innovative Solutions', desc: 'We create tools and platforms that make life easier, opportunities accessible, and technology beneficial for everyone.', features: ['Digital Transformation', 'Custom Platforms', 'Tech Consulting', 'Future Ready'], color: 'from-orange-500 to-red-400', url: '/ai-products' },
+    { icon: '🤖', title: 'AI-Powered Solutions', desc: 'Our platforms are enhanced with artificial intelligence — from our smart AI assistant to intelligent search, automated insights, and personalized recommendations.', features: ['AI Chat Assistant', 'Smart Search', 'Intelligent Analytics', 'Automated Workflows'], color: 'from-orange-500 to-red-400', url: '/ai-products' },
 ];
 
 const SUGGESTIONS = [
     { label: 'Siri Platform', path: '/siri' },
     { label: 'Rise Platform', path: '/rise' },
     { label: 'Learn Coding', path: '/academy' },
-    { label: 'AI for Business', path: '/ai-products' },
+    { label: 'AI Solutions', path: '/ai-products' },
 ];
 
 const STATS = [
     { value: '4', label: 'Core Projects', gradient: 'from-blue-400 to-purple-400' },
     { value: '24/7', label: 'Available', gradient: 'from-purple-400 to-pink-400' },
-    { value: '∞', label: 'Possibilities', gradient: 'from-emerald-400 to-teal-400' },
+    { value: 'AI', label: 'Powered', gradient: 'from-emerald-400 to-teal-400' },
 ];
 
 export default function Home() {
@@ -310,7 +310,7 @@ export default function Home() {
                             Empowering Rwanda's Digital Future
                         </h2>
                         <p className="text-xl lg:text-2xl max-w-4xl mx-auto" style={{ color: '#d1d5db' }}>
-                            Four powerful platforms designed to transform education, business, and innovation across Africa
+                            AI-powered platforms designed to transform education, business, and innovation across Africa
                         </p>
                     </div>
 
