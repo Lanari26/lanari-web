@@ -322,10 +322,11 @@ Rules:
 - If unsure, say so honestly and suggest the user contact Lanari Tech directly.`;
 }
 
+const https = require('https');
+
 function callOpenRouter(body) {
     return new Promise((resolve, reject) => {
         const payload = JSON.stringify(body);
-        const https = require('https');
         const req = https.request({
             hostname: 'openrouter.ai',
             path: '/api/v1/chat/completions',
@@ -342,7 +343,10 @@ function callOpenRouter(body) {
             res.on('data', chunk => data += chunk);
             res.on('end', () => {
                 if (res.statusCode >= 400) {
-                    return reject(new Error(`OpenRouter API error: ${res.statusCode} — ${data}`));
+                    const err = new Error(`OpenRouter ${res.statusCode}`);
+                    err.status = res.statusCode;
+                    err.body = data;
+                    return reject(err);
                 }
                 try {
                     const parsed = JSON.parse(data);
@@ -358,7 +362,25 @@ function callOpenRouter(body) {
     });
 }
 
-// Free models to try in order (best first). If one is rate-limited, try the next.
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// Calls OpenRouter with automatic retry on 429 rate-limit (waits then retries same model).
+async function callWithRetry(body, retries = 2) {
+    for (let i = 0; i <= retries; i++) {
+        try {
+            return await callOpenRouter(body);
+        } catch (err) {
+            if (err.status === 429 && i < retries) {
+                console.warn(`OpenRouter 429 on ${body.model}, retrying in ${(i + 1) * 2}s...`);
+                await wait((i + 1) * 2000);
+                continue;
+            }
+            throw err;
+        }
+    }
+}
+
+// Free models to try in order (best first). If one fails after retries, try the next.
 const OPENROUTER_MODELS = [
     'google/gemma-3-27b-it:free',
     'google/gemma-3-12b-it:free',
@@ -382,17 +404,17 @@ async function askOpenRouter(message, history, systemPrompt) {
     }
     messages.push({ role: 'user', content: message });
 
-    // Try each model in order; skip on rate-limit or error
+    // Try each model; retry on 429 before moving to next model
     for (const model of OPENROUTER_MODELS) {
         try {
-            const result = await callOpenRouter({ model, messages, max_tokens: 400, temperature: 0.7 });
+            const result = await callWithRetry({ model, messages, max_tokens: 400, temperature: 0.7 });
             if (result) return result;
         } catch (err) {
-            console.warn(`OpenRouter ${model} failed:`, err.message.substring(0, 120));
+            console.warn(`OpenRouter ${model} failed:`, (err.body || err.message).substring(0, 120));
             continue;
         }
     }
-    return null; // All models failed — will fall back to NLP engine
+    return null;
 }
 
 async function askAI(message, chatHistory = []) {
