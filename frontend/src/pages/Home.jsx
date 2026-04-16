@@ -87,83 +87,108 @@ export default function Home() {
                         transition: 'top 1s ease-out, left 1s ease-out',
                     }}
                 />
-                {/* Static ambient orbs */}
-                <div
-                    className="absolute w-[500px] h-[500px] rounded-full blur-3xl top-1/4 right-0 animate-float"
-                    style={{ background: 'radial-gradient(circle, rgba(168,85,247,0.1) 0%, rgba(236,72,153,0.05) 100%)' }}
-                />
-                <div
-                    className="absolute w-[450px] h-[450px] rounded-full blur-3xl bottom-0 left-1/3 animate-float-slow"
-                    style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.08) 0%, rgba(20,184,166,0.04) 100%)' }}
-                />
-                {/* Subtle grid */}
-                <div
-                    className="absolute inset-0"
-                    style={{
-                        backgroundImage: 'linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px)',
-                        backgroundSize: '60px 60px',
-                    }}
-                />
+                {/* Ambient orbs */}
+                <div className="absolute w-[500px] h-[500px] rounded-full blur-3xl top-1/4 right-0 animate-float"
+                    style={{ background: 'radial-gradient(circle, rgba(168,85,247,0.1) 0%, rgba(236,72,153,0.05) 100%)' }} />
+                <div className="absolute w-[450px] h-[450px] rounded-full blur-3xl bottom-0 left-1/3 animate-float-slow"
+                    style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.08) 0%, rgba(20,184,166,0.04) 100%)' }} />
 
-                {/* ── Circuit Lines SVG ── */}
-                <svg className="absolute inset-0 w-full h-full" style={{ opacity: 0.35 }}>
-                    {/* Horizontal circuit paths */}
-                    <line x1="0" y1="20%" x2="100%" y2="20%" stroke="url(#techGrad1)" strokeWidth="1" strokeDasharray="8 12" style={{ animation: 'dash-flow 25s linear infinite' }} />
-                    <line x1="0" y1="50%" x2="100%" y2="50%" stroke="url(#techGrad2)" strokeWidth="1" strokeDasharray="6 18" style={{ animation: 'dash-flow 30s linear infinite reverse' }} />
-                    <line x1="0" y1="80%" x2="100%" y2="80%" stroke="url(#techGrad1)" strokeWidth="1" strokeDasharray="10 14" style={{ animation: 'dash-flow 22s linear infinite' }} />
-                    {/* Diagonal accent lines */}
-                    <line x1="0" y1="0" x2="40%" y2="100%" stroke="url(#techGrad1)" strokeWidth="0.5" strokeDasharray="4 16" style={{ animation: 'dash-flow 20s linear infinite' }} />
-                    <line x1="60%" y1="0" x2="100%" y2="100%" stroke="url(#techGrad2)" strokeWidth="0.5" strokeDasharray="4 16" style={{ animation: 'dash-flow 24s linear infinite reverse' }} />
-                    {/* Vertical circuit paths */}
-                    <line x1="15%" y1="0" x2="15%" y2="100%" stroke="url(#techGrad2)" strokeWidth="1" strokeDasharray="5 20" style={{ animation: 'dash-flow 28s linear infinite' }} />
-                    <line x1="50%" y1="0" x2="50%" y2="100%" stroke="url(#techGrad1)" strokeWidth="1" strokeDasharray="8 16" style={{ animation: 'dash-flow 35s linear infinite reverse' }} />
-                    <line x1="85%" y1="0" x2="85%" y2="100%" stroke="url(#techGrad2)" strokeWidth="1" strokeDasharray="6 22" style={{ animation: 'dash-flow 26s linear infinite' }} />
-                    {/* Circuit junction nodes — bigger with glow */}
-                    {[
-                        [15, 20], [50, 20], [85, 20],
-                        [15, 50], [50, 50], [85, 50],
-                        [15, 80], [50, 80], [85, 80],
-                    ].map(([cx, cy], i) => (
-                        <g key={i}>
-                            <circle cx={`${cx}%`} cy={`${cy}%`} r="8" fill={i % 2 === 0 ? '#3b82f6' : '#a855f7'} opacity="0.15" style={{ animation: `node-pulse ${3 + (i % 3)}s ease-in-out infinite ${i * 0.4}s` }} />
-                            <circle cx={`${cx}%`} cy={`${cy}%`} r="4" fill={i % 2 === 0 ? '#3b82f6' : '#a855f7'} style={{ animation: `node-pulse ${3 + (i % 3)}s ease-in-out infinite ${i * 0.4}s` }} />
-                        </g>
-                    ))}
-                    <defs>
-                        <linearGradient id="techGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0" />
-                            <stop offset="50%" stopColor="#3b82f6" stopOpacity="1" />
-                            <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
-                        </linearGradient>
-                        <linearGradient id="techGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stopColor="#a855f7" stopOpacity="0" />
-                            <stop offset="50%" stopColor="#a855f7" stopOpacity="1" />
-                            <stop offset="100%" stopColor="#06b6d4" stopOpacity="0" />
-                        </linearGradient>
-                    </defs>
-                </svg>
-
-                {/* ── Floating Tech Particles — bigger, brighter ── */}
+                {/* ── Twinkling Stars ── */}
                 {[
-                    { left: '5%',  size: 6,  delay: 0,   dur: 14, color: '#3b82f6' },
-                    { left: '15%', size: 4,  delay: 3,   dur: 18, color: '#a855f7' },
-                    { left: '25%', size: 8,  delay: 6,   dur: 11, color: '#06b6d4' },
-                    { left: '38%', size: 5,  delay: 1,   dur: 16, color: '#8b5cf6' },
-                    { left: '48%', size: 7,  delay: 8,   dur: 13, color: '#3b82f6' },
-                    { left: '58%', size: 4,  delay: 4,   dur: 19, color: '#10b981' },
-                    { left: '68%', size: 6,  delay: 2,   dur: 15, color: '#a855f7' },
-                    { left: '78%', size: 5,  delay: 7,   dur: 12, color: '#06b6d4' },
-                    { left: '88%', size: 7,  delay: 5,   dur: 17, color: '#8b5cf6' },
-                    { left: '95%', size: 4,  delay: 9,   dur: 14, color: '#3b82f6' },
-                ].map((p, i) => (
+                    { top: '5%', left: '10%', size: 3, delay: 0, dur: 3 },
+                    { top: '12%', left: '25%', size: 2, delay: 1.2, dur: 4 },
+                    { top: '8%', left: '45%', size: 2.5, delay: 0.5, dur: 2.5 },
+                    { top: '15%', left: '65%', size: 3, delay: 2, dur: 3.5 },
+                    { top: '3%', left: '80%', size: 2, delay: 0.8, dur: 4.5 },
+                    { top: '20%', left: '92%', size: 2.5, delay: 1.5, dur: 3 },
+                    { top: '30%', left: '5%', size: 2, delay: 2.5, dur: 4 },
+                    { top: '35%', left: '35%', size: 3, delay: 0.3, dur: 2.8 },
+                    { top: '28%', left: '55%', size: 2, delay: 1.8, dur: 3.2 },
+                    { top: '40%', left: '75%', size: 2.5, delay: 3, dur: 3.8 },
+                    { top: '45%', left: '15%', size: 2, delay: 0.7, dur: 4.2 },
+                    { top: '50%', left: '88%', size: 3, delay: 2.2, dur: 2.6 },
+                    { top: '55%', left: '42%', size: 2, delay: 1, dur: 3.5 },
+                    { top: '62%', left: '8%', size: 2.5, delay: 3.5, dur: 3 },
+                    { top: '58%', left: '68%', size: 2, delay: 0.4, dur: 4 },
+                    { top: '70%', left: '30%', size: 3, delay: 2.8, dur: 2.5 },
+                    { top: '75%', left: '52%', size: 2, delay: 1.6, dur: 3.8 },
+                    { top: '68%', left: '85%', size: 2.5, delay: 0.9, dur: 3.2 },
+                    { top: '82%', left: '20%', size: 2, delay: 3.2, dur: 4.5 },
+                    { top: '85%', left: '60%', size: 3, delay: 0.6, dur: 2.8 },
+                    { top: '90%', left: '40%', size: 2, delay: 2.4, dur: 3.5 },
+                    { top: '88%', left: '95%', size: 2.5, delay: 1.3, dur: 3 },
+                    { top: '95%', left: '12%', size: 2, delay: 3.8, dur: 4 },
+                    { top: '92%', left: '72%', size: 3, delay: 0.2, dur: 2.5 },
+                ].map((star, i) => (
                     <div
-                        key={`particle-${i}`}
+                        key={`star-${i}`}
                         className="absolute rounded-full"
                         style={{
-                            left: p.left,
-                            bottom: '-10px',
-                            width: p.size,
-                            height: p.size,
+                            top: star.top,
+                            left: star.left,
+                            width: star.size,
+                            height: star.size,
+                            backgroundColor: '#ffffff',
+                            boxShadow: `0 0 ${star.size * 3}px #ffffff, 0 0 ${star.size * 6}px rgba(147,197,253,0.5)`,
+                            animation: `twinkle ${star.dur}s ease-in-out infinite ${star.delay}s`,
+                        }}
+                    />
+                ))}
+
+                {/* ── Electron Orbit System — Top Right ── */}
+                <div className="absolute" style={{ top: '10%', right: '10%', width: 280, height: 280 }}>
+                    {/* Nucleus glow */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full"
+                        style={{ backgroundColor: '#3b82f6', boxShadow: '0 0 20px #3b82f6, 0 0 40px #3b82f680', animation: 'pulse-glow 2s ease-in-out infinite' }} />
+                    {/* Orbit rings */}
+                    {[
+                        { radius: 60, dur: 4, color: '#3b82f6', tilt: 'rotateX(65deg)' },
+                        { radius: 90, dur: 6, color: '#a855f7', tilt: 'rotateX(65deg) rotateY(30deg)' },
+                        { radius: 120, dur: 8, color: '#06b6d4', tilt: 'rotateX(65deg) rotateY(-30deg)' },
+                    ].map((o, i) => (
+                        <div key={`orbit1-${i}`} className="absolute top-1/2 left-1/2" style={{ width: o.radius * 2, height: o.radius * 2, marginLeft: -o.radius, marginTop: -o.radius, transform: o.tilt }}>
+                            {/* Ring */}
+                            <div className="absolute inset-0 rounded-full" style={{ border: `1px solid ${o.color}30` }} />
+                            {/* Electron */}
+                            <div className="absolute top-1/2 left-1/2" style={{ width: 0, height: 0, animation: `electron-orbit ${o.dur}s linear infinite`, '--radius': `${o.radius}px` }}>
+                                <div className="rounded-full" style={{ width: 6, height: 6, marginLeft: -3, marginTop: -3, backgroundColor: o.color, boxShadow: `0 0 8px ${o.color}, 0 0 16px ${o.color}80` }} />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* ── Electron Orbit System — Bottom Left ── */}
+                <div className="absolute" style={{ bottom: '15%', left: '8%', width: 220, height: 220 }}>
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full"
+                        style={{ backgroundColor: '#a855f7', boxShadow: '0 0 16px #a855f7, 0 0 32px #a855f780', animation: 'pulse-glow 2.5s ease-in-out infinite' }} />
+                    {[
+                        { radius: 45, dur: 3.5, color: '#a855f7', tilt: 'rotateX(70deg)' },
+                        { radius: 75, dur: 5.5, color: '#3b82f6', tilt: 'rotateX(70deg) rotateY(40deg)' },
+                        { radius: 100, dur: 7, color: '#10b981', tilt: 'rotateX(70deg) rotateY(-25deg)' },
+                    ].map((o, i) => (
+                        <div key={`orbit2-${i}`} className="absolute top-1/2 left-1/2" style={{ width: o.radius * 2, height: o.radius * 2, marginLeft: -o.radius, marginTop: -o.radius, transform: o.tilt }}>
+                            <div className="absolute inset-0 rounded-full" style={{ border: `1px solid ${o.color}30` }} />
+                            <div className="absolute top-1/2 left-1/2" style={{ width: 0, height: 0, animation: `electron-orbit ${o.dur}s linear infinite reverse`, '--radius': `${o.radius}px` }}>
+                                <div className="rounded-full" style={{ width: 5, height: 5, marginLeft: -2.5, marginTop: -2.5, backgroundColor: o.color, boxShadow: `0 0 6px ${o.color}, 0 0 14px ${o.color}80` }} />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* ── Floating Particles rising up ── */}
+                {[
+                    { left: '5%',  size: 5, delay: 0,  dur: 14, color: '#3b82f6' },
+                    { left: '18%', size: 4, delay: 3,  dur: 18, color: '#a855f7' },
+                    { left: '30%', size: 6, delay: 6,  dur: 11, color: '#06b6d4' },
+                    { left: '42%', size: 4, delay: 1,  dur: 16, color: '#8b5cf6' },
+                    { left: '55%', size: 5, delay: 8,  dur: 13, color: '#3b82f6' },
+                    { left: '67%', size: 4, delay: 4,  dur: 19, color: '#10b981' },
+                    { left: '80%', size: 5, delay: 2,  dur: 15, color: '#a855f7' },
+                    { left: '92%', size: 4, delay: 7,  dur: 12, color: '#06b6d4' },
+                ].map((p, i) => (
+                    <div key={`particle-${i}`} className="absolute rounded-full"
+                        style={{
+                            left: p.left, bottom: '-10px', width: p.size, height: p.size,
                             backgroundColor: p.color,
                             boxShadow: `0 0 ${p.size * 4}px ${p.color}, 0 0 ${p.size * 8}px ${p.color}40`,
                             animation: `drift-up ${p.dur}s linear infinite ${p.delay}s`,
@@ -171,27 +196,21 @@ export default function Home() {
                     />
                 ))}
 
-                {/* ── Floating Code Symbols — larger, more visible ── */}
-                {['</', '/>', '{ }', '( )', '01', 'AI', '< >', '&&', '[ ]', '::'].map((sym, i) => (
-                    <span
-                        key={`code-${i}`}
-                        className="absolute font-mono font-bold select-none"
+                {/* ── Floating Code Symbols ── */}
+                {['</', '/>', '{ }', '( )', '01', 'AI', '< >', '&&'].map((sym, i) => (
+                    <span key={`code-${i}`} className="absolute font-mono font-bold select-none"
                         style={{
-                            left: `${5 + i * 10}%`,
-                            bottom: '-30px',
+                            left: `${6 + i * 12}%`, bottom: '-30px',
                             fontSize: `${16 + (i % 3) * 6}px`,
-                            color: ['#3b82f6', '#a855f7', '#06b6d4', '#10b981', '#8b5cf6', '#3b82f6', '#a855f7', '#06b6d4', '#10b981', '#8b5cf6'][i],
-                            textShadow: `0 0 10px ${['#3b82f6', '#a855f7', '#06b6d4', '#10b981', '#8b5cf6', '#3b82f6', '#a855f7', '#06b6d4', '#10b981', '#8b5cf6'][i]}60`,
+                            color: ['#3b82f6', '#a855f7', '#06b6d4', '#10b981', '#8b5cf6', '#3b82f6', '#a855f7', '#06b6d4'][i],
+                            textShadow: `0 0 10px ${['#3b82f6', '#a855f7', '#06b6d4', '#10b981', '#8b5cf6', '#3b82f6', '#a855f7', '#06b6d4'][i]}60`,
                             animation: `code-float ${9 + i * 2}s linear infinite ${i * 1.5}s`,
                         }}
-                    >
-                        {sym}
-                    </span>
+                    >{sym}</span>
                 ))}
 
-                {/* ── Horizontal Scan Line — brighter ── */}
-                <div
-                    className="absolute left-0 w-full h-[2px]"
+                {/* ── Scan Line ── */}
+                <div className="absolute left-0 w-full h-[2px]"
                     style={{
                         background: 'linear-gradient(90deg, transparent 0%, rgba(59,130,246,0.5) 20%, rgba(168,85,247,0.7) 50%, rgba(59,130,246,0.5) 80%, transparent 100%)',
                         animation: 'scan-line 8s linear infinite',
@@ -382,11 +401,23 @@ export default function Home() {
 
             {/* ── Ecosystem Section ── */}
             <section className="py-32 lg:py-48 px-8 relative overflow-hidden">
-                {/* Section tech accent — orbiting ring */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" style={{ width: 300, height: 300, opacity: 0.06 }}>
-                    <div className="absolute inset-0 rounded-full" style={{ border: '1px dashed #a855f7', animation: 'orbit 40s linear infinite' }} />
-                    <div className="absolute inset-6 rounded-full" style={{ border: '1px dashed #3b82f6', animation: 'orbit 30s linear infinite reverse' }} />
-                    <div className="absolute inset-12 rounded-full" style={{ border: '1px dashed #06b6d4', animation: 'orbit 20s linear infinite' }} />
+                {/* Electron orbit system — center background */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" style={{ width: 500, height: 500 }}>
+                    {/* Nucleus */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full"
+                        style={{ backgroundColor: '#8b5cf6', boxShadow: '0 0 20px #8b5cf6, 0 0 40px #8b5cf660', animation: 'pulse-glow 3s ease-in-out infinite' }} />
+                    {[
+                        { radius: 80, dur: 6, color: '#3b82f6', tilt: 'rotateX(75deg)' },
+                        { radius: 140, dur: 10, color: '#a855f7', tilt: 'rotateX(75deg) rotateY(35deg)' },
+                        { radius: 200, dur: 14, color: '#06b6d4', tilt: 'rotateX(75deg) rotateY(-35deg)' },
+                    ].map((o, i) => (
+                        <div key={`eco-orbit-${i}`} className="absolute top-1/2 left-1/2" style={{ width: o.radius * 2, height: o.radius * 2, marginLeft: -o.radius, marginTop: -o.radius, transform: o.tilt, opacity: 0.25 }}>
+                            <div className="absolute inset-0 rounded-full" style={{ border: `1px solid ${o.color}` }} />
+                            <div className="absolute top-1/2 left-1/2" style={{ width: 0, height: 0, animation: `electron-orbit ${o.dur}s linear infinite`, '--radius': `${o.radius}px` }}>
+                                <div className="rounded-full" style={{ width: 6, height: 6, marginLeft: -3, marginTop: -3, backgroundColor: o.color, boxShadow: `0 0 8px ${o.color}, 0 0 16px ${o.color}` }} />
+                            </div>
+                        </div>
+                    ))}
                 </div>
                 <div className="max-w-[90%] mx-auto relative z-10">
 
