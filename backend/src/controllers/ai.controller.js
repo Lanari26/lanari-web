@@ -322,6 +322,42 @@ Rules:
 - If unsure, say so honestly and suggest the user contact Lanari Tech directly.`;
 }
 
+function callOpenRouter(body) {
+    return new Promise((resolve, reject) => {
+        const payload = JSON.stringify(body);
+        const https = require('https');
+        const req = https.request({
+            hostname: 'openrouter.ai',
+            path: '/api/v1/chat/completions',
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+                'Content-Type': 'application/json',
+                'HTTP-Referer': process.env.FRONTEND_URL || 'https://web.lanari.rw',
+                'X-Title': 'Lanari AI',
+                'Content-Length': Buffer.byteLength(payload)
+            }
+        }, (res) => {
+            let data = '';
+            res.on('data', chunk => data += chunk);
+            res.on('end', () => {
+                if (res.statusCode >= 400) {
+                    return reject(new Error(`OpenRouter API error: ${res.statusCode} — ${data}`));
+                }
+                try {
+                    const parsed = JSON.parse(data);
+                    resolve(parsed.choices?.[0]?.message?.content || null);
+                } catch (e) {
+                    reject(new Error('Failed to parse OpenRouter response'));
+                }
+            });
+        });
+        req.on('error', reject);
+        req.write(payload);
+        req.end();
+    });
+}
+
 async function askOpenRouter(message, history, systemPrompt) {
     const messages = [{ role: 'system', content: systemPrompt }];
     for (const msg of history) {
@@ -332,29 +368,12 @@ async function askOpenRouter(message, history, systemPrompt) {
     }
     messages.push({ role: 'user', content: message });
 
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-            'Content-Type': 'application/json',
-            'HTTP-Referer': process.env.FRONTEND_URL || 'https://web.lanari.rw',
-            'X-Title': 'Lanari AI'
-        },
-        body: JSON.stringify({
-            model: 'meta-llama/llama-3.1-8b-instruct:free',
-            messages,
-            max_tokens: 400,
-            temperature: 0.7
-        })
+    return callOpenRouter({
+        model: 'meta-llama/llama-3.1-8b-instruct:free',
+        messages,
+        max_tokens: 400,
+        temperature: 0.7
     });
-
-    if (!response.ok) {
-        const err = await response.text();
-        throw new Error(`OpenRouter API error: ${response.status} — ${err}`);
-    }
-
-    const data = await response.json();
-    return data.choices?.[0]?.message?.content || null;
 }
 
 async function askAI(message, chatHistory = []) {
