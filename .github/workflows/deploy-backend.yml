@@ -1,4 +1,4 @@
-name: Deploy Backend to Server
+name: Deploy Backend to Contabo
 
 on:
   push:
@@ -6,38 +6,59 @@ on:
       - main
     paths:
       - 'backend/**'
+      - '.github/workflows/deploy-backend.yml'
+  workflow_dispatch:
+
+# --- Deployment target (Contabo / CloudPanel) ---
+# Host, user and path are not secret. Only the SSH key is stored as a secret.
+env:
+  DEPLOY_HOST: 176.126.87.142
+  DEPLOY_USER: lanariapi
+  DEPLOY_PATH: /home/lanariapi/htdocs/api.lanari.rw
+  PM2_APP: lanari-backend
 
 jobs:
   deploy-backend:
     name: Deploy Backend
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Sync backend source to deployment directory
+      - name: Configure SSH
         run: |
-          sudo -u lanari-api-web rsync -a --delete \
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Sync backend source to server
+        # .env stays on the server and is never overwritten (it is excluded here
+        # and lives outside the repo). node_modules is rebuilt on the server.
+        run: |
+          rsync -az --delete \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new" \
             --exclude ".git" \
             --exclude "node_modules" \
             --exclude ".env" \
-            "${{ github.workspace }}/backend/" \
-            "/home/lanari-api-web/htdocs/api-web.lanari.rw/"
+            --exclude ".env.local" \
+            --exclude ".env.production" \
+            "backend/" \
+            "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
 
-      - name: Install backend dependencies
+      - name: Install dependencies and (re)start with PM2
         run: |
-          sudo -u lanari-api-web bash -lc '
-            cd ~/htdocs/api-web.lanari.rw
-            npm install --omit=dev
-          '
-
-      - name: Restart backend with PM2
-        run: |
-          sudo -u lanari-api-web bash -lc '
-            cd ~/htdocs/api-web.lanari.rw
-            pm2 describe lanari-backend > /dev/null 2>&1 \
-              && pm2 restart lanari-backend \
-              || pm2 start src/server.js --name lanari-backend
-            pm2 save
-          '
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new \
+            "$DEPLOY_USER@$DEPLOY_HOST" \
+            "DEPLOY_PATH='$DEPLOY_PATH' PM2_APP='$PM2_APP' bash -s" <<'EOSSH'
+          set -euo pipefail
+          cd "$DEPLOY_PATH"
+          npm install --omit=dev
+          if pm2 describe "$PM2_APP" > /dev/null 2>&1; then
+            pm2 restart "$PM2_APP" --update-env
+          else
+            pm2 start npm --name "$PM2_APP" -- start
+          fi
+          pm2 save
+          EOSSH

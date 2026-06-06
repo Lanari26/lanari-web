@@ -1,4 +1,4 @@
-name: Deploy Frontend to Server
+name: Deploy Frontend to Contabo
 
 on:
   push:
@@ -6,11 +6,20 @@ on:
       - main
     paths:
       - 'frontend/**'
+      - '.github/workflows/deploy-frontend.yml'
+  workflow_dispatch:
+
+# --- Deployment target (Contabo / CloudPanel) ---
+# Host, user and path are not secret. Only the SSH key is stored as a secret.
+env:
+  DEPLOY_HOST: 176.126.87.142
+  DEPLOY_USER: lanari
+  DEPLOY_PATH: /home/lanari/htdocs/lanari.rw
 
 jobs:
   deploy-frontend:
     name: Deploy Frontend
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -29,11 +38,22 @@ jobs:
 
       - name: Build frontend
         working-directory: frontend
+        # API URL is baked into the bundle at build time. Override via the
+        # repo variable VITE_API_URL (Settings -> Secrets and variables -> Actions -> Variables).
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL || 'https://api.lanari.rw/api' }}
         run: npm run build
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null
 
       - name: Deploy built assets to web root
         run: |
-          sudo -u lanari-web mkdir -p /home/lanari-web/htdocs/web.lanari.rw
-          sudo -u lanari-web rsync -a --delete \
-            "${{ github.workspace }}/frontend/dist/" \
-            "/home/lanari-web/htdocs/web.lanari.rw/"
+          rsync -az --delete \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new" \
+            "frontend/dist/" \
+            "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
