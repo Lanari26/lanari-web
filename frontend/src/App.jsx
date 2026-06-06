@@ -1,3 +1,4 @@
+// Lanari web app — deployed to lanari.rw via GitHub Actions on push to main.
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import LoadingScreen from './components/LoadingScreen';

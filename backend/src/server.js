@@ -1,3 +1,4 @@
+// Lanari API — deployed to api.lanari.rw (port 5001) via GitHub Actions on push to main.
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
