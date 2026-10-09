@@ -186,7 +186,7 @@ export default function StaffDashboard({ user, workspace, notifications, unreadN
             <div className="grid grid-cols-1 xl:grid-cols-[0.95fr,1.05fr] gap-6">
                 <Section
                     title="Your Role Lane"
-                    subtitle="What you own by default in the Lanari operating model."
+                    subtitle="What you own by default in the Satellite AI operating model."
                     action={assignedRole?.code ? <Badge>{assignedRole.code}</Badge> : null}
                 >
                     <div className="flex flex-wrap gap-2">

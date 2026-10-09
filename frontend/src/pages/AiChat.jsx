@@ -162,10 +162,10 @@ export default function AiChat() {
                 </div>
                 <div className="relative z-10 text-center max-w-md w-full">
                     <div className="w-20 h-20 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/30 mx-auto mb-8">
-                        <img src={logo} alt="Lanari AI" className="w-12 h-12 rounded-xl" />
+                        <img src={logo} alt="Satellite AI" className="w-12 h-12 rounded-xl" />
                     </div>
                     <h2 className="text-3xl font-bold mb-3" style={{ color: '#ffffff' }}>
-                        Sign in to <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Lanari AI</span>
+                        Sign in to <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Satellite AI</span>
                     </h2>
                     <p className="text-base font-medium mb-8" style={{ color: '#9ca3af' }}>
                         Log in to chat with our AI assistant and keep your conversation history.
@@ -325,7 +325,7 @@ export default function AiChat() {
                             </svg>
                         </button>
                         <button onClick={() => navigate('/')} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                            <img src={logo} alt="Lanari" className="w-8 h-8 rounded-xl shadow-lg shadow-blue-500/20" />
+                            <img src={logo} alt="Satellite AI" className="w-8 h-8 rounded-xl shadow-lg shadow-blue-500/20" />
                         </button>
                         <div className="w-px h-6" style={{ backgroundColor: '#374151' }} />
                         <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20">
@@ -334,8 +334,8 @@ export default function AiChat() {
                             </svg>
                         </div>
                         <div>
-                            <h1 className="text-sm font-bold" style={{ color: '#ffffff' }}>Lanari AI</h1>
-                            <p className="text-[11px] font-medium" style={{ color: '#6b7280' }}>Powered by Lanari Tech</p>
+                            <h1 className="text-sm font-bold" style={{ color: '#ffffff' }}>Satellite AI</h1>
+                            <p className="text-[11px] font-medium" style={{ color: '#6b7280' }}>Powered by Satellite AI</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -365,7 +365,7 @@ export default function AiChat() {
                         <div className="flex flex-col items-center justify-center h-full min-h-[60vh] px-6 py-12">
                             <div className="relative mb-8">
                                 <div className="w-20 h-20 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/30">
-                                    <img src={logo} alt="Lanari AI" className="w-12 h-12 rounded-xl" />
+                                    <img src={logo} alt="Satellite AI" className="w-12 h-12 rounded-xl" />
                                 </div>
                                 <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
                                     <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
@@ -374,10 +374,10 @@ export default function AiChat() {
                                 </div>
                             </div>
                             <h2 className="text-3xl md:text-4xl font-bold mb-3 text-center" style={{ color: '#ffffff' }}>
-                                Hi, I'm <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Lanari AI</span>
+                                Hi, I'm <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Satellite AI</span>
                             </h2>
                             <p className="text-base font-medium text-center max-w-md mb-10" style={{ color: '#9ca3af' }}>
-                                Your intelligent assistant for everything Lanari Tech. Ask me anything about our products, services, or opportunities.
+                                Your intelligent assistant for everything Satellite AI. Ask me anything about our products, services, or opportunities.
                             </p>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
@@ -491,7 +491,7 @@ export default function AiChat() {
                                         handleSubmit(e);
                                     }
                                 }}
-                                placeholder="Ask Lanari AI anything..."
+                                placeholder="Ask Satellite AI anything..."
                                 rows={1}
                                 className="flex-1 bg-transparent text-sm font-medium outline-none placeholder-gray-500 resize-none py-2.5 px-3 max-h-32"
                                 style={{ color: '#ffffff' }}
@@ -514,7 +514,7 @@ export default function AiChat() {
                             </button>
                         </div>
                         <p className="text-center text-[11px] font-medium mt-2" style={{ color: '#4b5563' }}>
-                            Lanari AI is trained from curated data. Verify important information.
+                            Satellite AI is trained from curated data. Verify important information.
                         </p>
                     </form>
                 </div>

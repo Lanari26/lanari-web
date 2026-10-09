@@ -63,8 +63,8 @@ export default function AdminLayout({ children }) {
             >
                 {/* Logo */}
                 <div className="flex items-center gap-3 px-4 py-5" style={{ borderBottom: '1px solid #1f2937' }}>
-                    <img src={logo} alt="Lanari" className="w-9 h-9 rounded-xl flex-shrink-0" />
-                    {!collapsed && <span className="text-sm font-bold text-white truncate">Lanari Admin</span>}
+                    <img src={logo} alt="Satellite AI" className="w-9 h-9 rounded-xl flex-shrink-0" />
+                    {!collapsed && <span className="text-sm font-bold text-white truncate">Satellite AI Admin</span>}
                 </div>
 
                 {/* Nav */}

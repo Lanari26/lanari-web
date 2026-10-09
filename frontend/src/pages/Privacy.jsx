@@ -11,7 +11,7 @@ export default function Privacy() {
                     <section>
                         <h2 className="text-2xl font-bold text-white mb-4">1. Introduction</h2>
                         <p className="leading-relaxed">
-                            Lanari Tech ("we", "our", or "us") respects your privacy and is committed to protecting your personal data.
+                            Satellite AI ("we", "our", or "us") respects your privacy and is committed to protecting your personal data.
                             This privacy policy will inform you as to how we look after your personal data when you visit our website
                             or use our applications (Satellite, Satellite Host, Intore, Isiri, etc.) and tell you about your privacy rights and how the law protects you.
                         </p>

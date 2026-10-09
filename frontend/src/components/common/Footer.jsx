@@ -12,9 +12,9 @@ export default function Footer() {
                 <div className="grid md:grid-cols-4 lg:grid-cols-5 gap-12 lg:gap-24 mb-16">
                     <div className="md:col-span-2 lg:col-span-2">
                         <div className="flex items-center gap-4 mb-6">
-                            <img src={logo} alt="Lanari Tech" className="w-14 h-14 rounded-2xl shadow-lg shadow-purple-500/20" />
+                            <img src={logo} alt="Satellite AI" className="w-14 h-14 rounded-2xl shadow-lg shadow-purple-500/20" />
                             <div>
-                                <h3 className="font-bold text-xl lg:text-2xl" style={{ color: '#ffffff' }}>LANARI</h3>
+                                <h3 className="font-bold text-xl lg:text-2xl" style={{ color: '#ffffff' }}>SATELLITE AI</h3>
                                 <p className="text-base lg:text-lg font-medium" style={{ color: '#d1d5db' }}>Kigali, Rwanda</p>
                             </div>
                         </div>
@@ -68,7 +68,7 @@ export default function Footer() {
 
                 <div className="pt-10 flex flex-col md:flex-row items-center justify-between gap-6" style={{ borderTop: '1px solid #4b5563' }}>
                     <div className="text-base lg:text-lg font-semibold" style={{ color: '#9ca3af' }}>
-                        © {new Date().getFullYear()} Lanari Tech Ltd. All rights reserved.
+                        © {new Date().getFullYear()} Satellite AI Ltd. All rights reserved.
                     </div>
                     <div className="flex items-center gap-4 flex-wrap">
                         {/* Instagram */}

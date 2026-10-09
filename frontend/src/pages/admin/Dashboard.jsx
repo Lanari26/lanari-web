@@ -49,7 +49,7 @@ export default function Dashboard() {
             {/* Welcome */}
             <div>
                 <h2 className="text-2xl font-bold text-white mb-1">Welcome back</h2>
-                <p className="text-sm font-medium text-gray-500">Here's what's happening with Lanari Tech today.</p>
+                <p className="text-sm font-medium text-gray-500">Here's what's happening with Satellite AI today.</p>
             </div>
 
             {/* Stat Cards */}

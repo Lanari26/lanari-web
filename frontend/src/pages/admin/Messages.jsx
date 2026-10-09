@@ -76,7 +76,7 @@ export default function Messages() {
                                     <p className="text-sm text-gray-300 font-medium leading-relaxed whitespace-pre-wrap">{msg.message}</p>
                                     <div className="mt-3">
                                         <a
-                                            href={`mailto:${msg.email}?subject=Re: Your message to Lanari Tech`}
+                                            href={`mailto:${msg.email}?subject=Re: Your message to Satellite AI`}
                                             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold bg-blue-500/15 text-blue-400 hover:bg-blue-500/25 transition-colors"
                                         >
                                             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

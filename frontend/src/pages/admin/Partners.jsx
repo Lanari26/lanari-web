@@ -87,7 +87,7 @@ export default function Partners() {
                                                 </button>
                                             ))}
                                             <a
-                                                href={`mailto:${req.contact_email}?subject=Re: Partnership with Lanari Tech`}
+                                                href={`mailto:${req.contact_email}?subject=Re: Partnership with Satellite AI`}
                                                 onClick={e => e.stopPropagation()}
                                                 className="ml-auto px-3 py-1 rounded-lg text-xs font-bold bg-blue-500/15 text-blue-400 hover:bg-blue-500/25 transition-colors"
                                             >

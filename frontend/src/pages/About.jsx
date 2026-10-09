@@ -4,9 +4,9 @@ export default function About() {
     return (
         <div className="min-h-screen py-24 px-6">
             <div className="max-w-3xl mx-auto">
-                <h1 className="text-5xl font-bold mb-8 text-white">About Lanari</h1>
+                <h1 className="text-5xl font-bold mb-8 text-white">About Satellite AI</h1>
                 <p className="text-xl text-gray-300 leading-relaxed mb-6">
-                    Lanari is a technology company in Kigali, Rwanda. We build tools that let people make software and run a business with less friction.
+                    Satellite AI is a technology company in Kigali, Rwanda. We build tools that let people make software and run a business with less friction.
                 </p>
                 <p className="text-xl text-gray-300 leading-relaxed mb-12">
                     Our work is Satellite, an AI coding IDE, and Satellite Host, which puts what you build online. We also train custom AI models, build our own small coding model, Intore, and run Isiri, business software for Rwandan retail.

@@ -10,7 +10,7 @@ export default function Home() {
                     <div className="absolute top-40 right-1/4 w-[28rem] h-[28rem] bg-violet-500/15 rounded-full blur-3xl" />
                 </div>
                 <div className="relative max-w-5xl mx-auto text-center">
-                    <p className="text-sm font-bold tracking-widest text-blue-400 mb-6">LANARI · KIGALI, RWANDA</p>
+                    <p className="text-sm font-bold tracking-widest text-blue-400 mb-6">SATELLITE AI · KIGALI, RWANDA</p>
                     <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight mb-8">
                         Build software by <span className="bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">describing it.</span>
                     </h1>

@@ -65,7 +65,7 @@ export default function Product({ slug }) {
                     ))}
                 </div>
 
-                <h2 className="text-2xl font-bold text-white mb-6">More from Lanari</h2>
+                <h2 className="text-2xl font-bold text-white mb-6">More from Satellite AI</h2>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {others.map((o) => (
                         <Link key={o.slug} to={o.path} className="p-6 rounded-2xl bg-gray-800/40 border border-gray-700 hover:border-gray-500 transition-colors">

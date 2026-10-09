@@ -200,7 +200,7 @@ export default function Campaigns() {
 <tr><td align="center">
 <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
   <tr><td style="background:linear-gradient(135deg,#3b82f6,#8b5cf6);padding:32px 40px;border-radius:16px 16px 0 0;">
-    <h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:700;">Lanari Tech</h1>
+    <h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:700;">Satellite AI</h1>
   </td></tr>
   <tr><td style="background-color:#1f2937;padding:40px;border:1px solid #374151;border-top:none;">
     <h2 style="margin:0 0 16px;color:#ffffff;font-size:22px;">Hello {{name}},</h2>
@@ -209,7 +209,7 @@ export default function Campaigns() {
     </p>
   </td></tr>
   <tr><td style="padding:24px 40px;text-align:center;">
-    <p style="margin:0;color:#4b5563;font-size:11px;">&copy; 2026 Lanari Tech. All rights reserved.</p>
+    <p style="margin:0;color:#4b5563;font-size:11px;">&copy; 2026 Satellite AI. All rights reserved.</p>
   </td></tr>
 </table>
 </td></tr>

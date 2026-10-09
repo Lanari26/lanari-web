@@ -46,7 +46,7 @@ export default function Login() {
             <div className="w-full max-w-md bg-gray-800/50 backdrop-blur-xl p-8 rounded-3xl border border-gray-700 shadow-2xl">
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-                    <p className="text-gray-400">Sign in to access your Lanari account</p>
+                    <p className="text-gray-400">Sign in to access your Satellite AI account</p>
                 </div>
 
                 {error && (

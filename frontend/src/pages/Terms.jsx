@@ -11,7 +11,7 @@ export default function Terms() {
                     <section>
                         <h2 className="text-2xl font-bold text-white mb-4">1. Agreement to Terms</h2>
                         <p className="leading-relaxed">
-                            By accessing or using the services provided by Lanari Tech, including but not limited to Satellite, Satellite Host, Model Training, Intore and Isiri, you agree to be bound by these Terms of Service. If you do not agree to these terms, you may not use our services.
+                            By accessing or using the services provided by Satellite AI, including but not limited to Satellite, Satellite Host, Model Training, Intore and Isiri, you agree to be bound by these Terms of Service. If you do not agree to these terms, you may not use our services.
                         </p>
                     </section>
 

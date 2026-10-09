@@ -20,7 +20,7 @@ const quickLinks = [
     { name: 'Academy', desc: 'Learn New Skills', icon: '🎓', color: 'from-emerald-500 to-teal-400', url: '/academy' },
     { name: 'AI Solutions', desc: 'AI-Powered Tools', icon: '🤖', color: 'from-orange-500 to-red-400', url: '/ai-products' },
     { name: 'Cloud', desc: 'Cloud Services', icon: '☁️', color: 'from-sky-500 to-blue-400', url: '/cloud' },
-    { name: 'Mail', desc: 'Lanari Mail', icon: '✉️', color: 'from-red-500 to-pink-400', url: '/mail' },
+    { name: 'Mail', desc: 'Satellite AI Mail', icon: '✉️', color: 'from-red-500 to-pink-400', url: '/mail' },
     { name: 'Calendar', desc: 'Schedule & Events', icon: '📅', color: 'from-green-500 to-emerald-400', url: '/calendar' },
     { name: 'Docs', desc: 'Documentation', icon: '📄', color: 'from-yellow-500 to-orange-400', url: '/docs' },
 ];
@@ -123,8 +123,8 @@ export default function UserDashboard() {
             >
                 {/* Logo */}
                 <div className="flex items-center gap-3 px-4 py-5" style={{ borderBottom: '1px solid #1f2937' }}>
-                    <img src={logo} alt="Lanari" className="w-9 h-9 rounded-xl flex-shrink-0 cursor-pointer" onClick={() => navigate('/')} />
-                    {!collapsed && <span className="text-sm font-bold text-white truncate">Lanari Dashboard</span>}
+                    <img src={logo} alt="Satellite AI" className="w-9 h-9 rounded-xl flex-shrink-0 cursor-pointer" onClick={() => navigate('/')} />
+                    {!collapsed && <span className="text-sm font-bold text-white truncate">Satellite AI Dashboard</span>}
                     {/* Mobile close */}
                     <button onClick={() => setMobileOpen(false)} className="ml-auto lg:hidden p-1 rounded-lg text-gray-500 hover:text-white hover:bg-white/5">
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -628,8 +628,8 @@ function ProductsSection({ navigate }) {
     return (
         <div className="space-y-6">
             <div>
-                <h2 className="text-2xl font-bold text-white">Lanari Products</h2>
-                <p className="text-sm text-gray-500 font-medium mt-1">Explore the Lanari Tech ecosystem</p>
+                <h2 className="text-2xl font-bold text-white">Satellite AI Products</h2>
+                <p className="text-sm text-gray-500 font-medium mt-1">Explore the Satellite AI ecosystem</p>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
@@ -653,7 +653,7 @@ function ProductsSection({ navigate }) {
 
             {/* Explore more */}
             <div className="p-6 rounded-2xl text-center" style={{ backgroundColor: '#111827', border: '1px solid #1f2937' }}>
-                <p className="text-gray-500 text-sm font-medium mb-4">Explore everything Lanari Tech has to offer</p>
+                <p className="text-gray-500 text-sm font-medium mb-4">Explore everything Satellite AI has to offer</p>
                 <div className="flex flex-wrap items-center justify-center gap-3">
                     {[
                         { label: 'Browse Careers', path: '/careers', color: 'text-purple-400' },

@@ -39,7 +39,7 @@ export default function LoadingScreen({ onDone }) {
                 {/* Logo in center */}
                 <img
                     src={logo}
-                    alt="Lanari"
+                    alt="Satellite AI"
                     className="w-11 h-11 rounded-xl object-cover shadow-lg shadow-purple-500/20"
                 />
             </div>

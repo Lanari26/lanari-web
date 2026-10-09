@@ -20,8 +20,8 @@ export default function Header() {
         >
             <div className="max-w-6xl mx-auto flex items-center justify-between gap-6">
                 <Link to="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-                    <img src={logo} alt="Lanari" className="w-10 h-10 rounded-xl" />
-                    <span className="text-lg font-bold tracking-tight text-white">Lanari</span>
+                    <img src={logo} alt="Satellite AI" className="w-10 h-10 rounded-xl" />
+                    <span className="text-lg font-bold tracking-tight text-white">Satellite AI</span>
                 </Link>
 
                 <div className="hidden lg:flex items-center gap-7">
