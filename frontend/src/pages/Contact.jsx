@@ -40,7 +40,7 @@ export default function Contact() {
                 <div>
                     <h1 className="text-5xl font-bold mb-6 text-white">Get in Touch</h1>
                     <p className="text-xl text-gray-400 mb-12">
-                        Have a question about our platforms, partnership opportunities, or just want to say hello? We'd love to hear from you.
+                        A question about Satellite, Satellite Host, Model Training, Intore or Isiri? Tell us what you need and we will reply.
                     </p>
 
                     <div className="space-y-8">
@@ -50,8 +50,7 @@ export default function Contact() {
                             </div>
                             <div>
                                 <h3 className="text-lg font-bold text-white">Email Us</h3>
-                                <p className="text-gray-400">lanari.rw@gmail.com</p>
-                                <p className="text-gray-400">support@lanari.rw</p>
+                                <p className="text-gray-400">info@lanari.rw</p>
                             </div>
                         </div>
 

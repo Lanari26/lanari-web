@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
+import { PRODUCTS } from '../../data/products';
 
 export default function Footer() {
     const navigate = useNavigate();
@@ -13,12 +14,12 @@ export default function Footer() {
                         <div className="flex items-center gap-4 mb-6">
                             <img src={logo} alt="Lanari Tech" className="w-14 h-14 rounded-2xl shadow-lg shadow-purple-500/20" />
                             <div>
-                                <h3 className="font-bold text-xl lg:text-2xl" style={{ color: '#ffffff' }}>LANARI TECH</h3>
-                                <p className="text-base lg:text-lg font-medium" style={{ color: '#d1d5db' }}>Innovation from Rwanda</p>
+                                <h3 className="font-bold text-xl lg:text-2xl" style={{ color: '#ffffff' }}>LANARI</h3>
+                                <p className="text-base lg:text-lg font-medium" style={{ color: '#d1d5db' }}>Kigali, Rwanda</p>
                             </div>
                         </div>
                         <p className="text-lg lg:text-xl leading-relaxed max-w-2xl" style={{ color: '#9ca3af' }}>
-                            Committed to satisfying everyone's needs through innovative digital solutions. We empower people to learn, earn, connect, and grow.
+                            Satellite, Satellite Host, Model Training, Intore and Isiri: software you build by describing it, and the systems to run it.
                         </p>
                     </div>
 
@@ -27,12 +28,7 @@ export default function Footer() {
                     <div>
                         <h4 className="font-bold text-lg lg:text-xl mb-6" style={{ color: '#ffffff' }}>Our Projects</h4>
                         <nav className="space-y-4">
-                            {[
-                                { name: 'Siri Platform', url: '/siri' },
-                                { name: 'Rise Platform', url: '/rise' },
-                                { name: 'Coding Academy', url: 'https://lca.lanari.rw/' },
-                                { name: 'AI Products', url: '/ai-products' }
-                            ].map((item) => (
+                            {PRODUCTS.map((p) => ({ name: p.name, url: p.path })).map((item) => (
                                 <a
                                     key={item.name}
                                     href={item.url}
@@ -58,7 +54,6 @@ export default function Footer() {
                         <nav className="space-y-4">
                             {[
                                 { name: 'About', url: '/about' },
-                                { name: 'Careers', url: '/careers' },
                                 { name: 'Contact', url: '/contact' },
                                 { name: 'Privacy', url: '/privacy' },
                                 { name: 'Terms', url: '/terms' }
@@ -73,7 +68,7 @@ export default function Footer() {
 
                 <div className="pt-10 flex flex-col md:flex-row items-center justify-between gap-6" style={{ borderTop: '1px solid #4b5563' }}>
                     <div className="text-base lg:text-lg font-semibold" style={{ color: '#9ca3af' }}>
-                        © 2024 Lanari Tech Ltd. All rights reserved.
+                        © {new Date().getFullYear()} Lanari Tech Ltd. All rights reserved.
                     </div>
                     <div className="flex items-center gap-4 flex-wrap">
                         {/* Instagram */}
@@ -112,7 +107,7 @@ export default function Footer() {
                         </a>
 
                         {/* Email */}
-                        <a href="mailto:lanari.rw@gmail.com" className="hover:text-white transition-colors transform hover:scale-110" style={{ color: '#9ca3af' }}>
+                        <a href="mailto:info@lanari.rw" className="hover:text-white transition-colors transform hover:scale-110" style={{ color: '#9ca3af' }}>
                             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 12.713l-11.985-9.713h23.971l-11.986 9.713zm-5.425-1.822l-6.575-5.329v12.501l6.575-7.172zm10.85 0l6.575 7.172v-12.501l-6.575 5.329zm-1.557 1.261l-3.868 3.135-3.868-3.135-8.11 8.848h23.956l-8.11-8.848z" />
                             </svg>

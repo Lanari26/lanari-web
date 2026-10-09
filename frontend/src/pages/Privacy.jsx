@@ -13,7 +13,7 @@ export default function Privacy() {
                         <p className="leading-relaxed">
                             Lanari Tech ("we", "our", or "us") respects your privacy and is committed to protecting your personal data.
                             This privacy policy will inform you as to how we look after your personal data when you visit our website
-                            or use our applications (Siri, Rise, Academy, etc.) and tell you about your privacy rights and how the law protects you.
+                            or use our applications (Satellite, Satellite Host, Intore, Isiri, etc.) and tell you about your privacy rights and how the law protects you.
                         </p>
                     </section>
 
